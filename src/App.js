@@ -33,67 +33,18 @@ class App extends Component {
 
 
 
-  hasNoVisitedNeighbours = (previousPosition, position) => {
 
-    let neighbours = this.getNeighbours(position);
-    /*
-    //UP
-    let tempCellOne = { ...position };
-    tempCellOne.x--;
-
-    //DOWN
-    let tempCellTwo = { ...position };
-    tempCellTwo.x++;
-
-    //LEFT
-    let tempCellThree = { ...position };
-    tempCellThree.y--;
-
-    //RIGHT
-    let tempCellFour = { ...position };
-    tempCellFour.y++;
-    */
-    let maze = [...this.state.maze];
-    let totalRows = this.state.rows;
-    let totalColumns = this.state.columns;
-
-    for(let cell of neighbours) {
-      if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (maze[cell.x][cell.y] === 1) && (cell.x !== previousPosition.x || cell.y !== previousPosition.y)) {
-        return false;
-      }
-    }
-
-    return true;
-
-    /*
-    if ((tempCellOne.x !== -1 && tempCellOne.x !== totalRows) && (maze[tempCellOne.x][tempCellOne.y] === 1) && (tempCellOne.x !== previousPosition.x || tempCellOne.y !== previousPosition.y )) {
-      return false;
-    }
-    else if ((tempCellTwo.x !== -1 && tempCellTwo.x !== totalRows) && (maze[tempCellTwo.x][tempCellTwo.y] === 1) && (tempCellTwo.x !== previousPosition.x || tempCellTwo.y !== previousPosition.y)) {
-      return false;
-    }
-    else if ((tempCellThree.y !== -1 && tempCellThree.y !== totalColumns) && (maze[tempCellThree.x][tempCellThree.y] === 1) && (tempCellThree.x !== previousPosition.x || tempCellThree.y !== previousPosition.y)) {
-      return false;
-    }
-    else if ((tempCellFour.y !== -1 && tempCellFour.y !== totalColumns) && (maze[tempCellFour.x][tempCellFour.y] === 1) && (tempCellFour.x !== previousPosition.x || tempCellFour.y !== previousPosition.y)) {
-      return false;
-    }
-    else {
-      return true;
-    }
-
-    */
-  }
-    
-
+  /*
+    Returns an array of all the neighbours of the cell 'position' (TOP CELL, BOTTOM CELL, LEFT CELL, RIGHT CELL)
+  */
   getNeighbours = (position) => {
-    let ListOfNeighbours = [];
+    //let ListOfNeighbours = [];
 
     //TOP CELL
     let tempCellOne = { ...position };
     tempCellOne.x--;
 
-    //DOWN CELL
+    //BOTTOM CELL
     let tempCellTwo = { ...position };
     tempCellTwo.x++;
 
@@ -105,37 +56,51 @@ class App extends Component {
     let tempCellFour = { ...position };
     tempCellFour.y++;
 
+    /*
     ListOfNeighbours.push(tempCellOne);
     ListOfNeighbours.push(tempCellTwo);
     ListOfNeighbours.push(tempCellThree);
     ListOfNeighbours.push(tempCellFour);
+    */
+   
+    //return ListOfNeighbours;
 
-    return ListOfNeighbours;
-
+    return [tempCellOne, tempCellTwo, tempCellThree, tempCellFour];
   }
 
+  /*
+    Returns false if any of the neighbouring cells of 'position' has already been visited.
 
+    Returns true if 'position' has no visited neighbours.
+  */
+  hasNoVisitedNeighbours = (previousPosition, position) => {
+
+    let neighbours = this.getNeighbours(position);
+
+    let maze = [...this.state.maze];
+    let totalRows = this.state.rows;
+    let totalColumns = this.state.columns;
+
+    for (let cell of neighbours) {
+      if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (maze[cell.x][cell.y] === 1) && (cell.x !== previousPosition.x || cell.y !== previousPosition.y)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /*
+    Returns an array of valid neighbouring cells at the current 'position'
+    A neighbour cell is valid if:
+    - It is not a cell outside the maze.
+    - It has not been visited yet
+    - If the unvisited neighbour cell also has no unvisited neighbours.
+  */
   checkNeighbours = (position) => {
     let neighbours = this.getNeighbours(position);
+
     let valid_cells = [];
-    /*
-    //UP
-    let tempCellOne = { ...position };
-    tempCellOne.x--;
-
-    //DOWN
-    let tempCellTwo = { ...position };
-    tempCellTwo.x++;
-
-    //LEFT
-    let tempCellThree = { ...position };
-    tempCellThree.y--;
-
-    //RIGHT
-    let tempCellFour = { ...position };
-    tempCellFour.y++;
-    */
-
     let totalRows = this.state.rows;
     let totalColumns = this.state.columns;
 
@@ -145,36 +110,7 @@ class App extends Component {
       }
     }
 
-    
-
-    
-    /*
-    if ((tempCellOne.x !== -1 && tempCellOne.x !==  totalRows) &&  (this.state.maze[tempCellOne.x][tempCellOne.y] !== 1) && this.hasNoVisitedNeighbours(position, tempCellOne)) {
-
-      valid_cells.push(tempCellOne);
-    }
-
-    
-    if ((tempCellTwo.x !== -1 && tempCellTwo.x !== totalRows) && (this.state.maze[tempCellTwo.x][tempCellTwo.y] !== 1) && this.hasNoVisitedNeighbours(position, tempCellTwo)) {
-
-      valid_cells.push(tempCellTwo);
-    }
-
-    
-    if ((tempCellThree.y !== -1 && tempCellThree.y !== totalColumns) && (this.state.maze[tempCellThree.x][tempCellThree.y] !== 1) && this.hasNoVisitedNeighbours(position, tempCellThree)) {
-
-      valid_cells.push(tempCellThree);
-    }
-
-    if ((tempCellFour.y !== -1 && tempCellFour.y !== totalColumns) && (this.state.maze[tempCellFour.x][tempCellFour.y] !== 1) && this.hasNoVisitedNeighbours(position, tempCellFour)) {
-
-      valid_cells.push(tempCellFour);
-
-    }
-    */
-
     return valid_cells;
-
   }
 
 
