@@ -38,34 +38,23 @@ class App extends Component {
     Returns an array of all the neighbours of the cell 'position' (TOP CELL, BOTTOM CELL, LEFT CELL, RIGHT CELL)
   */
   getNeighbours = (position) => {
-    //let ListOfNeighbours = [];
-
     //TOP CELL
-    let tempCellOne = { ...position };
-    tempCellOne.x--;
+    let topCell = { ...position };
+    topCell.x--;
 
     //BOTTOM CELL
-    let tempCellTwo = { ...position };
-    tempCellTwo.x++;
+    let bottomCell = { ...position };
+    bottomCell.x++;
 
     //LEFT CELL
-    let tempCellThree = { ...position };
-    tempCellThree.y--;
+    let leftCell = { ...position };
+    leftCell.y--;
 
     //RIGHT CELL
-    let tempCellFour = { ...position };
-    tempCellFour.y++;
+    let rightCell = { ...position };
+    rightCell.y++;
 
-    /*
-    ListOfNeighbours.push(tempCellOne);
-    ListOfNeighbours.push(tempCellTwo);
-    ListOfNeighbours.push(tempCellThree);
-    ListOfNeighbours.push(tempCellFour);
-    */
-   
-    //return ListOfNeighbours;
-
-    return [tempCellOne, tempCellTwo, tempCellThree, tempCellFour];
+    return [topCell, bottomCell, leftCell, rightCell];
   }
 
   /*
@@ -147,33 +136,25 @@ class App extends Component {
       let valid_cells = this.checkNeighbours(current_cell);
       if (valid_cells.length !== 0) {
         this.stack.push(current_cell);
-        //newMaze[current_cell.x][current_cell.y] = 1;
 
         let randomMove = Math.floor(Math.random() * valid_cells.length);
 
         this.stack.push(valid_cells[randomMove]);
 
       }
-      else {
-        //newMaze[current_cell.x][current_cell.y] = 1;
-      }
-
     }
     else {
       newMaze[this.state.rows - 1][this.state.columns - 1] = 100;
 
-      //STOP INTERVAL FROM RUNNING
+      //STOP INTERVAL
       clearInterval(this.timer);
     }
-    //console.log("X:", agentPosition.x, "Y:", agentPosition.y);
     return newMaze;
   }
 
 
   createBoard = () => {
-    //let copy = [...this.state.board];
-    //const newBoard = new Array(10).fill(0).map(() => new Array(10).fill(0));
-
+    
     if (this.visited.size !== 0) {
       this.visited = new Set();
     }
@@ -183,8 +164,7 @@ class App extends Component {
 
     let newMaze = new Array(setRows).fill(-100).map(() => new Array(setColumns).fill(-100));
 
-    //newMaze[2][0] = 1;
-    //newMaze[0][2] = 1;
+
     this.setState({
       maze: newMaze,
       createMaze: true,
