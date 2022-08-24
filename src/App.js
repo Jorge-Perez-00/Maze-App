@@ -15,7 +15,8 @@ class App extends Component {
     }
     this.agent = { x: 0, y: 0 };
     this.stack = [];
-    this.visited = new Set();
+    this.firstDeadEnd = false;
+    this.exitCell= {};
   }
 
 
@@ -71,7 +72,7 @@ class App extends Component {
     let totalColumns = this.state.columns;
 
     for (let cell of neighbours) {
-      if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (maze[cell.x][cell.y] === 1) && (cell.x !== previousPosition.x || cell.y !== previousPosition.y)) {
+      if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (maze[cell.x][cell.y] !== -100 ) && (cell.x !== previousPosition.x || cell.y !== previousPosition.y)) {
         return false;
       }
     }
@@ -94,7 +95,7 @@ class App extends Component {
     let totalColumns = this.state.columns;
 
     for(let cell of neighbours) {
-      if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (this.state.maze[cell.x][cell.y] !== 1) && this.hasNoVisitedNeighbours(position, cell)) {
+      if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (this.state.maze[cell.x][cell.y] === -100 ) && this.hasNoVisitedNeighbours(position, cell)) {
         valid_cells.push(cell)
       }
     }
@@ -142,10 +143,39 @@ class App extends Component {
         this.stack.push(valid_cells[randomMove]);
 
       }
+      /*
+      else if (valid_cells.length === 0 && this.firstDeadEnd === false) {
+        this.firstDeadEnd = true;
+        //newMaze[current_cell.x][current_cell.y] = 100;
+        this.exitCell = current_cell;
+
+      }
+      */
     }
     else {
+      /*
+        Makes sure that there is a path the leads to the last cell at the bottom right corner of the maze if the cell was not visited during the random maze generation process.
+      */
+
+      if(newMaze[this.state.rows - 1][this.state.columns - 1] !== 1) {
+        newMaze[this.state.rows - 1][this.state.columns - 2] = 1;
+        newMaze[this.state.rows - 1][this.state.columns - 3] = 1;
+        newMaze[this.state.rows - 2][this.state.columns - 1] = 1;
+        newMaze[this.state.rows - 3][this.state.columns - 1] = 1;
+      }
+      //SET THE EXIT OF THE MAZE
       newMaze[this.state.rows - 1][this.state.columns - 1] = 100;
 
+      //Uncover the helper preset visited cells
+      newMaze[this.state.rows - 4][this.state.columns - 1] = 1;
+      newMaze[this.state.rows - 1][this.state.columns - 4] = 1;
+      
+      //Uncover the cells next to the helper visited cells so that the helper cells are connected to a path.
+      newMaze[this.state.rows - 5][this.state.columns - 1] = 1;
+      newMaze[this.state.rows - 6][this.state.columns - 1] = 1;
+      newMaze[this.state.rows - 1][this.state.columns - 5] = 1;
+      newMaze[this.state.rows - 1][this.state.columns - 6] = 1;
+      
       //STOP INTERVAL
       clearInterval(this.timer);
     }
@@ -155,14 +185,14 @@ class App extends Component {
 
   createBoard = () => {
     
-    if (this.visited.size !== 0) {
-      this.visited = new Set();
-    }
-
     let setRows = 50;
     let setColumns = 50;
 
     let newMaze = new Array(setRows).fill(-100).map(() => new Array(setColumns).fill(-100));
+   
+    //Preset 2 cells as visited to help the random maze generation create a path to the final cell at the bottom right corner. 
+    newMaze[setRows - 4][setColumns - 1] = 2;
+    newMaze[setRows - 1][setColumns - 4] = 2;
 
 
     this.setState({
