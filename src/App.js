@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import './App.css';
-import Maze from'./components/Maze'
+import Maze from './components/Maze'
+import Modes from './components/Modes'
+import Timer from './components/Timer'
 
 
 class App extends Component {
@@ -10,8 +12,12 @@ class App extends Component {
       maze: [],
       agent: {x:0, y:0},
       createMaze: false,
+      mazeComplete: false,
       rows: 0,
       columns: 0,
+      mode: "",
+      start: false,
+      gameMessage: "",
     }
     this.agent = { x: 0, y: 0 };
     this.stack = [];
@@ -22,11 +28,15 @@ class App extends Component {
 
 
   showAnimation = () => {
+   
     this.timer = setInterval(() => {
       let newMaze = this.generateMaze();
+      let row = this.state.rows - 1;
+      let column = this.state.columns - 1;
       this.setState({ 
         maze: newMaze,  
         agent: this.agent,
+        mazeComplete: newMaze[row][column] === 100 ? true : false,
       });
     }, 10)
 
@@ -175,7 +185,7 @@ class App extends Component {
       newMaze[this.state.rows - 6][this.state.columns - 1] = 1;
       newMaze[this.state.rows - 1][this.state.columns - 5] = 1;
       newMaze[this.state.rows - 1][this.state.columns - 6] = 1;
-      
+
       //STOP INTERVAL
       clearInterval(this.timer);
     }
@@ -185,8 +195,8 @@ class App extends Component {
 
   createBoard = () => {
     
-    let setRows = 50;
-    let setColumns = 50;
+    let setRows = 30;
+    let setColumns = 30;
 
     let newMaze = new Array(setRows).fill(-100).map(() => new Array(setColumns).fill(-100));
    
@@ -201,23 +211,115 @@ class App extends Component {
       rows: setRows,
       columns: setColumns,
     })
+
+    this.showAnimation();
   }
 
+  /*
+    Sets the mode in state
+  */
+  setMode = (event) => {
+    event.persist();
+
+    this.setState({
+      mode: event.target.id,
+    })
+  }
+
+  /*
+    Handles all key presses when playing the Maze game modes
+  */
+  ArrowKeyHandler = (event) => {
+    if(this.state.mode === 'solo' && this.state.start) {
+      const maze = this.state.maze;
+      let AgentPosition = {...this.state.agent}
+
+      if(event.key === "ArrowUp") {
+        AgentPosition.x--;
+      }
+      else if (event.key === "ArrowDown") {
+        AgentPosition.x++;
+
+      }
+      else if (event.key === "ArrowLeft") {
+        AgentPosition.y--;
+
+      }
+      else if (event.key === "ArrowRight") {
+        AgentPosition.y++;
+
+      }
+
+      let row = AgentPosition.x;
+      let col = AgentPosition.y;
+
+      if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) && maze[row][col] !== -100) {
+        this.setState({
+          agent: AgentPosition,
+          gameMessage: (row === this.state.rows - 1 && col === this.state.columns - 1) ? "You Won!" : "",
+          start: (row === this.state.rows - 1 && col === this.state.columns - 1) ? false : true,
+        })
+      }
+      console.log(event.key);
+
+    }
+  }
+
+  setStart = () => {
+    this.setState({
+      start: true,
+      agent: {x:0, y:0}
+    })
+  }
+
+  stopGame = () => {
+    console.log("STOPPED START")
+    this.setState({
+      start: false,
+      gameMessage: "You ran out of time! You lost!",
+    })
+  }
 
   render() {
 
     document.body.style.backgroundColor = "#121212"
 
+    let GenerateMazeButton;
+    if(this.state.mode !== '' && this.state.createMaze === false ) {
+      GenerateMazeButton = <button onClick={this.createBoard} >Generate Maze</button>
+
+    }
+
+    let startButton;
+    if(this.state.mazeComplete === true && this.state.start == false) {
+      startButton = <button onClick={this.setStart} >START</button>
+    }
+
+    let modeSpecificElements;
+    if (this.state.mode === 'solo' && this.state.start === true) {
+      modeSpecificElements = <Timer stopGame={this.stopGame} />
+    }
+
+    let gameMessage;
+    if(this.state.gameMessage !== "" && this.state.start === false) {
+      gameMessage = <h1 className='gameMessage' >{this.state.gameMessage}</h1>
+    }
+
+    //       <button onClick={this.createBoard} >Create Board</button>
+
+    //        <button onClick={() => {clearInterval(this.timer)}} >STOP</button>
 
     return (
       <div className="App">
         <h1 className='Title'>MAZE</h1>
 
-        <button onClick={this.createBoard} >Create Board</button>
-        <button onClick={this.showAnimation} >Generate Maze</button>
-        <button onClick={() => {clearInterval(this.timer)}} >STOP</button>
+        {this.state.mode === "" && <Modes setMode={this.setMode} />}
 
-        {this.state.createMaze && <Maze maze={this.state.maze} agent={this.agent}/>}
+        {GenerateMazeButton}
+        {modeSpecificElements}
+        {this.state.createMaze && <Maze maze={this.state.maze} agent={this.state.agent} ArrowKeyHandler={this.ArrowKeyHandler} />}
+        {startButton}
+        {gameMessage}
 
       </div>
     );

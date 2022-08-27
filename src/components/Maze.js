@@ -2,10 +2,10 @@
 
 function Maze(props) {
 
-    let {maze, agent} = props;
+    let {maze, agent, ArrowKeyHandler} = props;
 
     return(
-        <div>
+        <div className="maze-container" tabIndex={0} onKeyDown={ArrowKeyHandler}>
             {maze?.map((row, rowID) =>
                 <div key={rowID} className={"rows"}>
                     {row?.map((value, cellID) =>
