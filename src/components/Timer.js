@@ -3,51 +3,59 @@ import { Component } from "react";
 
 
 class Timer extends Component {
+
+    
     constructor(props) {
         super(props);
         this.state = {
             timer: new Date(0,0,0,0,1,0),
-            start: props.start
         }
 
     }
+    
 
+    
     componentDidMount() {
         this.timer = setInterval(() => {
             this.setTime();
         }, 1000)
     }
+
    componentWillUnmount() {
        clearInterval(this.timer);
 
-   }
+    }
+   
 
     setTime = () => {
         let newTimer = new Date(this.state.timer.valueOf());
 
-        newTimer.setSeconds(newTimer.getSeconds() - 1)
+        newTimer.setSeconds(newTimer.getSeconds() - 1);        
         console.log("ONE SECOND")
+        
         this.setState({
             timer: newTimer
         })
+        
 
-        let checkTime = Math.abs(newTimer.getTime())        
-        //console.log(checkTime);
+        let checkTime = Math.abs(newTimer.getTime());        
 
         //console.log(checkTime === 2209057200000)
         if(checkTime === 2209057200000) {
-            this.props.stopGame();
+            this.props.onZero();
+            console.log("TIMER HIT ZERO")
         }
 
     }
 
 
-    render() {
-
+    
+   render() {
         return(
             <h1 className="timer">{this.state.timer.toString().slice(20,24)}</h1>
         )
     }
+    
 }
 
 
