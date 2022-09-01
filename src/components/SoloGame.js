@@ -2,7 +2,7 @@ import { Component } from "react";
 
 import Maze from './Maze';
 import Timer from './Timer';
-import Game from './Game';
+import Sidebar from './Sidebar'
 
 
 class SoloGame extends Component {
@@ -119,26 +119,14 @@ class SoloGame extends Component {
 
     render(){
 
-
         /*
-                <Game
-                    player={this.state.player}
-                    maze={this.state.maze}
-                    mazeComplete={this.state.mazeComplete}
-                    setPlayersNewPosition={this.setPlayersNewPosition}
-                    rows={this.state.rows}
-                    columns={this.state.columns}
-                    createNewMaze={this.createNewMaze}
-
-                />
-        */
         let startButton;
         if (this.state.mazeComplete && !this.state.start && !this.state.wonGame) {
-            startButton = <button onClick={this.setStart}>START</button>
+            startButton = <button onClick={this.setStart} className="game-buttons">START</button>
 
         }
         else {
-            startButton = <button className="disabled-button">START</button>
+            startButton = <button className="game-buttons disabled-button">START</button>
 
         }
 
@@ -146,6 +134,7 @@ class SoloGame extends Component {
         if (this.state.gameMessage !== "" && this.state.start === false && this.state.mazeComplete) {
             gameMessage = <h1 className='gameMessage' >{this.state.gameMessage}</h1>
         }
+        */
 
         return(
             <div className="main-container">
@@ -159,12 +148,16 @@ class SoloGame extends Component {
                     start={this.state.start}
                 />
 
-                <div className="game-info-container" >
-                    {this.state.start ? <Timer onZero={this.stopGame} /> : <h1 className="timer">0:00</h1>}
-                    {startButton}
-                    {this.state.wonGame ? <button onClick={this.createNewMaze} >New Maze</button> : <button className="disabled-button" >New Maze</button>}
-                    {gameMessage}
-                </div>
+                
+                <Sidebar 
+                    mazeComplete={this.state.mazeComplete}
+                    start={this.state.start} 
+                    wonGame={this.state.wonGame} 
+                    gMessage={this.state.gameMessage}
+                    setStart={this.setStart} 
+                    stopGame={this.stopGame} 
+                    createNewMaze={this.createNewMaze}
+                />
                 
                 
             </div>

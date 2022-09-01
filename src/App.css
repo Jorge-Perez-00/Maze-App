@@ -4,18 +4,21 @@
 
 .Title {
   color: white;
-  font-size: 50px;
+  font-size: 35px;
   font-weight: lighter;
 }
 
 button {
   font-size: 25px;
+  /*
   margin-top: 10px;
   margin-left: 25px;
   margin-right: 25px;
   margin-bottom: 25px;
+  */
   display: inline-block;
   cursor: pointer;
+  
 }
 
 .mode {
@@ -39,8 +42,8 @@ button {
 .cell {
   background-color: #1C2833;
   outline: 2.5px solid black;
-  width: 25px;
-  height: 25px;
+  width: 20px;
+  height: 20px;
   display: inline-flex;
 
 }
@@ -54,12 +57,12 @@ button {
 }
 
 .agent {
-  width: 23px;
-  height: 25px;
-  font-size: 20px;
+  width: 18px;
+  height: 20px;
+  font-size: 15px;
   color: black;
   background-color: aqua;
-  outline: 2px solid black;
+  outline: 1px solid black;
   text-align: center;
   position: absolute;
   margin-bottom: auto;
@@ -69,9 +72,9 @@ button {
 }
 
 .builder {
-  width: 23px;
-  height: 25px;
-  font-size: 20px;
+  width: 18px;
+  height: 20px;
+  font-size: 15px;
   color: black;
   background-color: rgb(221, 224, 0);
   outline: 2px solid black;
@@ -83,15 +86,18 @@ button {
   margin-right: auto;
 }
 
-img {
-  width: 40px;
-  height: 40px;
-}
 
-.timer {
-  color: white;
-  font-weight: lighter;
-  font-size: 50px;
+
+.main-container {
+  background-color: transparent;
+  /*background-color: transparent;*/
+  display: flex;
+  width: max-content;
+  height: max-content;
+  margin: auto;
+  padding: 10px;
+  border-radius: 10px;
+  outline: 2px solid white;
 }
 
 .maze-container {
@@ -104,13 +110,14 @@ img {
 
 }
 
+
 .click-message {
   width: 280px;
   height: 80px;
   margin: auto;
   text-align: center;
   position: absolute;
-  background-color: rgba(180, 32, 32, 0.75);
+  background-color: rgba(180, 32, 32, 0.85);
   color: white;
   font-weight: lighter;
   font-size: 50px;
@@ -125,11 +132,30 @@ img {
 
 
 .gameMessage {
-  color: white;
+  color: black;
   font-weight: lighter;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.game-buttons {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+  font-size: 30px;
+
+  background-color: transparent;
+  padding: 10px;
+  width: 175px;
 }
 
 
 .disabled-button {
   opacity: 30%;
 }
+
+
+
+
+

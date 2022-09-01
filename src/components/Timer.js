@@ -52,7 +52,7 @@ class Timer extends Component {
     
    render() {
         return(
-            <h1 className="timer">{this.state.timer.toString().slice(20,24)}</h1>
+            <div className="timer">{this.state.timer.toString().slice(20,24)}</div>
         )
     }
     

@@ -259,7 +259,17 @@ class Maze extends Component {
             message = <h1 className="click-message" >'Click Maze'</h1>
         }
 
-        let player = this.props.player;
+        //let player = this.props.player;
+        let player;
+        if(this.props.player === undefined) {
+            player = {};
+        }
+        else {
+            player = this.props.player;
+        }
+
+        let tempMaze = new Array(this.props.rows).fill(-100).map(() => new Array(this.props.columns).fill(-100));
+        
         return (
             <div className="maze-container" tabIndex={-1} onKeyDown={this.props.ArrowKeyHandler} onClick={this.deleteMessage} onBlur={this.showMessage} >
                 {/* !this.state.createMaze && <button onClick={this.createBoard} >Generate Maze</button>   */}
