@@ -38,7 +38,7 @@ class App extends Component {
         {this.state.mode === "" && <Modes setMode={this.setMode} />}
 
         
-        {this.state.mode === 'solo' && <SoloGame/>}
+        {this.state.mode === 'Solo Game' && <SoloGame/>}
        
 
       </div>
