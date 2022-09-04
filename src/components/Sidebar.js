@@ -1,6 +1,8 @@
 
 import ArrowKeysImage from '../images/arrowkeys.png'
+import Player2Keys from '../images/awsdkeys.png'
 import player1 from '../images/p1-character.png'
+import player2 from '../images/p2-character.png'
 import wallcell from '../images/wallcell.png'
 import exitcell from '../images/exitcell.png'
 
@@ -11,7 +13,7 @@ import Timer from './Timer';
 
 function Sidebar(props) {
 
-    const {mazeComplete, start, wonGame, gMessage, setStart, stopGame, createNewMaze, setAgent} = props;
+    const {mode, mazeComplete, start, wonGame, gMessage, setStart, stopGame, createNewMaze, setAgent} = props;
 
     
     let startButton;
@@ -32,19 +34,32 @@ function Sidebar(props) {
 
     return(
         <div className="sidebar-container">
+            
+            {mode !== "maze training" &&
+                <div className="game-info-childs child-one" >
+                    {start && mode !== "maze training" ? <Timer onZero={stopGame} /> : <div className="timer">0:00</div>}
 
-            <div className="game-info-childs child-one" >
-                {start ? <Timer onZero={stopGame} /> : <div className="timer">0:00</div>}
-
-            </div>
-
-            <div className="game-info-childs child-two" >
-                <div className='info-card'>
-                    <div className='info-card-child'>
-                        <img src={ArrowKeysImage} alt="arrowkeys" className="control-image" />
-                        <h1 className='control-text'>- P1 controls</h1>
-                    </div>
                 </div>
+            }
+           
+            <div className="game-info-childs child-two" style={mode === "maze training" ? {height: '73%'} : {height: '58%'}} >
+                {mode !== "maze training" && 
+                    <div className='control-card'>
+                        <div className='control-card-child'>
+                            <img src={ArrowKeysImage} alt="arrowkeys" className="control-image1" />
+                            <h1 className='control-text'>- P1 controls</h1>
+                        </div>
+                    </div>
+                }
+                
+                {mode === "player vs player" && 
+                    <div className='control-card'>
+                        <div className='control-card-child'>
+                            <img src={Player2Keys} alt="arrowkeys" className="control-image2" />
+                            <h1 className='control-text'>- P2 controls</h1>
+                        </div>
+                    </div>
+                }
 
                 <div className='maze-info-container'>
                     <div className='character-info'>
@@ -53,6 +68,13 @@ function Sidebar(props) {
                             <img src={player1} alt="P1" className='info-image'/>
                             <h4 className='info-name'>- Player 1</h4>
                         </div>
+                        {mode === "player vs player" &&
+                            <div className='maze-info-card'>
+                                <img src={player2} alt="P2" className='info-image' />
+                                <h4 className='info-name'>- Player 2</h4>
+                            </div>
+                        }
+                        
                     </div>
 
                     <div className='environment-info'>

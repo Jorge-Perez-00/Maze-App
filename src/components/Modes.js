@@ -1,15 +1,18 @@
 import soloMazeImage from '../images/solomaze-preview.png'
+import pvpImage from '../images/pvp-preview.png'
 import '../css/Modes.css'
 
 function Modes(props) {
 
-    let {setMode} = props;
+    let {setMode, test} = props;
 
+    
+   
 
     const modes = [
-        {image: soloMazeImage, title: "Maze Training", text: "?" },
+        { image: soloMazeImage, title: "Maze Training", text: "In progress..." },
         { image: soloMazeImage, title: "Solo Game", text: "Play against time and do your best to find the exit of the maze before the time runs out." },
-        { image: soloMazeImage, title: "PVP Game", text: "?" },
+        { image: pvpImage, title: "PVP Game", text: "In progress..." },
         { image: soloMazeImage, title: "Player Vs Agent", text: "?" },
         { image: soloMazeImage, title: "Multiplayer", text: "?" }
     ]

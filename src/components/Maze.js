@@ -255,23 +255,22 @@ class Maze extends Component {
     render() {
 
         let message;
-        if(/*this.state.mazeComplete && */ !this.state.clicked && this.props.start) {
+        if(/*this.state.mazeComplete && */ !this.state.clicked && this.props.start && !this.props.agent) {
             message = <h1 className="click-message" >'Click Maze'</h1>
         }
 
-        //let player = this.props.player;
-        let player;
-        if(this.props.player === undefined) {
-            player = {};
-        }
-        else {
-            player = this.props.player;
-        }
+        //Prop Characters
+        let agent = this.props.agent ? this.props.agent : {};
+        let player = this.props.player ? this.props.player : {};
+        let player2 = this.props.player2 ? this.props.player2 : {}; 
 
-        let tempMaze = new Array(this.props.rows).fill(-100).map(() => new Array(this.props.columns).fill(-100));
+        //Prop Functions
+        let ArrowKeyHandler = this.props.ArrowKeyHandler ? this.props.ArrowKeyHandler : null;
+
+        //let tempMaze = new Array(this.props.rows).fill(-100).map(() => new Array(this.props.columns).fill(-100));
         
         return (
-            <div className="maze-container" tabIndex={-1} onKeyDown={this.props.ArrowKeyHandler} onClick={this.deleteMessage} onBlur={this.showMessage} >
+            <div className="maze-container" tabIndex={-1} onKeyDown={ArrowKeyHandler} onClick={this.deleteMessage} onBlur={this.showMessage} >
                 {/* !this.state.createMaze && <button onClick={this.createBoard} >Generate Maze</button>   */}
 
                 {this.state.createMaze && this.state.maze.map((row, rowID) =>
@@ -282,7 +281,10 @@ class Maze extends Component {
                                     (this.state.builder.x === rowID && this.state.builder.y === cellID) ? <h2 className="builder">B</h2> : null
                                 }
                                 {
-                                    (player.x === rowID && player.y === cellID) ? <h2 className="agent">P1</h2> : null
+                                    (player.x === rowID && player.y === cellID) ? <h2 className="player p1">P1</h2> : null
+                                }
+                                {
+                                    (player2.x === rowID && player2.y === cellID) ? <h2 className="player p2">P2</h2> : null
                                 }
                             </div>
                         )}
