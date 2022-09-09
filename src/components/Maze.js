@@ -28,7 +28,7 @@ class Maze extends Component {
         
         this.timeout = setTimeout(() => {
             this.createBoard();
-                console.log("MOUNTING...");
+            console.log("MOUNTING...");
         }, 1)
         
     }
@@ -50,7 +50,7 @@ class Maze extends Component {
             this.setState({
                 maze: newMaze,
                 builder: this.builder,
-                mazeComplete: newMaze[row][column] === 100 ? true : false,
+                mazeComplete: newMaze[row][column] === 1000 ? true : false,
             });
         }, 10)
 
@@ -97,7 +97,7 @@ class Maze extends Component {
         let totalColumns = this.state.columns;
 
         for (let cell of neighbours) {
-            if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (maze[cell.x][cell.y] !== -100) && (cell.x !== previousPosition.x || cell.y !== previousPosition.y)) {
+            if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (maze[cell.x][cell.y] !== -9999) && (cell.x !== previousPosition.x || cell.y !== previousPosition.y)) {
                 return false;
             }
         }
@@ -120,7 +120,7 @@ class Maze extends Component {
         let totalColumns = this.state.columns;
 
         for (let cell of neighbours) {
-            if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (this.state.maze[cell.x][cell.y] === -100) && this.hasNoVisitedNeighbours(position, cell)) {
+            if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (this.state.maze[cell.x][cell.y] === -9999) && this.hasNoVisitedNeighbours(position, cell)) {
                 valid_cells.push(cell)
             }
         }
@@ -139,7 +139,7 @@ class Maze extends Component {
 
         console.log("Generating Maze...")
 
-        if (newMaze[0][0] === -100) {
+        if (newMaze[0][0] === -9999) {
             let initial_cell = this.builder;
             this.stack.push(initial_cell);
 
@@ -152,7 +152,7 @@ class Maze extends Component {
 
             //SET THE AGENT'S POSITION TO THE CURRENT/TOP CELL OF THE STACK
             this.builder = { ...current_cell };
-            newMaze[current_cell.x][current_cell.y] = 1;
+            newMaze[current_cell.x][current_cell.y] = -1;
 
             /*
             GET AN ARRAY OF ALL THE UNVISITED NEIGHBOURS THAT ALSO HAS NO UNVISTED NEIGHBOURS OF ITS OWN, EXCLUDING THE current_cell
@@ -182,35 +182,75 @@ class Maze extends Component {
               Makes sure that there is a path the leads to the last cell at the bottom right corner of the maze if the cell was not visited during the random maze generation process.
             */
 
-            if (newMaze[this.state.rows - 1][this.state.columns - 1] !== 1) {
-                newMaze[this.state.rows - 1][this.state.columns - 2] = 1;
-                newMaze[this.state.rows - 1][this.state.columns - 3] = 1;
-                newMaze[this.state.rows - 2][this.state.columns - 1] = 1;
-                newMaze[this.state.rows - 3][this.state.columns - 1] = 1;
+            if (newMaze[this.state.rows - 1][this.state.columns - 1] !== -1) {
+                newMaze[this.state.rows - 1][this.state.columns - 2] = -1;
+                newMaze[this.state.rows - 1][this.state.columns - 3] = -1;
+                newMaze[this.state.rows - 2][this.state.columns - 1] = -1;
+                newMaze[this.state.rows - 3][this.state.columns - 1] = -1;
             }
             //SET THE EXIT OF THE MAZE
-            newMaze[this.state.rows - 1][this.state.columns - 1] = 100;
+            newMaze[this.state.rows - 1][this.state.columns - 1] = 1000;
 
             //Uncover the helper preset visited cells
-            newMaze[this.state.rows - 4][this.state.columns - 1] = 1;
-            newMaze[this.state.rows - 1][this.state.columns - 4] = 1;
+            newMaze[this.state.rows - 4][this.state.columns - 1] = -1;
+            newMaze[this.state.rows - 1][this.state.columns - 4] = -1;
 
             //Uncover the cells next to the helper visited cells so that the helper cells are connected to a path.
-            newMaze[this.state.rows - 5][this.state.columns - 1] = 1;
-            newMaze[this.state.rows - 6][this.state.columns - 1] = 1;
-            newMaze[this.state.rows - 1][this.state.columns - 5] = 1;
-            newMaze[this.state.rows - 1][this.state.columns - 6] = 1;
+            newMaze[this.state.rows - 5][this.state.columns - 1] = -1;
+            newMaze[this.state.rows - 6][this.state.columns - 1] = -1;
+            newMaze[this.state.rows - 1][this.state.columns - 5] = -1;
+            newMaze[this.state.rows - 1][this.state.columns - 6] = -1;
 
 
             this.builder = {};
-            this.props.setMazeInfo(/*{x:0, y:0},*/ newMaze)
+            //this.props.setMazeInfo(/*{x:0, y:0},*/ newMaze)
 
             //STOP INTERVAL
             clearInterval(this.timer);
+
+            //TEST
+            this.setDeadends();
+            this.props.setMazeInfo(/*{x:0, y:0},*/ newMaze)
+
         }
         return newMaze;
     }
 
+    setDeadends = () => {
+        console.log("TEST FUNCTION")
+        let copyMaze = [...this.state.maze]
+        let rows = this.state.rows;
+        let cols = this.state.columns;
+        for(let row = 0; row < rows; row++) {
+            for(let col = 0; col < cols; col++) {
+                let position = {x: row, y:col};
+                let neighbours = this.countNeighbours(position);
+                if(neighbours === 1) {
+                    copyMaze[position.x][position.y] = -500;
+                }
+            }
+        }
+
+        copyMaze[rows-1][cols-1] = 1000;
+
+        this.setState({
+            maze: copyMaze
+        })
+    }
+    countNeighbours = (position) => {
+        let neighbours = this.getNeighbours(position);
+        let totalNeighbours = 0;
+        let totalRows = this.state.rows;
+        let totalColumns = this.state.columns;
+     
+        for (let cell of neighbours) {
+            if ((cell.x !== -1 && cell.x !== totalRows) && (cell.y !== -1 && cell.y !== totalColumns) && (this.state.maze[cell.x][cell.y] !== -9999)) {
+                totalNeighbours++;
+            }
+        }
+
+        return totalNeighbours;
+    }
 
     createBoard = () => {
 
@@ -219,7 +259,7 @@ class Maze extends Component {
         let setRows = this.props.rows;
         let setColumns = this.props.columns;
 
-        let newMaze = new Array(setRows).fill(-100).map(() => new Array(setColumns).fill(-100));
+        let newMaze = new Array(setRows).fill(-9999).map(() => new Array(setColumns).fill(-9999));
 
         //Preset 2 cells as visited to help the random maze generation create a path to the final cell at the bottom right corner. 
         newMaze[setRows - 4][setColumns - 1] = 2;
@@ -264,6 +304,9 @@ class Maze extends Component {
         let player = this.props.player ? this.props.player : {};
         let player2 = this.props.player2 ? this.props.player2 : {}; 
 
+        let path = this.props.path ? this.props.path : new Set()
+        //console.log(path)
+
         //Prop Functions
         let ArrowKeyHandler = this.props.ArrowKeyHandler ? this.props.ArrowKeyHandler : null;
 
@@ -276,10 +319,18 @@ class Maze extends Component {
                 {this.state.createMaze && this.state.maze.map((row, rowID) =>
                     <div key={rowID} className={"rows"}>
                         {row.map((value, cellID) =>
-                            <div key={cellID} className={`cell ${value === 100 ? "Goal" : value === 1 ? "Path" : ""}`}>
+                            <div key={cellID} className={`cell ${value === 1000 ? "Goal" : value === -1 ? "Path" : value === -500 ? "Path" : ""}`}>
+                                {/*rowID.toString() + '-' + cellID.toString()*/}
+                                {
+                                    ((path.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-path"></h2>  )
+                                }
                                 {
                                     (this.state.builder.x === rowID && this.state.builder.y === cellID) ? <h2 className="builder">B</h2> : null
                                 }
+                                {
+                                    (agent.x === rowID && agent.y === cellID) ? <h2 className="player agent">A</h2> : null
+                                }
+                               
                                 {
                                     (player.x === rowID && player.y === cellID) ? <h2 className="player p1">P1</h2> : null
                                 }

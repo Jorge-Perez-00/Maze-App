@@ -96,7 +96,7 @@ class PlayerVsPlayer extends Component {
             let p1_row = PlayerPosition.x;
             let p1_col = PlayerPosition.y;
 
-            if ((p1_row !== -1 && p1_row !== this.state.rows) && (p1_col !== -1 && p1_col !== this.state.columns) && maze[p1_row][p1_col] !== -100) {
+            if ((p1_row !== -1 && p1_row !== this.state.rows) && (p1_col !== -1 && p1_col !== this.state.columns) && maze[p1_row][p1_col] !== -9999) {
                 //this.props.setPlayersNewPosition(PlayerPosition);
 
                 this.setState({
@@ -111,7 +111,7 @@ class PlayerVsPlayer extends Component {
             let p2_row = Player2Position.x;
             let p2_col = Player2Position.y;
 
-            if ((p2_row !== -1 && p2_row !== this.state.rows) && (p2_col !== -1 && p2_col !== this.state.columns) && maze[p2_row][p2_col] !== -100) {
+            if ((p2_row !== -1 && p2_row !== this.state.rows) && (p2_col !== -1 && p2_col !== this.state.columns) && maze[p2_row][p2_col] !== -9999) {
                 //this.props.setPlayersNewPosition(PlayerPosition);
 
                 this.setState({

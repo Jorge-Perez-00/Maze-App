@@ -10,7 +10,9 @@ class MazeTraining extends Component {
         super(props);
         this.state = {
             agent: {},
+            agent2: {},
             maze: [],
+            path: new Set(),
             mazeComplete: false,
             rows: 30,
             columns: 30,
@@ -20,6 +22,53 @@ class MazeTraining extends Component {
             gameMessage: "",
         }
     }
+
+
+    resetPath = () => {
+        this.setState({
+            path: new Set()
+        })
+    }
+
+    setPath = (stringPosition) => {
+        let copyPath = new Set(this.state.path);
+
+        copyPath.add(stringPosition)
+
+        this.setState({
+            path: copyPath,
+        })
+    }
+
+    /*
+    setAgent = (position) => {
+        this.setState({
+            agent: position,
+        })
+
+    }
+    */
+    setAgent = (position, stringPosition) => {
+        let copyPath = new Set(this.state.path);
+
+        copyPath.add(stringPosition)
+        //console.log(copyPath)
+
+        this.setState({
+            agent: position,
+            path: copyPath,
+
+        })
+
+    }
+
+    setAgent2 = (position) => {
+        this.setState({
+            agent2: position,
+        })
+
+    }
+
 
     setMazeInfo = (maze) => {
         this.setState({
@@ -57,11 +106,16 @@ class MazeTraining extends Component {
                 <Agent 
                     start={this.state.start}
                     maze={this.state.maze}
+                    setAgent={this.setAgent}
+                    setPath={this.setPath}
+                    resetPath={this.resetPath}
                 />
+
 
                 <Maze
                     key={this.state.createNewMaze}
                     agent={this.state.agent}
+                    path={this.state.path}
                     setMazeInfo={this.setMazeInfo}
                     rows={this.state.rows}
                     columns={this.state.columns}

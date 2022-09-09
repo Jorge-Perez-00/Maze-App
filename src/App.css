@@ -58,6 +58,7 @@ button {
   background-Color: white;
 }
 
+
 .player {
   width: 20px;
   height: 20px;
@@ -78,6 +79,17 @@ button {
 
 .p2 {
   background-color: pink;
+}
+
+.agent {
+  background-color: rgb(255, 62, 62);
+}
+
+.agent-path {
+  background-color: lightcoral;
+}
+.agent2 {
+  background-color: rgb(0, 255, 42);
 }
 
 .builder {

@@ -76,7 +76,7 @@ class SoloGame extends Component {
             let row = PlayerPosition.x;
             let col = PlayerPosition.y;
 
-            if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) && maze[row][col] !== -100) {
+            if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) && maze[row][col] !== -9999) {
                 //this.props.setPlayersNewPosition(PlayerPosition);
 
                 this.setState({
