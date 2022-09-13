@@ -312,26 +312,6 @@ function Agent(props) {
         }, 10)
     }
 
-    function test2() {
-        console.log("INTERVAL IS RUNNING: ", number);
-        if (number === 100) {
-            clearInterval(interval);
-        }
-        number++;
-
-    }
-    /*
-    componentDidMount = () => {
-        if(this.props.start) {
-            console.log("START IS TRUE IN AGENT COMPONENT")
-        }
-    }
-    */
-
-
-
-
-   
     return(null)
     
 }

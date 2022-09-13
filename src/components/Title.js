@@ -10,7 +10,8 @@ function Title(props) {
     return(
         <h1 className='Title'>
             {feature === 'Solo Game' ? "MAZE GAME: SOLO" : 
-            feature === 'PVP Game' ? "MAZE GAME: Player Vs Player" : "MAZE"}
+            feature === 'PVP Game' ? "MAZE GAME: PLAYER VS PLAYER" :
+            feature === 'Maze Training' ? "MAZE: REINFORCEMENT LEARNING" : "MAZE"}
         </h1>
     )
 
