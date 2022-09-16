@@ -19,26 +19,21 @@ class PlayerVsPlayer extends Component {
             columns: 30,
             createNewMaze: 0,
 
-            start: false,
+            start: true,
             gameMessage: "",
-            wonGame: false,
+            newMaze: true,
 
         }
 
     }
 
 
-    setPlayersNewPosition = (position) => {
-        this.setState({
-            player: position,
-        })
-    }
-
     setMazeInfo = (maze) => {
         this.setState({
             maze: maze,
             //player: position,
             mazeComplete: true,
+            start: false,
         })
     }
 
@@ -58,37 +53,47 @@ class PlayerVsPlayer extends Component {
 
         if (this.state.start) {
             const maze = this.state.maze;
-            let PlayerPosition = { ...this.state.player };
+            let PlayerPosition = { ...this.state.player};
             let Player2Position = {...this.state.player2};
 
+            let p1 = false;
+            let p2 = false;
 
             if(event.key === "w") {
+                p2 = true;
                 Player2Position.x--;
             }
             else if(event.key === "s") {
+                p2 = true;
                 Player2Position.x++;
             }
             else if (event.key === "a") {
+                p2 = true;
                 Player2Position.y--;
             }
             else if (event.key === "d") {
+                p2 = true;
                 Player2Position.y++;
             }
 
 
 
             if (event.key === "ArrowUp") {
+                p1 = true;
                 PlayerPosition.x--;
             }
             else if (event.key === "ArrowDown") {
+                p1 = true;
                 PlayerPosition.x++;
 
             }
             else if (event.key === "ArrowLeft") {
+                p1 = true;
                 PlayerPosition.y--;
 
             }
             else if (event.key === "ArrowRight") {
+                p1 = true;
                 PlayerPosition.y++;
 
             }
@@ -96,14 +101,14 @@ class PlayerVsPlayer extends Component {
             let p1_row = PlayerPosition.x;
             let p1_col = PlayerPosition.y;
 
-            if ((p1_row !== -1 && p1_row !== this.state.rows) && (p1_col !== -1 && p1_col !== this.state.columns) && maze[p1_row][p1_col] !== -9999) {
+            if ((p1_row !== -1 && p1_row !== this.state.rows) && (p1_col !== -1 && p1_col !== this.state.columns) /*&& maze[p1_row][p1_col] !== -9999*/ && p1) {
                 //this.props.setPlayersNewPosition(PlayerPosition);
-
+                console.log(PlayerPosition)
                 this.setState({
                     player: PlayerPosition,
                     gameMessage: (p1_row === this.state.rows - 1 && p1_col === this.state.columns - 1) ? "Player 1 Won!" : "",
                     start: (p1_row === this.state.rows - 1 && p1_col === this.state.columns - 1) ? false : true,
-                    wonGame: (p1_row === this.state.rows - 1 && p1_col === this.state.columns - 1) ? true : false,
+                    newMaze: (p1_row === this.state.rows - 1 && p1_col === this.state.columns - 1) ? true : false,
                 })
 
             }
@@ -111,14 +116,14 @@ class PlayerVsPlayer extends Component {
             let p2_row = Player2Position.x;
             let p2_col = Player2Position.y;
 
-            if ((p2_row !== -1 && p2_row !== this.state.rows) && (p2_col !== -1 && p2_col !== this.state.columns) && maze[p2_row][p2_col] !== -9999) {
+            if ((p2_row !== -1 && p2_row !== this.state.rows) && (p2_col !== -1 && p2_col !== this.state.columns) /*&& maze[p2_row][p2_col] !== -9999*/ && p2) {
                 //this.props.setPlayersNewPosition(PlayerPosition);
 
                 this.setState({
                     player2: Player2Position,
                     gameMessage: (p2_row === this.state.rows - 1 && p2_col === this.state.columns - 1) ? "Player 2 Won!" : "",
                     start: (p2_row === this.state.rows - 1 && p2_col === this.state.columns - 1) ? false : true,
-                    wonGame: (p2_row === this.state.rows - 1 && p2_col === this.state.columns - 1) ? true : false,
+                    newMaze: (p2_row === this.state.rows - 1 && p2_col === this.state.columns - 1) ? true : false,
                 })
 
             }
@@ -133,12 +138,14 @@ class PlayerVsPlayer extends Component {
             player: { x:0, y:0 },
             player2: { x:0, y:0 },
             start: true,
+            newMaze: false,
         })
     }
 
     stopGame = () => {
         this.setState({
             start: false,
+            newMaze: true,
             gameMessage: "You ran out of time! You lost!",
         })
     }
@@ -150,7 +157,7 @@ class PlayerVsPlayer extends Component {
             player2: {},
             mazeComplete: false,
             gameMessage: "",
-            wonGame: false,
+            //newMaze: false,
         })
     }
 
@@ -175,7 +182,7 @@ class PlayerVsPlayer extends Component {
                     mode={"player vs player"}
                     mazeComplete={this.state.mazeComplete}
                     start={this.state.start}
-                    wonGame={this.state.wonGame}
+                    newMaze={this.state.newMaze}
                     gMessage={this.state.gameMessage}
                     setStart={this.setStart}
                     stopGame={this.stopGame}

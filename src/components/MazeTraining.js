@@ -15,6 +15,7 @@ class MazeTraining extends Component {
             rows: 30,
             columns: 30,
             start: false,
+            newMaze: false,
             createNewMaze: 0,
             start: false,
             gameMessage: "",
@@ -22,12 +23,15 @@ class MazeTraining extends Component {
 
         }
         this.invalid_value = -99999;
+
         this.EPISODE = 0;
-        this.EPS = 100;
+        this.EPS = 50;
         this.q_table = new Array(this.state.rows).fill(0).map(() => new Array(this.state.columns).fill(0).map(() => new Array(4).fill(0)));
+        this.previousPath = new Set();
+        this.samePathCount = 0;
     }
 
-    componentDidMount() {
+    setupTable = () => {
         for (let row = 0; row < this.state.rows; row++) {
             for (let col = 0; col < this.state.columns; col++) {
 
@@ -54,23 +58,38 @@ class MazeTraining extends Component {
         }
     }
 
+    componentDidMount() {
+        this.setupTable();
+    }
+
 
     resetPath = () => {
+        if(this.previousPath.size === this.state.path.size) {
+            this.samePathCount += 1;
+        }
+        else {
+            this.samePathCount = 0;
+        }
+        console.log("samePathCount: ", this.samePathCount);
+        
+        //SAVE CURRENT PATH ONTO ANOTHER SET VARIABLE
+        this.previousPath = new Set(this.state.path);
         this.setState({
             path: new Set(),
             agent: {x:0, y:0}
         })
     }
 
+    /*
+        Set AGENT'S NEW POSITION AND UPDATE CURRENT PATH
+    */
     setAgent = (position, stringPosition) => {
-        let copyPath = new Set(this.state.path);
-
-        copyPath.add(stringPosition)
-        //console.log(copyPath)
-
+        let newPath = new Set(this.state.path);
+        newPath.add(stringPosition)
+    
         this.setState({
             agent: position,
-            path: copyPath,
+            path: newPath,
 
         })
 
@@ -80,6 +99,7 @@ class MazeTraining extends Component {
         this.setState({
             maze: maze,
             mazeComplete: true,
+            newMaze: true,
         })
     }
 
@@ -87,17 +107,30 @@ class MazeTraining extends Component {
         this.setState({
             agent: { x: 0, y: 0 },
             start: true,
+            newMaze: false,
         })
         this.startTraining();
     }
 
     createNewMaze = () => {
+        //RESET ALL VARIABLES USED TO HELP TRAIN THE AGENT
+        this.EPISODE = 0;
+        this.EPS = 50;
+        this.q_table = new Array(this.state.rows).fill(0).map(() => new Array(this.state.columns).fill(0).map(() => new Array(4).fill(0)));
+        this.previousPath = new Set();
+        this.samePathCount = 0;
+        this.setupTable();
+
+
         this.setState({
             createNewMaze: this.state.createNewMaze === 0 ? 1 : 0,
             agent: {},
             mazeComplete: false,
             gameMessage: "",
-            wonGame: false,
+            newMaze: false,
+            start: false,
+            path: new Set(),
+
         })
     }
 
@@ -111,6 +144,8 @@ class MazeTraining extends Component {
     /*  
         AGENT TRAINING SECTION........................................................
     */
+
+
 
     /*
         Return an array of actions that will not take the agent outside the maze.
@@ -283,11 +318,25 @@ class MazeTraining extends Component {
             
            
             //this.resetPath();
+            if(this.samePathCount > 10) {
+                clearInterval(this.interval)
+                console.log("Same path for 10 EPISODES");
+                this.setState({
+                    //start: false,
+                    newMaze: true,
+                })
+            }
+            else {
+                this.resetPath();
+            }
 
             if (q_table[0][0][1] > 0 || q_table[0][0][3] > 0) {
                 console.log("SHOWCASING BEST PATH...")
                 //showPath = true;
                 clearInterval(this.interval);
+
+
+
                 /*
                 this.intervalMax = setInterval(() => {
                     this.maxPath();
@@ -295,9 +344,10 @@ class MazeTraining extends Component {
                 */
             }
             else {
-                this.resetPath();
+                //    this.resetPath();
                 
             }
+            
 
 
             if (this.EPS !== 0) {
@@ -351,6 +401,7 @@ class MazeTraining extends Component {
 
                 <Maze
                     key={this.state.createNewMaze}
+                    mode={"Training"}
                     agent={this.state.agent}
                     path={this.state.path}
                     setMazeInfo={this.setMazeInfo}
@@ -363,7 +414,7 @@ class MazeTraining extends Component {
                     mode={"maze training"}
                     mazeComplete={this.state.mazeComplete}
                     start={this.state.start}
-                    wonGame={this.state.wonGame}
+                    newMaze={this.state.newMaze}
                     gMessage={this.state.gameMessage}
                     setStart={this.setStart}
                     createNewMaze={this.createNewMaze}

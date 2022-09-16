@@ -1,7 +1,6 @@
 import { Component } from "react";
 
 import Maze from './Maze';
-import Timer from './Timer';
 import Sidebar from './Sidebar'
 
 
@@ -14,11 +13,11 @@ class SoloGame extends Component {
             mazeComplete: false,
             rows: 30,
             columns: 30,
-            createNewMaze: 0,
+            createMaze: 0,
 
-            start: false,
+            start: true,
             gameMessage: "",
-            wonGame: false,
+            newMaze: true,
 
         }
 
@@ -36,6 +35,7 @@ class SoloGame extends Component {
             maze: maze,
             //player: position,
             mazeComplete: true,
+            start: false,
         })
     }
 
@@ -76,14 +76,14 @@ class SoloGame extends Component {
             let row = PlayerPosition.x;
             let col = PlayerPosition.y;
 
-            if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) && maze[row][col] !== -9999) {
+            if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) /*&& maze[row][col] !== -9999*/) {
                 //this.props.setPlayersNewPosition(PlayerPosition);
 
                 this.setState({
                     player: PlayerPosition,
                     gameMessage: (row === this.state.rows - 1 && col === this.state.columns - 1) ? "You Won!" : "",
                     start: (row === this.state.rows - 1 && col === this.state.columns - 1) ? false : true,
-                    wonGame: (row === this.state.rows - 1 && col === this.state.columns - 1) ? true : false,
+                    newMaze: (row === this.state.rows - 1 && col === this.state.columns - 1) ? true : false,
                 })
 
             }
@@ -96,23 +96,26 @@ class SoloGame extends Component {
         this.setState({
             player: { x: 0, y: 0 },
             start: true,
+            newMaze: false,
         })
     }
 
     stopGame = () => {
         this.setState({
             start: false,
+            newMaze: true,
             gameMessage: "You ran out of time! You lost!",
         })
     }
 
     createNewMaze = () => {
         this.setState({
-            createNewMaze: this.state.createNewMaze === 0 ? 1 : 0,
+            createMaze: this.state.createMaze === 0 ? 1 : 0,
             player: {},
             mazeComplete: false,
             gameMessage: "",
-            wonGame: false,
+            //newMaze: false,
+            //start: true,
         })
     }
 
@@ -139,7 +142,7 @@ class SoloGame extends Component {
         return(
             <div className="main-container">
                 <Maze 
-                    key={this.state.createNewMaze}
+                    key={this.state.createMaze}
                     player={this.state.player} 
                     setMazeInfo={this.setMazeInfo}
                     ArrowKeyHandler={this.ArrowKeyHandler} 
@@ -152,13 +155,12 @@ class SoloGame extends Component {
                 <Sidebar 
                     mazeComplete={this.state.mazeComplete}
                     start={this.state.start} 
-                    wonGame={this.state.wonGame} 
+                    newMaze={this.state.newMaze} 
                     gMessage={this.state.gameMessage}
                     setStart={this.setStart} 
                     stopGame={this.stopGame} 
                     createNewMaze={this.createNewMaze}
                 />
-                
                 
             </div>
          
