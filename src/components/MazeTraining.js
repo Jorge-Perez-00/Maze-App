@@ -172,7 +172,6 @@ class MazeTraining extends Component {
         let action;
 
         for (let index = 0; index < 4; index++) {
-            //let nP = take_action(position, index);
             if (this.q_table[position.x][position.y][index] > max) {
                 max = this.q_table[position.x][position.y][index];
                 action = index;
@@ -180,7 +179,6 @@ class MazeTraining extends Component {
         }
         maxActions.push(action);
         for (let action = 0; action < 4; action++) {
-            //let nP = take_action(position, action);
             if (this.q_table[position.x][position.y][action] === max) {
                 maxActions.push(action);
             }
@@ -272,7 +270,6 @@ class MazeTraining extends Component {
             actionToOldPosition = 2;
         }
         for (let action = 0; action < 4; action++) {
-            //let tempPosition = take_action(newPosition)
             if (this.q_table[position.x][position.y][action] > maxValue && action !== actionToOldPosition) {
                 maxValue = this.q_table[position.x][position.y][action];
             }
@@ -293,6 +290,7 @@ class MazeTraining extends Component {
 
         if (maze[agent.x][agent.y] !== 1000) {
             console.log("TRAINING...")
+
             //GET ACTION BASED ON THE AGENT'S CURRENT POSITION
             let action = this.get_Action(agent);
 
@@ -317,7 +315,6 @@ class MazeTraining extends Component {
             console.log("EPISODE: ", this.EPISODE, "EPSILON: ", this.EPS)
             
            
-            //this.resetPath();
             if(this.samePathCount > 10) {
                 clearInterval(this.interval)
                 console.log("Same path for 10 EPISODES");
@@ -330,6 +327,7 @@ class MazeTraining extends Component {
                 this.resetPath();
             }
 
+            /*
             if (q_table[0][0][1] > 0 || q_table[0][0][3] > 0) {
                 console.log("SHOWCASING BEST PATH...")
                 //showPath = true;
@@ -337,19 +335,17 @@ class MazeTraining extends Component {
 
 
 
-                /*
+                
                 this.intervalMax = setInterval(() => {
                     this.maxPath();
                 }, 200)
-                */
+                
             }
             else {
                 //    this.resetPath();
                 
             }
-            
-
-
+            */
             if (this.EPS !== 0) {
                 if (this.EPS === 100) {
                     this.EPS = 50;
@@ -385,20 +381,6 @@ class MazeTraining extends Component {
     render() {
         return(
             <div className="main-container">
-
-                {/*
-                <Agent 
-                    start={this.state.start}
-                    maze={this.state.maze}
-                    setAgent={this.setAgent}
-                    setPath={this.setPath}
-                    resetPath={this.resetPath}
-                />
-                */}
-                
-                
-
-
                 <Maze
                     key={this.state.createNewMaze}
                     mode={"Training"}

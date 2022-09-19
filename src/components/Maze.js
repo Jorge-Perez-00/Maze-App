@@ -11,28 +11,28 @@ class Maze extends Component {
             maze: new Array(this.props.rows).fill(-9999).map(() => new Array(this.props.columns).fill(-9999)),
             builder: {},
             createMaze: false,
-            mazeComplete: false,
             rows: this.props.rows,
             columns: this.props.columns,
-            mode: "",
             start: false,
             gameMessage: "",
             clicked: false,
         }
-        //Maze for mode that do not show animated maze being built in real time.
-        this.maze = [...this.state.maze];
+        //Maze for modes that do not show animated maze being built in real time.
+        //this.maze = [...this.state.maze];
 
-        //MAZE BUILDER
+        //MAZE BUILDER AGENT
         this.builder = { x: 0, y: 0 };
         //CELL STACK THAT HELPS THE MAZE BUILDER BUILD A RANDOM MAZE
         this.stack = [];
+
+        this.Maze = new Array(this.props.rows).fill(-9999).map(() => new Array(this.props.columns).fill(-9999));
 
     }
 
     
     componentDidMount() {
      
-        //SHOW MAZE GENERATION
+        //SHOW MAZE GENERATION FOR THE TRAINING MODE
         if(this.props.mode === "Training"/* && this.props.start*/) {
             this.timeout = setTimeout(() => {
                 this.setupMaze();
@@ -41,25 +41,13 @@ class Maze extends Component {
         }
 
 
-        
-        //HIDE MAZE GENERATION
-        if(this.props.mode !== "Training"/* && this.props.start*/) {
+       
+        //HIDE MAZE GENERATION FOR ALL MODES THAT ARE NOT THE MAZE TRAINING MODE
+        if(this.props.mode !== "Training") {
             this.generateMazeBTS();
         }
-        /*
-        else {
-            console.log("MOUNTING... GAME MODE MAZE RUNNING...");
-            this.generateMazeBTS();
-        }
-        */
-      
         
-        /*
-        this.timeout = setTimeout(() => {
-            this.setupMaze();
-            console.log("MOUNTING...");
-        }, 1)
-        */
+       
     }
 
 
@@ -76,11 +64,13 @@ class Maze extends Component {
             let column = this.state.columns - 1;
 
             //this.props.setAgentsPosition(this.agent);
+            
             this.setState({
                 maze: newMaze,
                 builder: this.builder,
                 mazeComplete: newMaze[row][column] === 1000 ? true : false,
             });
+            
         }, 10)
 
     }
@@ -118,13 +108,18 @@ class Maze extends Component {
       Returns true if 'position' has no visited neighbours.
     */
     hasNoVisitedNeighbours = (previousPosition, position) => {
+        /*
         let maze; 
         if(this.props.mode === "Training") {
-            maze = this.state.maze;
+            //maze = [...this.state.maze];
+            maze = this.Maze;
         }
         else {
             maze = this.maze
         }
+        */
+        let maze = this.Maze;
+
 
         let neighbours = this.getNeighbours(position);
 
@@ -149,13 +144,17 @@ class Maze extends Component {
       - If the unvisited neighbour cell also has no unvisited neighbours.
     */
     checkNeighbours = (position) => {
+        /*
         let maze;
         if (this.props.mode === "Training") {
-            maze = this.state.maze;
+            //maze = [...this.state.maze];
+            maze = this.Maze;
         }
         else {
             maze = this.maze
         }
+        */
+        let maze = this.Maze;
 
         let neighbours = this.getNeighbours(position);
 
@@ -176,7 +175,7 @@ class Maze extends Component {
 
     generateMazeBTS = () => {
         console.log("Generating Maze Behind the Scenes...")
-        let newMaze = this.maze;
+        let newMaze = this.Maze;
 
         //SETUP MAZE
         newMaze[this.props.rows - 4][this.props.columns - 1] = 2;
@@ -230,13 +229,16 @@ class Maze extends Component {
 
         this.builder = {};
 
-        //TEST
+      
         //this.setDeadends();
+        
         this.setState({
             maze: newMaze,
-            mazeComplete: true,
         })
+        
         console.log("FINISHED BUILDING MAZE")
+        //PARENT FUNCTION CALLBACK
+        //THIS CALL WILL SEND THE RANDOM COMPLETED MAZE BACK TO THE PARENT
         this.props.setMazeInfo(newMaze)
     }
 
@@ -245,7 +247,9 @@ class Maze extends Component {
      * @returns An updated maze board
      */
     generateMaze = () => {
-        let newMaze = [...this.state.maze];
+        //let newMaze = [...this.state.maze];
+
+        let newMaze = this.Maze;
 
         console.log("Generating Maze...")
 
@@ -310,26 +314,20 @@ class Maze extends Component {
             //STOP INTERVAL
             clearInterval(this.timer);
 
-            //TEST
+            //SET A NEGATIVE VALUE TO ALL DEADENDS IN THE MAZE
             this.setDeadends();
-            this.props.setMazeInfo(/*{x:0, y:0},*/ newMaze)
+
+            //THIS CALL WILL SEND THE RANDOM COMPLETED MAZE BACK TO THE PARENT
+            this.props.setMazeInfo(newMaze)
 
         }
         return newMaze;
     }
 
     setDeadends = () => {
-        console.log("TEST FUNCTION")
-        let maze;
-        if (this.props.mode === "Training") {
-            maze = this.state.maze;
-        }
-        else {
-            maze = this.maze
-        }
+        console.log("SETTING DEADENDS VALUES!")
+        let copyMaze = this.Maze;
 
-        //let copyMaze = [...this.state.maze]
-        let copyMaze = maze;
         let rows = this.state.rows;
         let cols = this.state.columns;
         for(let row = 0; row < rows; row++) {
@@ -344,26 +342,11 @@ class Maze extends Component {
 
         copyMaze[rows-1][cols-1] = 1000;
 
-        if(this.props.mode !== "Training") {
-            this.setState({
-                maze: copyMaze
-            })
-        }
-        else{
-            this.maze = copyMaze;
-        }
-       
-        
-       //return copyMaze;
+               
     }
+
     countNeighbours = (position) => {
-        let maze;
-        if (this.props.mode === "Training") {
-            maze = this.state.maze;
-        }
-        else {
-            maze = this.maze
-        }
+        let maze = this.Maze;
 
         let neighbours = this.getNeighbours(position);
         let totalNeighbours = 0;
@@ -380,8 +363,8 @@ class Maze extends Component {
     }
 
     setupMaze = () => {
-
-       
+        /*
+        
         //let setRows = this.props.rows;
         //let setColumns = this.props.columns;
 
@@ -391,14 +374,9 @@ class Maze extends Component {
         //Preset 2 cells as visited to help the random maze generation create a path to the final cell at the bottom right corner. 
         newMaze[this.props.rows - 4][this.props.columns - 1] = 2;
         newMaze[this.props.rows - 1][this.props.columns - 4] = 2;
-
-
-        this.setState({
-            maze: newMaze,
-            //createMaze: true,
-            //rows: setRows,
-            //columns: setColumns,
-        })
+        */
+        this.Maze[this.props.rows - 4][this.props.columns - 1] = 2;
+        this.Maze[this.props.rows - 1][this.props.columns - 4] = 2;
 
         this.startGeneration();
     }
@@ -422,7 +400,7 @@ class Maze extends Component {
     render() {
 
         let message;
-        if(/*this.state.mazeComplete && */ !this.state.clicked && this.props.start && !this.props.agent) {
+        if(!this.state.clicked && this.props.start && !this.props.agent) {
             message = <h1 className="click-message" >'Click Maze'</h1>
         }
 
@@ -437,11 +415,9 @@ class Maze extends Component {
         //Prop Functions
         let ArrowKeyHandler = this.props.ArrowKeyHandler ? this.props.ArrowKeyHandler : null;
 
-        //let tempMaze = new Array(this.props.rows).fill(-100).map(() => new Array(this.props.columns).fill(-100));
         
         return (
             <div className="maze-container" tabIndex={-1} onKeyDown={ArrowKeyHandler} onClick={this.deleteMessage} onBlur={this.showMessage} >
-                {/* !this.state.createMaze && <button onClick={this.createBoard} >Generate Maze</button>   */}
 
                 {this.state.maze.map((row, rowID) =>
                     <div key={rowID} className={"rows"}>
@@ -453,20 +429,10 @@ class Maze extends Component {
                                     ((path.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-path"></h2>  )
                                     
                                 }
-                                
-                                {
-                                    (this.state.builder.x === rowID && this.state.builder.y === cellID) ? <h2 className="builder">B</h2> : null
-                                }
-                                {
-                                    (agent.x === rowID && agent.y === cellID) ? <h2 className="player agent">A</h2> : null
-                                }
-                               
-                                {
-                                    (player.x === rowID && player.y === cellID) ? <h2 className="player p1">P1</h2> : null
-                                }
-                                {
-                                    (player2.x === rowID && player2.y === cellID) ? <h2 className="player p2">P2</h2> : null
-                                }
+                                { (this.state.builder.x === rowID && this.state.builder.y === cellID) ? <h2 className="builder">B</h2> : null }
+                                { (agent.x === rowID && agent.y === cellID) ? <h2 className="player agent">A</h2> : null }
+                                { (player.x === rowID && player.y === cellID) ? <h2 className="player p1">P1</h2> : null }
+                                { (player2.x === rowID && player2.y === cellID) ? <h2 className="player p2">P2</h2> : null }
                             </div>
                         )}
                     </div>

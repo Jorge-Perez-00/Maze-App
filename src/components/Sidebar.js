@@ -13,11 +13,11 @@ import Timer from './Timer';
 
 function Sidebar(props) {
 
-    const {mode, mazeComplete, start, newMaze, gMessage, setStart, stopGame, createNewMaze, setAgent} = props;
+    const {mode, start, newMaze, gMessage, setStart, stopGame, createNewMaze, setAgent} = props;
 
     
     let startButton;
-    if (/*mazeComplete &&*/ !start && newMaze) {
+    if (!start && newMaze) {
         startButton = <button onClick={setStart} className="game-buttons">START</button>
 
     }
@@ -27,7 +27,7 @@ function Sidebar(props) {
     }
 
     let gameMessage;
-    if (gameMessage !== "" && start === false && mazeComplete) {
+    if (gameMessage !== "" && !start) {
         gameMessage = <h1 className='gameMessage' >{gMessage}</h1>
     }
 

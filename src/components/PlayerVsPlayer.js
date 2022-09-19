@@ -14,7 +14,6 @@ class PlayerVsPlayer extends Component {
             maze: [],
             player: {},
             player2: {},
-            mazeComplete: false,
             rows: 30,
             columns: 30,
             createNewMaze: 0,
@@ -31,8 +30,6 @@ class PlayerVsPlayer extends Component {
     setMazeInfo = (maze) => {
         this.setState({
             maze: maze,
-            //player: position,
-            mazeComplete: true,
             start: false,
         })
     }
@@ -44,12 +41,6 @@ class PlayerVsPlayer extends Component {
             Handles all key presses when playing the Maze game modes
           */
     ArrowKeyHandler = (event) => {
-        /*
-        if (!this.state.start && event.key === " " && !this.state.wonGame) {
-            this.setStart();
-            console.log("SPACE BAR")
-        }
-        */
 
         if (this.state.start) {
             const maze = this.state.maze;
@@ -102,7 +93,6 @@ class PlayerVsPlayer extends Component {
             let p1_col = PlayerPosition.y;
 
             if ((p1_row !== -1 && p1_row !== this.state.rows) && (p1_col !== -1 && p1_col !== this.state.columns) /*&& maze[p1_row][p1_col] !== -9999*/ && p1) {
-                //this.props.setPlayersNewPosition(PlayerPosition);
                 console.log(PlayerPosition)
                 this.setState({
                     player: PlayerPosition,
@@ -117,7 +107,6 @@ class PlayerVsPlayer extends Component {
             let p2_col = Player2Position.y;
 
             if ((p2_row !== -1 && p2_row !== this.state.rows) && (p2_col !== -1 && p2_col !== this.state.columns) /*&& maze[p2_row][p2_col] !== -9999*/ && p2) {
-                //this.props.setPlayersNewPosition(PlayerPosition);
 
                 this.setState({
                     player2: Player2Position,
@@ -155,9 +144,7 @@ class PlayerVsPlayer extends Component {
             createNewMaze: this.state.createNewMaze === 0 ? 1 : 0,
             player: {},
             player2: {},
-            mazeComplete: false,
             gameMessage: "",
-            //newMaze: false,
         })
     }
 
@@ -180,7 +167,6 @@ class PlayerVsPlayer extends Component {
 
                 <Sidebar
                     mode={"player vs player"}
-                    mazeComplete={this.state.mazeComplete}
                     start={this.state.start}
                     newMaze={this.state.newMaze}
                     gMessage={this.state.gameMessage}

@@ -10,7 +10,6 @@ class SoloGame extends Component {
         this.state = {
             maze: [],
             player: {},
-            mazeComplete: false,
             rows: 30,
             columns: 30,
             createMaze: 0,
@@ -33,8 +32,6 @@ class SoloGame extends Component {
     setMazeInfo = (maze) => {
         this.setState({
             maze: maze,
-            //player: position,
-            mazeComplete: true,
             start: false,
         })
     }
@@ -46,13 +43,7 @@ class SoloGame extends Component {
             Handles all key presses when playing the Maze game modes
           */
     ArrowKeyHandler = (event) => {
-        /*
-        if (!this.state.start && event.key === " " && !this.state.wonGame) {
-            this.setStart();
-            console.log("SPACE BAR")
-        }
-        */
-
+        
         if (this.state.start) {
             const maze = this.state.maze;
             let PlayerPosition = { ...this.state.player }
@@ -77,8 +68,6 @@ class SoloGame extends Component {
             let col = PlayerPosition.y;
 
             if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) /*&& maze[row][col] !== -9999*/) {
-                //this.props.setPlayersNewPosition(PlayerPosition);
-
                 this.setState({
                     player: PlayerPosition,
                     gameMessage: (row === this.state.rows - 1 && col === this.state.columns - 1) ? "You Won!" : "",
@@ -112,32 +101,12 @@ class SoloGame extends Component {
         this.setState({
             createMaze: this.state.createMaze === 0 ? 1 : 0,
             player: {},
-            mazeComplete: false,
             gameMessage: "",
-            //newMaze: false,
-            //start: true,
         })
     }
 
 
     render(){
-
-        /*
-        let startButton;
-        if (this.state.mazeComplete && !this.state.start && !this.state.wonGame) {
-            startButton = <button onClick={this.setStart} className="game-buttons">START</button>
-
-        }
-        else {
-            startButton = <button className="game-buttons disabled-button">START</button>
-
-        }
-
-        let gameMessage;
-        if (this.state.gameMessage !== "" && this.state.start === false && this.state.mazeComplete) {
-            gameMessage = <h1 className='gameMessage' >{this.state.gameMessage}</h1>
-        }
-        */
 
         return(
             <div className="main-container">
@@ -153,7 +122,6 @@ class SoloGame extends Component {
 
                 
                 <Sidebar 
-                    mazeComplete={this.state.mazeComplete}
                     start={this.state.start} 
                     newMaze={this.state.newMaze} 
                     gMessage={this.state.gameMessage}
