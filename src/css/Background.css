@@ -1,0 +1,64 @@
+
+
+
+
+.background-container {
+    margin: auto;
+    position: absolute;
+    z-index: -2;
+    font-size: 0;
+}
+
+
+.background-cells {
+    width: 1vw;
+    height: 1vw;
+    display: inline-flex;
+    margin: auto;
+    outline: 1px solid black;
+    background-color: black;
+    opacity: 0;
+}
+
+.red {
+    opacity: 1;
+    background-color: rgba(255, 0, 0, 0.35);
+}
+
+.blue {
+   opacity: 1;
+   background-color: rgba(0, 255, 255, 0.35);
+}
+
+.pink {
+    opacity: 1;
+    background-color: rgba(255, 192, 203, 0.55);
+}
+
+
+
+
+
+
+
+/*
+.col-1 {
+    animation-duration: 1s;
+    animation-delay: 1s;
+    animation-iteration-count: infinite;
+}
+.col-2 {
+    animation-duration: 1s;
+    animation-delay: 1.1s;
+    animation-iteration-count: infinite;
+}
+*/
+
+@keyframes LightUp {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

@@ -4,7 +4,7 @@ import '../css/Modes.css'
 
 function Modes(props) {
 
-    let {setMode, test} = props;
+    let { setMode, handleHover, handleMouseLeave } = props;
 
     
    
@@ -25,7 +25,7 @@ function Modes(props) {
             <button onClick={setMode} id='solo' className='mode active'>Solo Game</button>
             <button className='mode disabled'>Player Vs Agent</button>*/}
             {modes.map((mode, modeID) => 
-                <div key={modeID} id={mode.title} className={mode.text === "?" ? "mode-card disabled" : "mode-card" } onClick={mode.text === "?" ? null : setMode}>
+                <div key={modeID} id={mode.title} className={mode.text === "?" ? "mode-card disabled" : "mode-card" } onMouseEnter={handleHover} onMouseLeave={handleMouseLeave} onClick={mode.text === "?" ? null : setMode}>
                     <img id={mode.title} onClick={setMode} className='mode-image' src={mode.image} alt="mode image"/>
                     <h1 id={mode.title} onClick={setMode} className='mode-title'>{mode.title}</h1>
                     <p id={mode.title} onClick={setMode} className='mode-text'>{mode.text}</p>

@@ -1,11 +1,18 @@
 .App {
   text-align: center;
+  background-color: #121212;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  overflow: hidden;
+  z-index: -9999;
 }
 
 .Title {
   color: white;
   font-size: 35px;
   font-weight: lighter;
+  opacity: 1;
 }
 
 button {
