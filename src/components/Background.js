@@ -9,12 +9,10 @@ function Background (props) {
     const {hover} = props;
 
     let backgroundMaze = new Array(100).fill(0).map(() => new Array(100).fill(0));
-    //let [ randomCell, setRandomCell ] = useState({x:-1, y:-1});
 
     let [cellSet, updateCellSet] = useState(new Set());
     let [cellSet2, updateCellSet2] = useState(new Set());
 
-    //console.log(hover);
     useEffect(() => {
         let interval = null;
 
@@ -51,15 +49,7 @@ function Background (props) {
 
     function RandomCells() {
         console.log("RANDOM CELL FUNCTION")
-        /*
-        let randomX = Math.floor(Math.random() * 50);
-        let randomY = Math.floor(Math.random() * 100);
-        //setRandomCell({x:randomX, y:randomY});
-
-        let newSet = new Set(cellSet);
-        newSet.add(randomX.toString() + '-' + randomY.toString());
-        updateCellSet(newSet);
-        */
+      
         let newSet = new Set();
         for(let cells = 0; cells < 50; cells++) {
             let randomX = Math.floor(Math.random() * 50);

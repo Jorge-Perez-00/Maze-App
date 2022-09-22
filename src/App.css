@@ -68,6 +68,8 @@ button {
 }
 
 
+
+
 .player {
   width: 20px;
   height: 20px;
@@ -97,6 +99,11 @@ button {
 .agent-path {
   background-color: lightcoral;
 }
+.agent-previous-path {
+  background-color: purple;
+}
+
+
 .agent2 {
   background-color: rgb(0, 255, 42);
 }

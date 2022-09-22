@@ -34,10 +34,13 @@ class Maze extends Component {
      
         //SHOW MAZE GENERATION FOR THE TRAINING MODE
         if(this.props.mode === "Training"/* && this.props.start*/) {
+           
+            
             this.timeout = setTimeout(() => {
                 this.setupMaze();
                 console.log("MOUNTING... TRAINING....");
             }, 1)
+            
         }
 
 
@@ -392,6 +395,8 @@ class Maze extends Component {
         this.setState({
             clicked: true, 
         })
+
+        
     }
 
     
@@ -403,13 +408,17 @@ class Maze extends Component {
         if(!this.state.clicked && this.props.start && !this.props.agent) {
             message = <h1 className="click-message" >'Click Maze'</h1>
         }
+        else if(!this.state.clicked && this.props.agent ) {
+            //message = <h1 className="click-message" >'Build Maze'</h1>
 
+        }
         //Prop Characters
         let agent = this.props.agent ? this.props.agent : {};
         let player = this.props.player ? this.props.player : {};
         let player2 = this.props.player2 ? this.props.player2 : {}; 
 
-        let path = this.props.path ? this.props.path : new Set()
+        let path = this.props.path ? this.props.path : new Set();
+        let previousPath = this.props.previousPath ? this.props.previousPath : new Set();
         //console.log(path)
 
         //Prop Functions
@@ -417,7 +426,7 @@ class Maze extends Component {
 
         
         return (
-            <div className="maze-container" tabIndex={-1} onKeyDown={ArrowKeyHandler} onClick={this.deleteMessage} onBlur={this.showMessage} >
+            <div className="maze-container" tabIndex={-1} onKeyDown={ArrowKeyHandler} onClick={this.deleteMessage} onBlur={!this.props.agent ? this.showMessage : null} >
 
                 {this.state.maze.map((row, rowID) =>
                     <div key={rowID} className={"rows"}>
@@ -425,9 +434,14 @@ class Maze extends Component {
                             <div key={cellID} className={`cell ${value === 1000 ? "Goal" : value === -1 ? "Path" : value === -500 ? "Path" : ""}`}>
                                 {//value
                                 }
+                               
                                 {
-                                    ((path.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-path"></h2>  )
-                                    
+                                    ((previousPath.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-previous-path"></h2>)
+
+                                }
+                                {
+                                    ((path.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-path"></h2>)
+
                                 }
                                 { (this.state.builder.x === rowID && this.state.builder.y === cellID) ? <h2 className="builder">B</h2> : null }
                                 { (agent.x === rowID && agent.y === cellID) ? <h2 className="player agent">A</h2> : null }

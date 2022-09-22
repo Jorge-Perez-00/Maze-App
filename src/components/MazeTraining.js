@@ -10,6 +10,7 @@ class MazeTraining extends Component {
         this.state = {
             agent: {},
             maze: [],
+            previousPath: new Set(),
             path: new Set(),
             mazeComplete: false,
             rows: 30,
@@ -74,7 +75,9 @@ class MazeTraining extends Component {
         
         //SAVE CURRENT PATH ONTO ANOTHER SET VARIABLE
         this.previousPath = new Set(this.state.path);
+
         this.setState({
+            previousPath: this.previousPath,
             path: new Set(),
             agent: {x:0, y:0}
         })
@@ -129,6 +132,7 @@ class MazeTraining extends Component {
             gameMessage: "",
             newMaze: false,
             start: false,
+            previousPath: new Set(),
             path: new Set(),
 
         })
@@ -385,6 +389,7 @@ class MazeTraining extends Component {
                     key={this.state.createNewMaze}
                     mode={"Training"}
                     agent={this.state.agent}
+                    previousPath={this.state.previousPath}
                     path={this.state.path}
                     setMazeInfo={this.setMazeInfo}
                     rows={this.state.rows}
