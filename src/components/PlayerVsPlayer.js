@@ -92,7 +92,7 @@ class PlayerVsPlayer extends Component {
             let p1_row = PlayerPosition.x;
             let p1_col = PlayerPosition.y;
 
-            if ((p1_row !== -1 && p1_row !== this.state.rows) && (p1_col !== -1 && p1_col !== this.state.columns) /*&& maze[p1_row][p1_col] !== -9999*/ && p1) {
+            if ((p1_row !== -1 && p1_row !== this.state.rows) && (p1_col !== -1 && p1_col !== this.state.columns) && maze[p1_row][p1_col] !== -9999 && p1) {
                 console.log(PlayerPosition)
                 this.setState({
                     player: PlayerPosition,
@@ -106,7 +106,7 @@ class PlayerVsPlayer extends Component {
             let p2_row = Player2Position.x;
             let p2_col = Player2Position.y;
 
-            if ((p2_row !== -1 && p2_row !== this.state.rows) && (p2_col !== -1 && p2_col !== this.state.columns) /*&& maze[p2_row][p2_col] !== -9999*/ && p2) {
+            if ((p2_row !== -1 && p2_row !== this.state.rows) && (p2_col !== -1 && p2_col !== this.state.columns) && maze[p2_row][p2_col] !== -9999 && p2) {
 
                 this.setState({
                     player2: Player2Position,
@@ -117,7 +117,7 @@ class PlayerVsPlayer extends Component {
 
             }
 
-            console.log(event.key);
+            //console.log(event.key);
 
         }
     }
@@ -154,6 +154,7 @@ class PlayerVsPlayer extends Component {
         return (
             <div className="main-container">
                 <Maze
+                    mode={"hide"}
                     key={this.state.createNewMaze}
                     player={this.state.player}
                     player2={this.state.player2}

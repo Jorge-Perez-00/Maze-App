@@ -67,7 +67,7 @@ class SoloGame extends Component {
             let row = PlayerPosition.x;
             let col = PlayerPosition.y;
 
-            if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) /*&& maze[row][col] !== -9999*/) {
+            if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) && maze[row][col] !== -9999) {
                 this.setState({
                     player: PlayerPosition,
                     gameMessage: (row === this.state.rows - 1 && col === this.state.columns - 1) ? "You Won!" : "",
@@ -76,7 +76,7 @@ class SoloGame extends Component {
                 })
 
             }
-            console.log(event.key);
+            //console.log(event.key);
 
         }
     }
@@ -111,6 +111,7 @@ class SoloGame extends Component {
         return(
             <div className="main-container">
                 <Maze 
+                    mode={"hide"}
                     key={this.state.createMaze}
                     player={this.state.player} 
                     setMazeInfo={this.setMazeInfo}

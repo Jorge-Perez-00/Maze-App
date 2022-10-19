@@ -1,0 +1,32 @@
+.Title {
+    color: white;
+    font-size: 35px;
+    font-weight: lighter;
+    opacity: 1;
+    background-color: transparent;
+
+    width: max-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 7.5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    outline: 2px solid transparent;
+    cursor: pointer;
+
+}
+
+
+
+.title0:hover {
+    border-bottom: 2px solid rgb(255, 0, 0);
+}
+
+.title1:hover {
+    border-bottom: 2px solid aqua;
+}
+
+.title2:hover {
+    border-bottom: 2px solid Pink;
+}
+

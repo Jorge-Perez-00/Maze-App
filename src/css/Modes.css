@@ -20,14 +20,41 @@
     cursor: pointer;
     box-shadow: 0px 0px 10px -2px rgb(62, 249, 255);
     animation: FadeIn 0.5s linear 0s;
+    padding: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 10px;
 }
 
 .mode-card:hover {
     color: black;
-    background-color: white;
+    background-color: rgb(238, 238, 238);
     outline: 1.25px solid rgb(255, 255, 255);
-    box-shadow: 5px 5px 10px rgb(62, 249, 255);
 }
+/*
+    BOX-SHADOW COLORS FOR EACH CARD (0-4) 
+*/
+.card0:hover {
+    box-shadow: 4px 4px 15px rgb(255, 68, 62);
+}
+
+.card1:hover {
+    box-shadow: 4px 4px 15px rgb(62, 249, 255);
+}
+
+.card2:hover {
+    box-shadow: 4px 4px 15px pink;
+}
+
+.card3:hover {
+    box-shadow: 4px 4px 15px white;
+}
+
+.card4:hover {
+    box-shadow: 4px 4px 15px white;
+}
+
+
 
 .mode-card:hover .mode-title {
     color: black;

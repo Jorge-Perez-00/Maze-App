@@ -31,6 +31,7 @@ class App extends Component {
   }
 
   handleHover = (event) => {
+    console.log("ID HOVER: ", event.target.id);
     this.setState({
       hover: event.target.id
     })
@@ -42,22 +43,30 @@ class App extends Component {
     })
   }
 
+
+  onTitleClick = () => {
+    //console.log("CLICKED ON TITLE...")
+    this.setState({
+      mode: "",
+    })
+  }
+
   render() {
 
     //document.body.style.backgroundColor = "#121212"
 
     return (
       <div className="App">
-        <Background hover={this.state.hover} />
+        {this.state.mode === ""  && <Background hover={this.state.hover} />}
 
-        <Title feature={this.state.mode} />
+        <Title mode={this.state.mode} handleTitleClick={this.onTitleClick} />
 
 
         {this.state.mode === "" && <Modes setMode={this.setMode} handleHover={this.handleHover} handleMouseLeave={this.handleMouseLeave}  />}
 
         {this.state.mode === "Maze Training" && <MazeTraining/>}
         {this.state.mode === 'Solo Game' && <SoloGame/>}
-        {this.state.mode === 'PVP Game' && <PlayerVsPlayer/>}
+        {this.state.mode === 'Player Vs Player' && <PlayerVsPlayer/>}
 
       </div>
     );

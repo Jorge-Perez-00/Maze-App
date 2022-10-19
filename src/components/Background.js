@@ -22,16 +22,12 @@ function Background (props) {
                 RandomCells();
             }, 100)                 
         }
-        else if(hover === "PVP Game") {
+        else if (hover === "Player Vs Player") {
             interval = setInterval(() => {
                 RandomCellsDoubleSets();
             }, 100)   
         }
-        /*
-        else{
-            updateCellSet(new Set())
-        }
-        */
+       
         
         
         
@@ -48,7 +44,7 @@ function Background (props) {
 
 
     function RandomCells() {
-        console.log("RANDOM CELL FUNCTION")
+        //console.log("RANDOM CELL FUNCTION")
       
         let newSet = new Set();
         for(let cells = 0; cells < 50; cells++) {
@@ -66,7 +62,7 @@ function Background (props) {
     }
 
     function RandomCellsDoubleSets() {
-        console.log("RANDOM CELL FUNCTION")
+        //console.log("RANDOM CELL FUNCTION")
         
         let newSet = new Set();
         for (let cells = 0; cells < 30; cells++) {
@@ -106,8 +102,8 @@ function Background (props) {
                             key={cellID} id={rowID + "-" + cellID} 
                             className={`background-cells ${cellSet.has(rowID.toString() + '-' + cellID.toString()) && hover === "Solo Game" ? 'blue' :
                                                             cellSet.has(rowID.toString() + '-' + cellID.toString()) && hover === "Maze Training" ? 'red' : 
-                                                            cellSet.has(rowID.toString() + '-' + cellID.toString()) && hover === "PVP Game" ? 'blue' : 
-                                                            cellSet2.has(rowID.toString() + '-' + cellID.toString()) && hover === "PVP Game" ? 'pink' : ""} `}
+                                                            cellSet.has(rowID.toString() + '-' + cellID.toString()) && hover === "Player Vs Player" ? 'blue' : 
+                                                            cellSet2.has(rowID.toString() + '-' + cellID.toString()) && hover === "Player Vs Player" ? 'pink' : ""} `}
                         >
                             
                         </div>

@@ -10,16 +10,20 @@ class MazeTraining extends Component {
         this.state = {
             agent: {},
             maze: [],
-            previousPath: new Set(),
             path: new Set(),
             mazeComplete: false,
             rows: 30,
             columns: 30,
-            start: false,
+            start: true,
             newMaze: false,
             createNewMaze: 0,
-            start: false,
+            mazeType: "none",
+            mazeInProgress: false,
             gameMessage: "",
+            trainingInfo: {
+                EPISODES: 0,
+                EPSILON: 0,
+            }
 
 
         }
@@ -28,10 +32,31 @@ class MazeTraining extends Component {
         this.EPISODE = 0;
         this.EPS = 50;
         this.q_table = new Array(this.state.rows).fill(0).map(() => new Array(this.state.columns).fill(0).map(() => new Array(4).fill(0)));
-        this.previousPath = new Set();
+        this.path = new Set();
         this.samePathCount = 0;
+
+
+        this.QVALUE_CHANGES = 0;
+        this.EPISODES_WITH_NO_QVALUE_CHANGES = 0;
     }
 
+    showQValues = (div) => {
+        let coordinates = div.target.id.split("-");
+        let position = {x: parseInt(coordinates[0],10), y: parseInt(coordinates[1],10)}
+        console.log(position);
+        console.log("UP:", this.q_table[position.x][position.y][0])
+        console.log("DOWN:", this.q_table[position.x][position.y][1])
+        console.log("LEFT:", this.q_table[position.x][position.y][2])
+        console.log("RIGHT:", this.q_table[position.x][position.y][3])
+
+
+    }
+
+    /*
+        FUNCTION THAT WILL SETUP THE Q_TABLE WHEN THE COMPONENT IS MOUNTED.
+        ALL ACTIONS IN THE QTABLE THAT LEAD THE AGENT TO GO OUTSIDE THE MAZE WILL BE SET TO AN "invalid_value" WHICH IS JUST THE LARGE NEGATIVE NUMBER -99999.
+        THE SAME "invalid_value" IS USED DURING TRAINING TO PREVENT THE AGENT FROM TAKING ANY ACTION THAT WILL LEAD IT OUTSIDE THE MAZE.
+    */
     setupTable = () => {
         for (let row = 0; row < this.state.rows; row++) {
             for (let col = 0; col < this.state.columns; col++) {
@@ -64,45 +89,38 @@ class MazeTraining extends Component {
     }
 
 
-    resetPath = () => {
-        if(this.previousPath.size === this.state.path.size) {
-            this.samePathCount += 1;
-        }
-        else {
-            this.samePathCount = 0;
-        }
-        console.log("samePathCount: ", this.samePathCount);
-        
-        //SAVE CURRENT PATH ONTO ANOTHER SET VARIABLE
-        this.previousPath = new Set(this.state.path);
-
-        this.setState({
-            previousPath: this.previousPath,
-            path: new Set(),
-            agent: {x:0, y:0}
-        })
-    }
-
     /*
         Set AGENT'S NEW POSITION AND UPDATE CURRENT PATH
     */
     setAgent = (position, stringPosition) => {
         let newPath = new Set(this.state.path);
         newPath.add(stringPosition)
+
+      
     
         this.setState({
             agent: position,
             path: newPath,
-
         })
 
     }
+
+    setMazeType = (event) => {
+        const type = event.target.id;
+        console.log(type)
+        this.setState({
+            mazeType: type,
+            newMaze: true
+        })
+    }
+    
 
     setMazeInfo = (maze) => {
         this.setState({
             maze: maze,
             mazeComplete: true,
             newMaze: true,
+            mazeInProgress: false,
         })
     }
 
@@ -111,8 +129,22 @@ class MazeTraining extends Component {
             agent: { x: 0, y: 0 },
             start: true,
             newMaze: false,
+            mazeInProgress: true,
         })
-        this.startTraining();
+
+        if(this.state.mazeType === "hide") {
+            console.log("TRAINING WITH NO ANIMATION...");
+            this.start = setTimeout(() => {
+                this.Train_No_Animation()
+            }, 1)
+        }
+        else if(this.state.mazeType === "show") {
+            console.log("TRAINING WITH ANIMATION...");
+            this.interval = setInterval(() => {
+                this.Train_Animation();
+            }, 30)
+        }
+     
     }
 
     createNewMaze = () => {
@@ -120,7 +152,6 @@ class MazeTraining extends Component {
         this.EPISODE = 0;
         this.EPS = 50;
         this.q_table = new Array(this.state.rows).fill(0).map(() => new Array(this.state.columns).fill(0).map(() => new Array(4).fill(0)));
-        this.previousPath = new Set();
         this.samePathCount = 0;
         this.setupTable();
 
@@ -132,7 +163,7 @@ class MazeTraining extends Component {
             gameMessage: "",
             newMaze: false,
             start: false,
-            previousPath: new Set(),
+            mazeInProgress: true,
             path: new Set(),
 
         })
@@ -190,7 +221,6 @@ class MazeTraining extends Component {
 
         return maxActions;
     }
-
 
     /*
         Return a random valid action or an action with the higher future value.
@@ -282,18 +312,101 @@ class MazeTraining extends Component {
         return maxValue;
     }
 
+    Train_No_Animation = () => {
 
-    /*
-        FUNCTION THATS IN CHARGE OF TRAINING THE AGENT
-    */
-    Train = () => {
-        //console.log("Training Agent...");
-        let agent = {...this.state.agent};
-        let maze = this.state.maze;
+        const maze = this.state.maze;
+        //let rows = this.state.rows;
+        //let cols = this.state.cols;
         let q_table = this.q_table;
 
-        if (maze[agent.x][agent.y] !== 1000) {
-            console.log("TRAINING...")
+        let noUpdates = false;
+        //let foundExit;
+        while(!noUpdates) {
+            //console.log("First while loop")
+            let agent = {x:0, y:0};
+            while(maze[agent.x][agent.y] !== 1000) {
+                //console.log("Second while loop")
+
+                //GET ACTION BASED ON THE AGENT'S CURRENT POSITION
+                let action = this.get_Action(agent);
+                //console.log(action)
+
+                //GET NEW POSITION AFTER TAKING 'action'
+                let new_position = this.take_action(agent, action);
+
+                let current_value = q_table[agent.x][agent.y][action];
+
+                let reward = maze[new_position.x][new_position.y];
+                let max_value = this.getMaxQValue(new_position, action);
+
+                q_table[agent.x][agent.y][action] = current_value + 1 * (reward + (1 * max_value) - current_value);
+
+                if (current_value !== q_table[agent.x][agent.y][action] && maze[agent.x][agent.y] !== -9999) {
+                    this.QVALUE_CHANGES++;
+                }
+
+                agent = new_position;
+                /*
+                if(agent.x === rows - 1 && agent.y === cols - 1) {
+                    foundExit = true;
+                }
+                */
+              
+            }
+            //WHEN EXIT HAS BEEN REACHED DO...
+            if (this.QVALUE_CHANGES === 0) {
+                this.EPISODES_WITH_NO_QVALUE_CHANGES++;
+            }
+            else {
+                this.EPISODES_WITH_NO_QVALUE_CHANGES = 0;
+            }
+
+            if(this.EPISODES_WITH_NO_QVALUE_CHANGES === 100) {
+                noUpdates = true;
+            }
+            this.QVALUE_CHANGES = 0;
+
+            if (q_table[0][0][1] <= 0 && q_table[0][0][3] <= 0) {
+                if (this.EPISODE % 10 === 0) {
+                    this.EPS = 75;
+                }
+                else if (this.EPISODE < 50) {
+                    this.EPS = 10;
+                }
+                else if (this.EPISODE < 100) {
+                    this.EPS = 25;
+                }
+                else {
+                    this.EPS = 50;
+                }
+            }
+            else {
+                this.EPS = 90;
+            }
+
+            this.EPISODE++;
+            /* DEBUGGING...
+            console.log(this.EPISODE);
+            console.log("EPISODES WITH NO QVALUE CHANGES COUNT: ", this.EPISODES_WITH_NO_QVALUE_CHANGES);
+            */
+        }
+        //WHEN NO QVALUES HAVE CHANGED DO...
+        
+        clearTimeout(this.start);
+        this.BEST_PATH();
+    }
+
+
+
+
+    Train_Animation = () => {      
+        let agent = { x: 0, y: 0 };
+        const maze = this.state.maze;
+        let q_table = this.q_table;
+
+        let EPISODE_ENDED = false;
+        this.path = new Set();
+        while(!EPISODE_ENDED) {
 
             //GET ACTION BASED ON THE AGENT'S CURRENT POSITION
             let action = this.get_Action(agent);
@@ -308,78 +421,131 @@ class MazeTraining extends Component {
 
             q_table[agent.x][agent.y][action] = current_value + 1 * (reward + (1 * max_value) - current_value);
 
-            let visited = agent;
+            if (current_value !== q_table[agent.x][agent.y][action] && maze[agent.x][agent.y] !== -9999) {
+                this.QVALUE_CHANGES++;
+                //console.log("VALUE IN Q_TABLE HAS CHANGED")
+            }
+            else {
+                //console.log("VALUE IN Q_TABLE HAS NOT CHANGED")
+            }
             //setPath(agent.x.toString() + agent.y.toString())
+            this.path.add(agent.x.toString() + '-' + agent.y.toString());
+
+            agent = new_position;
+            if(agent.x === this.state.rows - 1 && agent.y === this.state.columns - 1) {
+                EPISODE_ENDED = true;
+            }
+            //CALL PARENT FUNCTION THAT UPDATES AGENT'S POSITION
+            //this.setAgent(agent, visited.x.toString() + '-' + visited.y.toString());
+
+
+        }//WHILE LOOP
+
+        //WHEN EXIT HAS BEEN REACHED DO...
+        if (this.QVALUE_CHANGES === 0) {
+            this.EPISODES_WITH_NO_QVALUE_CHANGES++;
+        }
+        else {
+            this.EPISODES_WITH_NO_QVALUE_CHANGES = 0;
+        }
+     
+        /*
+        if (this.EPISODES_WITH_NO_QVALUE_CHANGES === 100) {
+            clearInterval(this.interval);
+        }
+        */
+
+        this.QVALUE_CHANGES = 0;
+
+        if (q_table[0][0][1] <= 0 && q_table[0][0][3] <= 0) {
+            if (this.EPISODE % 10 === 0) {
+                this.EPS = 75;
+            }
+            else if (this.EPISODE < 50) {
+                this.EPS = 10;
+            }
+            else if (this.EPISODE < 100) {
+                this.EPS = 25;
+            }
+            else {
+                this.EPS = 50;
+            }
+        }
+        else {
+            this.EPS = 90;
+        }
+
+        this.EPISODE++;
+        
+        
+        /* DEBUGGING...
+        console.log(this.EPISODE);
+        console.log("EPISODES WITH NO QVALUE CHANGES COUNT: ", this.EPISODES_WITH_NO_QVALUE_CHANGES);
+        console.log(this.path);
+        */
+        if (this.EPISODES_WITH_NO_QVALUE_CHANGES === 100) {
+            clearInterval(this.interval);           
+            this.BEST_PATH();
+        }
+        else {
+            this.setState({
+                path: this.path,
+            })
+        }
+
+    }
+
+    BEST_PATH = () => {
+        this.setState({
+            agent: {x:0, y:0},
+            path: new Set(),
+        })
+
+        console.log("SHOWING BEST PATH...")
+        this.BEST_PATH_INTERVAL = setInterval(() => {
+            this.SHOW_BEST_PATH();
+        },75)
+    }
+
+    /*
+        FUNCTION THAT WILL SHOWCASE THE BEST PATH AFTER TRAINING IS DONE WITH THE HELP OF setInterval.
+    */
+    SHOW_BEST_PATH = () => {
+
+        let agent = {...this.state.agent};
+        const maze = this.state.maze;
+
+        if (maze[agent.x][agent.y] !== 1000) {
+
+            //GET ACTION BASED ON THE AGENT'S CURRENT POSITION
+            //let action = this.get_Action(position);
+
+            let max_actions = this.get_all_max_actions(agent);
+            let index = Math.floor(Math.random() * max_actions.length);
+            let action = max_actions[index];
+
+            //GET NEW POSITION AFTER TAKING 'action'
+            let new_position = this.take_action(agent, action);
+           
+
+            let visited = agent;
+
             agent = new_position;
             //CALL PARENT FUNCTION THAT UPDATES AGENT'S POSITION
             this.setAgent(agent, visited.x.toString() + '-' + visited.y.toString());
+
+
         }
         else {
-            this.EPISODE++;
-            console.log("EPISODE: ", this.EPISODE, "EPSILON: ", this.EPS)
-            
-           
-            if(this.samePathCount > 10) {
-                clearInterval(this.interval)
-                console.log("Same path for 10 EPISODES");
-                this.setState({
-                    //start: false,
-                    newMaze: true,
-                })
-            }
-            else {
-                this.resetPath();
-            }
-
-            /*
-            if (q_table[0][0][1] > 0 || q_table[0][0][3] > 0) {
-                console.log("SHOWCASING BEST PATH...")
-                //showPath = true;
-                clearInterval(this.interval);
-
-
-
-                
-                this.intervalMax = setInterval(() => {
-                    this.maxPath();
-                }, 200)
-                
-            }
-            else {
-                //    this.resetPath();
-                
-            }
-            */
-            if (this.EPS !== 0) {
-                if (this.EPS === 100) {
-                    this.EPS = 50;
-                }
-                else {
-                    this.EPS = this.EPS - 10;
-
-                }
-            }
-
-            console.log("0 0")
-            for (let index = 0; index < 4; index++) {
-                console.log(index, ":", q_table[0][0][index]);
-            }
-
-            console.log("0 1")
-            for (let index = 0; index < 4; index++) {
-                console.log(index, ":", q_table[0][1][index]);
-            }
-            console.log("1 0")
-            for (let index = 0; index < 4; index++) {
-                console.log(index, ":", q_table[1][0][index]);
-            }
-
+            clearInterval(this.BEST_PATH_INTERVAL);
+            this.setState({
+                newMaze: true,
+                mazeInProgress: false,
+            })
         }
+
+
     }
-
-    
-
-
 
 
     render() {
@@ -387,24 +553,25 @@ class MazeTraining extends Component {
             <div className="main-container">
                 <Maze
                     key={this.state.createNewMaze}
-                    mode={"Training"}
+                    mode={this.state.mazeType}
                     agent={this.state.agent}
-                    previousPath={this.state.previousPath}
                     path={this.state.path}
-                    setMazeInfo={this.setMazeInfo}
                     rows={this.state.rows}
                     columns={this.state.columns}
                     start={this.state.start}
+                    setMazeInfo={this.setMazeInfo}
+                    showQValues={this.showQValues}
                 />
 
                 <Sidebar
-                    mode={"maze training"}
+                    mode={"Training"}
                     mazeComplete={this.state.mazeComplete}
                     start={this.state.start}
                     newMaze={this.state.newMaze}
                     gMessage={this.state.gameMessage}
                     setStart={this.setStart}
                     createNewMaze={this.createNewMaze}
+                    trainingInfo={{Episode: this.EPISODE, Epsilon: this.EPS, mazeType: this.state.mazeType, mazeInProgress: this.state.mazeInProgress, setMazeType: this.setMazeType}}
                 />
             </div>
         )

@@ -65,6 +65,7 @@
 }
 
 .character-info {
+    position: relative;
     background-color: aliceblue;
     width: 48%;
     margin-left: 5px;
@@ -72,8 +73,10 @@
     outline: 2px solid black;
     border-radius: 10px;
     margin-top: 10px;
+    overflow: visible;
 }
 .environment-info {
+    position: relative;
     background-color: aliceblue;
     width: 48%;
     margin-left: 3px;
@@ -81,6 +84,7 @@
     outline: 2px solid black;
     border-radius: 10px;
     margin-top: 10px;
+    overflow: visible;
 }
 .maze-info-card {
     display: flex;
@@ -90,10 +94,33 @@
     margin-bottom: -10px;
 }
 
+ul {
+    list-style-type: none;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    
+}
+ul.character-list {
+    margin-left: 25px;
+    margin-right: -25px;
+    width: fit-content;
+}
+
+li {
+    margin-left: 8px;
+    display: flex;
+    margin-bottom: -15px;
+}
+
+li.characters {
+    margin-left: 0px;
+    width: max-content;
+}
 
 .info-image {
     width: 30px;
-    height: 28px;
+    height: 30px;
     
     object-fit: contain;
 }
@@ -102,13 +129,15 @@
     font-size: 20px;
     font-weight: lighter;
     margin-top: auto;
-    
-    
+    margin-left: 2px;
+    word-wrap: break-word;
 }
 
 
 .info-title {
     margin-top: auto;
+    font-size: 20px;
+    margin-bottom: 10px;
 }
 
 
@@ -131,13 +160,44 @@
     font-weight: lighter;
 }
 
+.info-box {
+    position: relative;
+    height: 36%;
+    width: 96%;
+    background-color: aliceblue;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.info-text {
+    color: black;
+    font-weight: lighter;
+    margin-left: 10px;
+    margin-right: auto;
+}
+
 /*
     DIV #3
 */
 .child-three {
     height: 13%;
-    background-color: bisque;
+    background-color: aliceblue;
 }
+
+.training {
+    background-color: transparent;
+    outline: none;
+}
+
+.gameMessage {
+    color: black;
+    font-weight: lighter;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
 
 
 /*
@@ -145,5 +205,49 @@
 */
 .child-four {
     height: 10%;
+    background-color: transparent;
+    outline: none;
+}
+
+.game-buttons {
+    margin-top: auto;
+    margin-bottom: auto;
+    /*margin-left: 10px;
+    margin-right: 10px;
+    */
+    font-size: 25px;
+    border-radius: 15px;
     background-color: aliceblue;
+    padding: 18px;
+    width: 180px;
+    
+    /*width: 50%;
+*/
+}
+
+.enabled-button:hover {
+    background-color: rgb(0, 187, 187);
+    outline: 2px solid white;
+}
+
+.enabled-training-button:hover {
+    background-color: rgb(178, 0, 194);
+    outline: 2px solid white;
+}
+
+.frozen-training-button {
+    background-color: rgb(178, 0, 194);
+    outline: 2px solid white;
+}
+
+.left {
+    margin-right: 3px;
+}
+
+.right {
+    margin-left: 3px;
+}
+
+.disabled-button {
+    opacity: 30%;
 }

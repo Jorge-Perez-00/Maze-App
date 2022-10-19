@@ -33,20 +33,19 @@ class Maze extends Component {
     componentDidMount() {
      
         //SHOW MAZE GENERATION FOR THE TRAINING MODE
-        if(this.props.mode === "Training"/* && this.props.start*/) {
-           
-            
+        if(this.props.mode === "show") {
+            console.log("GENERATING MAZE WITH ANIMATION...");
             this.timeout = setTimeout(() => {
-                this.setupMaze();
-                console.log("MOUNTING... TRAINING....");
+                this.Maze[this.props.rows - 4][this.props.columns - 1] = 2;
+                this.Maze[this.props.rows - 1][this.props.columns - 4] = 2;
+
+                this.startGeneration();
             }, 1)
             
         }
-
-
-       
         //HIDE MAZE GENERATION FOR ALL MODES THAT ARE NOT THE MAZE TRAINING MODE
-        if(this.props.mode !== "Training") {
+        if(this.props.mode === "hide") {
+            console.log("GENERATING MAZE WITHOUT ANIMATION...");
             this.generateMazeBTS();
         }
         
@@ -231,9 +230,6 @@ class Maze extends Component {
 
 
         this.builder = {};
-
-      
-        //this.setDeadends();
         
         this.setState({
             maze: newMaze,
@@ -318,7 +314,7 @@ class Maze extends Component {
             clearInterval(this.timer);
 
             //SET A NEGATIVE VALUE TO ALL DEADENDS IN THE MAZE
-            this.setDeadends();
+            this.setRandomOpenCells();
 
             //THIS CALL WILL SEND THE RANDOM COMPLETED MAZE BACK TO THE PARENT
             this.props.setMazeInfo(newMaze)
@@ -327,25 +323,33 @@ class Maze extends Component {
         return newMaze;
     }
 
-    setDeadends = () => {
-        console.log("SETTING DEADENDS VALUES!")
-        let copyMaze = this.Maze;
+    setRandomOpenCells = () => {
+        console.log("SETTING RANDOM OPEN CELLS")
+        let cells = [];
 
+        let maze = this.Maze;
         let rows = this.state.rows;
         let cols = this.state.columns;
-        for(let row = 0; row < rows; row++) {
-            for(let col = 0; col < cols; col++) {
-                let position = {x: row, y:col};
-                let neighbours = this.countNeighbours(position);
-                if(neighbours === 1) {
-                    copyMaze[position.x][position.y] = -500;
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                let position = { x: row, y: col };
+                if(maze[position.x][position.y] === -9999) {
+                    let neighbours = this.countNeighbours(position);
+                    if(neighbours >= 3) {
+                        cells.push(position);
+                    }
+
                 }
             }
         }
 
-        copyMaze[rows-1][cols-1] = 1000;
+        for(let count = 0; count < 10; count++) {
+            let index = Math.floor(Math.random() * cells.length);
+            let cell = cells[index];
+            maze[cell.x][cell.y] = -1; 
+        }
 
-               
+
     }
 
     countNeighbours = (position) => {
@@ -363,25 +367,6 @@ class Maze extends Component {
         }
 
         return totalNeighbours;
-    }
-
-    setupMaze = () => {
-        /*
-        
-        //let setRows = this.props.rows;
-        //let setColumns = this.props.columns;
-
-        //let newMaze = new Array(setRows).fill(-9999).map(() => new Array(setColumns).fill(-9999));
-        let newMaze = [...this.state.maze]
-
-        //Preset 2 cells as visited to help the random maze generation create a path to the final cell at the bottom right corner. 
-        newMaze[this.props.rows - 4][this.props.columns - 1] = 2;
-        newMaze[this.props.rows - 1][this.props.columns - 4] = 2;
-        */
-        this.Maze[this.props.rows - 4][this.props.columns - 1] = 2;
-        this.Maze[this.props.rows - 1][this.props.columns - 4] = 2;
-
-        this.startGeneration();
     }
 
     showMessage = () => {
@@ -418,7 +403,8 @@ class Maze extends Component {
         let player2 = this.props.player2 ? this.props.player2 : {}; 
 
         let path = this.props.path ? this.props.path : new Set();
-        let previousPath = this.props.previousPath ? this.props.previousPath : new Set();
+       
+
         //console.log(path)
 
         //Prop Functions
@@ -431,14 +417,10 @@ class Maze extends Component {
                 {this.state.maze.map((row, rowID) =>
                     <div key={rowID} className={"rows"}>
                         {row.map((value, cellID) =>
-                            <div key={cellID} className={`cell ${value === 1000 ? "Goal" : value === -1 ? "Path" : value === -500 ? "Path" : ""}`}>
+                            <div key={cellID} id={rowID.toString() + "-" + cellID.toString()} onClick={this.props.showQValues} className={`cell ${value === 1000 ? "Goal" : value === -1 ? "Path" : value === -500 ? "Path" : ""}`}>
                                 {//value
                                 }
                                
-                                {
-                                    ((previousPath.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-previous-path"></h2>)
-
-                                }
                                 {
                                     ((path.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-path"></h2>)
 
