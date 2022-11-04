@@ -48,7 +48,7 @@ class Maze extends Component {
             console.log("GENERATING MAZE WITHOUT ANIMATION...");
             this.generateMazeBTS();
         }
-        
+        console.log("maze running...")
        
     }
 
@@ -231,6 +231,9 @@ class Maze extends Component {
 
         this.builder = {};
         
+        //SET A NEGATIVE VALUE TO ALL DEADENDS IN THE MAZE
+        this.setRandomOpenCells();
+
         this.setState({
             maze: newMaze,
         })
@@ -401,6 +404,8 @@ class Maze extends Component {
         let agent = this.props.agent ? this.props.agent : {};
         let player = this.props.player ? this.props.player : {};
         let player2 = this.props.player2 ? this.props.player2 : {}; 
+        let player3 = this.props.player3 ? this.props.player3 : {}; 
+        let player4 = this.props.player4 ? this.props.player4 : {}; 
 
         let path = this.props.path ? this.props.path : new Set();
        
@@ -408,18 +413,17 @@ class Maze extends Component {
         //console.log(path)
 
         //Prop Functions
-        let ArrowKeyHandler = this.props.ArrowKeyHandler ? this.props.ArrowKeyHandler : null;
+        let handleOnKeyDown = this.props.handleOnKeyDown ? this.props.handleOnKeyDown : null;
+        let handleOnKeyUp = this.props.handleOnKeyUp ? this.props.handleOnKeyUp : null;
 
-        
+        let maze = this.state.maze;
         return (
-            <div className="maze-container" tabIndex={-1} onKeyDown={ArrowKeyHandler} onClick={this.deleteMessage} onBlur={!this.props.agent ? this.showMessage : null} >
+            <div className="maze-container" tabIndex={-1} onKeyDown={handleOnKeyDown} onKeyUp={handleOnKeyUp} onClick={this.deleteMessage} onBlur={!this.props.agent ? this.showMessage : null} >
 
-                {this.state.maze.map((row, rowID) =>
+                {maze.map((row, rowID) =>
                     <div key={rowID} className={"rows"}>
                         {row.map((value, cellID) =>
                             <div key={cellID} id={rowID.toString() + "-" + cellID.toString()} onClick={this.props.showQValues} className={`cell ${value === 1000 ? "Goal" : value === -1 ? "Path" : value === -500 ? "Path" : ""}`}>
-                                {//value
-                                }
                                
                                 {
                                     ((path.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-path"></h2>)
@@ -427,8 +431,26 @@ class Maze extends Component {
                                 }
                                 { (this.state.builder.x === rowID && this.state.builder.y === cellID) ? <h2 className="builder">B</h2> : null }
                                 { (agent.x === rowID && agent.y === cellID) ? <h2 className="player agent">A</h2> : null }
-                                { (player.x === rowID && player.y === cellID) ? <h2 className="player p1">P1</h2> : null }
-                                { (player2.x === rowID && player2.y === cellID) ? <h2 className="player p2">P2</h2> : null }
+                                { (player4.x === rowID && player4.y === cellID) ? 
+                                    <h2 className={`player p4 ${player4.player ? player4.player : ""}`}>P4
+                                        {player4.player && player4.player === 'you' ? <div className="playerBox">You</div> : null}
+                                    </h2> : null}
+                                
+                                { (player3.x === rowID && player3.y === cellID) ? 
+                                    <h2 className={`player p3 ${player3.player ? player3.player : ""}`}>P3
+                                        {player3.player && player3.player === 'you' ? <div className="playerBox">You</div> : null}
+                                    </h2> : null}
+                                
+                                { (player2.x === rowID && player2.y === cellID) ? 
+                                    <h2 className={`player p2 ${player2.player ? player2.player : ""}`}>P2
+                                        {player2.player && player2.player === 'you' ? <div className="playerBox">You</div> : null}
+                                    </h2> : null}
+                                
+                                { (player.x === rowID && player.y === cellID) ? 
+                                    <h2 className={`player p1 ${player.player ? player.player : ""}`}>P1
+                                        {player.player && player.player === 'you' ? <div className="playerBox">You</div> : null}
+                                    </h2> : null }
+
                             </div>
                         )}
                     </div>

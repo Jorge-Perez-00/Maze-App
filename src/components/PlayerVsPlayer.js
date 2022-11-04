@@ -40,7 +40,7 @@ class PlayerVsPlayer extends Component {
     /*
             Handles all key presses when playing the Maze game modes
           */
-    ArrowKeyHandler = (event) => {
+    handleOnKeyDown = (event) => {
 
         if (this.state.start) {
             const maze = this.state.maze;
@@ -159,7 +159,7 @@ class PlayerVsPlayer extends Component {
                     player={this.state.player}
                     player2={this.state.player2}
                     setMazeInfo={this.setMazeInfo}
-                    ArrowKeyHandler={this.ArrowKeyHandler}
+                    handleOnKeyDown={this.handleOnKeyDown}
                     rows={this.state.rows}
                     columns={this.state.columns}
                     start={this.state.start}

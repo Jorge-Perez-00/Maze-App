@@ -9,6 +9,7 @@ import SoloGame from './components/SoloGame'
 import PlayerVsPlayer from './components/PlayerVsPlayer';
 import MazeTraining from './components/MazeTraining';
 import Background from './components/Background';
+import Multiplayer from './components/Multiplayer';
 
 
 class App extends Component {
@@ -67,6 +68,7 @@ class App extends Component {
         {this.state.mode === "Maze Training" && <MazeTraining/>}
         {this.state.mode === 'Solo Game' && <SoloGame/>}
         {this.state.mode === 'Player Vs Player' && <PlayerVsPlayer/>}
+        {this.state.mode === 'Multiplayer' && <Multiplayer/>}
 
       </div>
     );

@@ -15,8 +15,8 @@ function Modes(props) {
         { image: trainingImage, title: "Maze Training", text: "Take a closer look at how a random maze is generated and view how an Agent uses Reinforcement Learning to find the best path in any randomly generated maze." },
         { image: soloMazeImage, title: "Solo Game", text: "Race against time and do your best to find the exit of the maze before the time runs out." },
         { image: pvpImage, title: "Player Vs Player", text: "Offline Multiplayer mode where two players can race against each other to find the exit of the maze." },
-        { image: unknownImage, title: "Player Vs Agent", text: "?" },
-        { image: unknownImage, title: "Multiplayer", text: "?" }
+        //{ image: unknownImage, title: "Player Vs Agent", text: "?" },
+        { image: unknownImage, title: "Multiplayer", text: "In progress..." }
     ]
 
 

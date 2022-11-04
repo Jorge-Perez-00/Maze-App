@@ -31,7 +31,7 @@ class Timer extends Component {
         let newTimer = new Date(this.state.timer.valueOf());
 
         newTimer.setSeconds(newTimer.getSeconds() - 1);        
-        console.log("ONE SECOND")
+        //console.log("ONE SECOND")
         
         this.setState({
             timer: newTimer

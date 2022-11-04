@@ -87,6 +87,38 @@ button {
   background-color: pink;
 }
 
+.p3 {
+  background-color: rgb(251, 255, 0);
+}
+
+.p4 {
+  background-color: #3e69f8;
+}
+
+.you {
+  z-index: 50;
+}
+
+.other {
+  z-index: 20;
+}
+
+.playerBox {
+  position: absolute;
+  background-color: #1C2833;
+  outline: 1px solid white;
+  border-radius: 6px;
+  padding-left: 3.5px;
+  padding-right: 3.5px;
+  width: max-content;
+  height: max-content;
+  
+  color: white;
+  top: -25px;
+  left: -6.5px;
+}
+
+
 .agent {
   background-color: rgb(255, 62, 62);
 }

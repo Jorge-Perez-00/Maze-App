@@ -13,6 +13,7 @@ function Background (props) {
     let [cellSet, updateCellSet] = useState(new Set());
     let [cellSet2, updateCellSet2] = useState(new Set());
 
+    console.log("Component is running...")
     useEffect(() => {
         let interval = null;
 
