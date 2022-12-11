@@ -185,6 +185,37 @@ button {
 
 }
 
+.multiplayer-countdown-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #121212;
+  top: 0;
+  left: 0;
+  opacity: 70%;
+  z-index: 50;
+}
+
+.multiplayer-countdown-container {
+  position: absolute;
+  background-color: aliceblue;
+  top: 50%;
+  left: 50%;
+  width: max-content;
+  height: max-content;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  border-radius: 15px;
+  z-index: 51;
+}
+
+.multiplayer-countdown {
+  color: rgb(20, 160, 160);
+  font-size: 80px;
+  margin: auto;
+
+}
+
 
 
 

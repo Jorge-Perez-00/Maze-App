@@ -234,9 +234,12 @@ class Maze extends Component {
         //SET A NEGATIVE VALUE TO ALL DEADENDS IN THE MAZE
         this.setRandomOpenCells();
 
-        this.setState({
-            maze: newMaze,
-        })
+        if(!this.props.multiplayerMaze) {
+            this.setState({
+                maze: newMaze,
+            }) 
+        }
+        
         
         console.log("FINISHED BUILDING MAZE")
         //PARENT FUNCTION CALLBACK
@@ -396,16 +399,15 @@ class Maze extends Component {
         if(!this.state.clicked && this.props.start && !this.props.agent) {
             message = <h1 className="click-message" >'Click Maze'</h1>
         }
-        else if(!this.state.clicked && this.props.agent ) {
-            //message = <h1 className="click-message" >'Build Maze'</h1>
+       
 
-        }
         //Prop Characters
         let agent = this.props.agent ? this.props.agent : {};
         let player = this.props.player ? this.props.player : {};
         let player2 = this.props.player2 ? this.props.player2 : {}; 
         let player3 = this.props.player3 ? this.props.player3 : {}; 
         let player4 = this.props.player4 ? this.props.player4 : {}; 
+        let countdown = this.props.countdown ? this.props.countdown : 0;
 
         let path = this.props.path ? this.props.path : new Set();
        
@@ -416,7 +418,7 @@ class Maze extends Component {
         let handleOnKeyDown = this.props.handleOnKeyDown ? this.props.handleOnKeyDown : null;
         let handleOnKeyUp = this.props.handleOnKeyUp ? this.props.handleOnKeyUp : null;
 
-        let maze = this.state.maze;
+        let maze = this.props.multiplayerMaze ? this.props.multiplayerMaze : this.state.maze;
         return (
             <div className="maze-container" tabIndex={-1} onKeyDown={handleOnKeyDown} onKeyUp={handleOnKeyUp} onClick={this.deleteMessage} onBlur={!this.props.agent ? this.showMessage : null} >
 
@@ -456,6 +458,15 @@ class Maze extends Component {
                     </div>
                 )}
                 {message}
+                {countdown !== 0 && 
+                <>
+                    <div className="multiplayer-countdown-background">
+
+                    </div>
+                    <div className="multiplayer-countdown-container">
+                        <h1 className="multiplayer-countdown" >{countdown}</h1>
+                    </div>
+                </>}
             </div>
         )
     }

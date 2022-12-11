@@ -47,9 +47,20 @@ class App extends Component {
 
   onTitleClick = () => {
     //console.log("CLICKED ON TITLE...")
+    if(this.state.mode === 'Multiplayer') {
+      window.location.reload();
+    }
+    else {
+      this.setState({
+        mode: "",
+      })
+    }
+
+    /*
     this.setState({
       mode: "",
     })
+    */
   }
 
   render() {
@@ -58,7 +69,7 @@ class App extends Component {
 
     return (
       <div className="App">
-        {this.state.mode === ""  && <Background hover={this.state.hover} />}
+        {/*this.state.mode === ""  && <Background hover={this.state.hover} />*/}
 
         <Title mode={this.state.mode} handleTitleClick={this.onTitleClick} />
 

@@ -5,6 +5,9 @@ import agent from '../images/agent-character.png'
 import builder from '../images/builder-character.png'
 import player1 from '../images/p1-character.png'
 import player2 from '../images/p2-character.png'
+import player3 from '../images/p3-character.png'
+import player4 from '../images/p4-character.png'
+import star from '../images/goldstar.png'
 import wallcell from '../images/wallcell.png'
 import exitcell from '../images/exitcell.png'
 import openPath from '../images/open-path.png'
@@ -17,7 +20,7 @@ import Timer from './Timer';
 
 function Sidebar(props) {
 
-    const {mode, start, newMaze, gMessage, setStart, stopGame, createNewMaze, trainingInfo, multiplayerHost} = props;
+    const {mode, start, newMaze, gMessage, setStart, stopGame, createNewMaze, trainingInfo, multiplayerHost, playersInfo, ready, hasUsername, setReady} = props;
 
     //console.log(trainingInfo.setMazeType)
 
@@ -141,8 +144,43 @@ function Sidebar(props) {
                     }
 
                 </div> :
-                <div className="game-info-childs child-two" style={{ height: '88%' }}>
+                <div className="game-info-childs child-two" style={{ height: '76%' }}>
+                    <div className='maze-info-container'>
+                        <div className='multiplayer-players'>
+                            <h4 className='info-title'>Players</h4>
+                            <ul className='character-list-m'>          
+                                
+                                <li className='item-m'>
+                                    <img src={player1} alt="P1" className='player-image-m' />
+                                    <h4 className='player-name-m'>- {playersInfo.player1.name}</h4>
+                                    <div className={`ready-indicator ${playersInfo.player1.ready ? 'ready' : "not-ready"}`}></div>
+                                    {playersInfo.player1.host === true && <img src={star} alt="start" className='host-indicator' />}
+                                </li>
+                        
+                                <li className='item-m'>
+                                    <img src={player2} alt="P2" className='player-image-m' />
+                                    <h4 className='player-name-m'>- {playersInfo.player2.name}</h4>
+                                    <div className={`ready-indicator ${playersInfo.player2.ready ? 'ready' : "not-ready"}`}></div>
+                                    {playersInfo.player2.host === true && <img src={star} alt="start" className='host-indicator' />}
+                                </li>
 
+                                <li className='item-m'>
+                                    <img src={player3} alt="P3" className='player-image-m' />
+                                    <h4 className='player-name-m'>- {playersInfo.player3.name}</h4>
+                                    <div className={`ready-indicator ${playersInfo.player3.ready ? 'ready' : "not-ready"}`}></div>
+                                    {playersInfo.player3.host === true && <img src={star} alt="start" className='host-indicator' />}
+                                </li>
+
+                                <li className='item-m'>
+                                    <img src={player4} alt="P4" className='player-image-m' />
+                                    <h4 className='player-name-m'>- {playersInfo.player4.name}</h4>
+                                    <div className={`ready-indicator ${playersInfo.player4.ready ? 'ready' : "not-ready"}`}></div>
+                                    {playersInfo.player4.host === true && <img src={star} alt="start" className='host-indicator' />}
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
             }
@@ -171,7 +209,7 @@ function Sidebar(props) {
             
             
           
-            {mode !== "Multiplayer" &&
+            {/*mode !== "Multiplayer" &&
                 <div className="game-info-childs child-four" >
                     {startButton}
                     {newMaze ?
@@ -179,9 +217,9 @@ function Sidebar(props) {
                         <button className="game-buttons right disabled-button" >NEW MAZE</button>
                     }
                 </div> 
-            }
+                */}
 
-            {(mode === "Multiplayer" && multiplayerHost) ? 
+            {/*(mode === "Multiplayer" && multiplayerHost) ? 
                 <div className="game-info-childs child-four" >
                     {startButton}
                     {newMaze ?
@@ -192,6 +230,30 @@ function Sidebar(props) {
                 <div className="game-info-childs child-four" >
                     <button className="game-buttons left disabled-button">START</button>
                     <button className="game-buttons right disabled-button" >NEW MAZE</button>
+                </div>
+                */}
+
+            {(mode === "Multiplayer" && !multiplayerHost) ? 
+                <div className="game-info-childs child-four" >
+                    <button className="game-buttons left disabled-button">START</button>
+                    <button className="game-buttons right disabled-button" >NEW MAZE</button>
+                </div> : 
+                <div className="game-info-childs child-four" >
+                    {startButton}
+                    {newMaze ?
+                        <button title="Generate a new random maze" onClick={createNewMaze} className="game-buttons right enabled-button" >NEW MAZE</button> :
+                        <button className="game-buttons right disabled-button" >NEW MAZE</button>
+                    }
+                </div>
+
+            }
+
+            {mode === "Multiplayer" && 
+                <div className="game-info-childs child-five">
+                    {(hasUsername && !ready) ? 
+                        <button onClick={setReady} className='ready-button-m ready-enabled'>READY</button> :
+                        <button className='ready-button-m ready-disabled'>READY</button>
+                    }
                 </div>
             }
             
