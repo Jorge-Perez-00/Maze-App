@@ -2,6 +2,7 @@
     padding: 0;
     margin-left: 22px;
     margin-right: 10px;
+    
 
 }
 
@@ -62,6 +63,8 @@
     height: 58%;
     width: 100%;
     display: flex;
+    box-sizing: border-box;
+    justify-content: space-around;
 }
 
 .multiplayer-players {
@@ -75,6 +78,7 @@
 }
 
 .character-info {
+    box-sizing: border-box;
     position: relative;
     background-color: aliceblue;
     width: 48%;
@@ -86,6 +90,7 @@
     overflow: visible;
 }
 .environment-info {
+    box-sizing: border-box;
     position: relative;
     background-color: aliceblue;
     width: 48%;
@@ -112,7 +117,7 @@ ul {
     
 }
 ul.character-list {
-    margin-left: 25px;
+    margin-left: 0px;
     margin-right: -25px;
     width: fit-content;
 }
@@ -124,7 +129,7 @@ li {
 }
 
 li.characters {
-    margin-left: 0px;
+    /* margin-left: 0px; */
     width: max-content;
 }
 
@@ -189,13 +194,18 @@ li.characters {
 /* MULTIPLAYER PLAYER INFO STYLES  */
 
 .character-list-m {
-    background-color: aquamarine;
+    /* background-color: aquamarine; */
     width: 100%;
 }
 
 .item-m {
     margin-bottom: 10px;
-    background-color: bisque;
+    /* background-color: bisque; */
+    
+}
+
+.item-hide {
+    opacity: 40%;
 }
 
 .player-image-m {
@@ -280,9 +290,7 @@ li.characters {
 .game-buttons {
     margin-top: auto;
     margin-bottom: auto;
-    /*margin-left: 10px;
-    margin-right: 10px;
-    */
+   
     font-size: 25px;
     border-radius: 15px;
     background-color: aliceblue;
@@ -348,4 +356,113 @@ li.characters {
 
 .ready-disabled {
     opacity: 30%;
+}
+
+
+@media screen and (max-width: 1150px) {
+    .game-buttons {
+        width: 150px;
+        font-size: 20px;
+    }
+
+    .info-title {
+        font-size: 18px;
+    }
+
+    .info-image {
+        width: 25px;
+        height: 25px;
+    }
+
+    .info-name {
+        font-size: 18px;
+    }
+
+    .info-text {
+        font-size: 28px;
+    }
+
+    
+}
+
+@media screen and (min-width: 1921px) {
+
+    .timer {
+        font-size: 105px;
+    }
+
+    .game-buttons {
+        width: 275px;
+        font-size: 40px;
+        padding: 25px;
+    }
+
+    .info-title {
+        font-size: 25px;
+    }
+
+    .info-image {
+        width: 45px;
+        height: 45px;
+    }
+
+    .info-name {
+        font-size: 30px;
+    }
+
+    .info-text {
+        font-size: 45px;
+    }
+
+    .ready-button-m {
+        font-size: 45px;
+    }
+
+
+    .player-image-m {
+        width: 80px;
+        height: 80px;
+    }
+
+    .player-name-m {
+        font-size: 50px;
+
+    }
+
+    .ready-indicator {
+        width: 30px;
+        height: 30px;
+        border-radius: 15px;
+    }
+
+    .host-indicator {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+
+@media screen and (max-height: 800px) {
+    .game-buttons {
+            width: 150px;
+            font-size: 20px;
+        }
+    
+        .info-title {
+            font-size: 18px;
+        }
+    
+        .info-image {
+            width: 25px;
+            height: 25px;
+        }
+    
+        .info-name {
+            font-size: 18px;
+        }
+    
+        .info-text {
+            font-size: 28px;
+        }
+    
 }

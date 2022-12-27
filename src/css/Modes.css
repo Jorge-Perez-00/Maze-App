@@ -1,36 +1,72 @@
 
 
 .mode-container {
+    
     display: flex;
-    margin: auto;
-    margin-top: 80px;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    list-style: none;
+    position: relative;
+    margin: 10px auto;
+    margin-top: 5vh;
+    padding: 10px;
     background-color: transparent;
-    width: max-content;
+
+    
+    max-width: 1250px;
+    width: 80%;
+    
 }
 
+.card-item {
+    box-sizing: border-box;
+    display: flex;
+    width: 25%;
+    padding: 10px;
+  
+    height: auto;
+    aspect-ratio: 1/2;
+    background-color: none;
+
+    /*outline: 1px solid aqua;
+    */
+}
 
 .mode-card {
-    position: relative;
+    box-sizing: border-box;
     text-align: center;
-    background-color: #121212;
-    outline: 1.25px solid white;
-    height: 50vh;
-    margin: 20px;
-    width: max-content;
+    
+    background-color: #1b1a1ac7;
+  
+    outline: 1.25px solid aliceblue;
+    width: 100%;
     cursor: pointer;
-    box-shadow: 0px 0px 10px -2px rgb(62, 249, 255);
+
+    filter: brightness(1);
+    /*box-shadow: 0px 0px 10px -2px rgb(62, 249, 255);
+    */
     animation: FadeIn 0.5s linear 0s;
-    padding: 10px;
+
+    
+    /*padding: 10px;
+    */
+    padding-top: 6px;
     padding-right: 5px;
     padding-left: 5px;
-    border-radius: 10px;
+    border-radius: 8px;
+    
 }
+
+
+
 
 .mode-card:hover {
     color: black;
     background-color: rgb(238, 238, 238);
     outline: 1.25px solid rgb(255, 255, 255);
 }
+
 /*
     BOX-SHADOW COLORS FOR EACH CARD (0-4) 
 */
@@ -65,17 +101,20 @@
 }
 
 
+
+
 .mode-image {
     background-color: antiquewhite;
-    width: 25vh;
-    height: 25vh;
-    
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    filter: brightness(0.8);
+
 }
 
 .mode-title {
-    color: white;
-    font-size: 2.5vh;
-    width: max-content;
+    color: aliceblue;
+    font-size: 25px;
     margin: auto;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: lighter;
@@ -87,9 +126,9 @@
 .mode-text {
     background-color: transparent;
     color: aliceblue;
-    font-size: 1.5vh;
-    width: 100%;
-    inline-size: 20vh;
+    font-size: 16px;
+    inline-size: 99%;
+    line-height: 1.25;
     margin: auto;
 }
 
@@ -105,4 +144,144 @@
     }
 }
 
+/*
+@media screen and (max-width: 600px) {
+    .mode-title {
+        font-size: 10px;
+    }
+    
+    .mode-text {
+        font-size: 5px;
+    }
+}
 
+@media screen and (max-width: 700px) {
+    .mode-title {
+        font-size: 15px;
+    }
+    
+    .mode-text {
+        font-size: 10px;
+    }
+    
+}
+*/
+
+
+
+
+
+
+
+@media screen and (max-width: 1000px) {
+    .card-item {
+        padding: 5px;
+        width: 38%;
+    }
+}
+
+@media screen and (min-width: 1001px) and (max-width: 1080px) {
+    .mode-title {
+        font-size: 20px;
+    }
+
+    .mode-text {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .mode-container {
+        width: 90%;
+    }
+
+    .card-item {
+        width: 45%;
+    }
+
+    .mode-title {
+        font-size: 20px;
+    }
+
+    .mode-text {
+        font-size: 14px;
+    }
+
+}
+
+@media screen and (min-width: 426px) and (max-width: 600px) {
+    .mode-container {
+        width: 90%;
+    }
+
+    .card-item {
+        width: 45%;
+    }
+
+    .mode-title {
+        font-size: 18px;
+    }
+
+    .mode-text {
+        font-size: 12px;
+    }
+
+}
+
+@media screen and (max-width: 425px /*620px*/) {
+    .mode-container {
+        width: 100%;
+    }
+
+    .card-item {
+        padding-bottom: 25px;
+        width: 75%;
+        aspect-ratio: 1/2;
+    }
+
+    
+
+
+    /*
+    .mode-card {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .mode-image-container {
+       width: 50%;
+       margin: 0;
+    }
+
+    .mode-text-container {
+        width: 50%;
+
+    }
+    */
+    
+}
+
+@media screen and (max-height: 800px) {
+    .mode-container {
+        margin-top: 2vh;
+    }
+    
+}
+
+@media screen and (min-width: 1920px) and (min-height: 1080px) {
+    .mode-container {
+        max-width: 1800px;
+    }
+
+    .mode-title {
+        font-size: 35px;
+    }
+
+    .mode-text {
+        font-size: 25px;
+        
+    }
+
+    
+}

@@ -1,7 +1,9 @@
 
 .form-container {
     position: absolute;
-    background-color: aliceblue;
+    background-color: rgb(165, 182, 196);
+    outline: 2px solid rgb(255, 255, 255); 
+    
     border-radius: 5px;
     padding: 40px;
     z-index: 100;
@@ -25,15 +27,40 @@ input[type=text] {
     border: 1px solid black;
     box-sizing: border-box;
     margin: 8px 0;
+    border-radius: 8px;
+    background-color: aliceblue;
 }
 
 input[type=submit] {
     width: 50%;
-    font-size: 20px;
+    font-size: 25px;
     padding: 10px 20px;
     border: 1px solid black;
     margin: 8px 0;
     border-radius: 8px;
     cursor: pointer;
+    background-color: aliceblue;
 }
 
+input[type=submit]:hover {
+    background-color: rgba(0, 255, 255, 0.35);
+}
+
+
+@media screen and (min-width: 1921px) {
+  .form-container {
+    width: 600px;
+  }
+
+  label {
+    font-size: 45px;
+  }
+
+  input[type=text] {
+    font-size: 40px;
+  }
+
+  input[type=submit] {
+    font-size: 40px;
+  }
+}

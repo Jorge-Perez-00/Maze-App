@@ -43,7 +43,7 @@ class Maze extends Component {
             }, 1)
             
         }
-        //HIDE MAZE GENERATION FOR ALL MODES THAT ARE NOT THE MAZE TRAINING MODE
+        //HIDE MAZE GENERATION FOR ALL GAME MODES
         if(this.props.mode === "hide") {
             console.log("GENERATING MAZE WITHOUT ANIMATION...");
             this.generateMazeBTS();
@@ -396,9 +396,22 @@ class Maze extends Component {
     render() {
 
         let message;
+        
         if(!this.state.clicked && this.props.start && !this.props.agent) {
-            message = <h1 className="click-message" >'Click Maze'</h1>
+            //message = <h1 className="click-message" >'Click Maze'</h1>
+            message = 
+            <>
+                <div className="maze-message-background">
+
+                </div>
+                <h1 className="click-message" >CLICK MAZE TO MOVE</h1>
+            </>
         }
+        
+        
+        // if(!this.state.clicked && (this.props.start === true) && this.props.multiplayerMaze) {
+        //     message = <h1 className="click-message" >'Click Maze'</h1>
+        // }
        
 
         //Prop Characters
@@ -460,7 +473,7 @@ class Maze extends Component {
                 {message}
                 {countdown !== 0 && 
                 <>
-                    <div className="multiplayer-countdown-background">
+                    <div className="maze-message-background">
 
                     </div>
                     <div className="multiplayer-countdown-container">

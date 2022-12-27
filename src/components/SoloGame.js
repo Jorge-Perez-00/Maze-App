@@ -2,6 +2,7 @@ import { Component } from "react";
 
 import Maze from './Maze';
 import Sidebar from './Sidebar'
+import MessageBox from "./MessageBox";
 
 
 class SoloGame extends Component {
@@ -42,6 +43,12 @@ class SoloGame extends Component {
         this.setState({
             maze: maze,
             start: false,
+        })
+    }
+
+    removeMessageBox = () => {
+        this.setState({
+            gameMessage: ""
         })
     }
 
@@ -190,6 +197,14 @@ class SoloGame extends Component {
 
         return(
             <div className="main-container">
+
+                <MessageBox
+                    open={this.state.gameMessage !== ""}
+                    message={this.state.gameMessage}
+                    buttons={[{ text: "Close", onClick: this.removeMessageBox, className: "enabled" }]}
+                />
+
+
                 <Maze 
                     mode={"hide"}
                     key={this.state.createMaze}

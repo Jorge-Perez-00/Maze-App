@@ -150,28 +150,28 @@ function Sidebar(props) {
                             <h4 className='info-title'>Players</h4>
                             <ul className='character-list-m'>          
                                 
-                                <li className='item-m'>
-                                    <img src={player1} alt="P1" className='player-image-m' />
+                                <li className={`item-m ${playersInfo.player1.name === "?" ? 'item-hide' : "" }`}>
+                                    <img title="Player's Avatar" src={player1} alt="P1" className='player-image-m' />
                                     <h4 className='player-name-m'>- {playersInfo.player1.name}</h4>
-                                    <div className={`ready-indicator ${playersInfo.player1.ready ? 'ready' : "not-ready"}`}></div>
-                                    {playersInfo.player1.host === true && <img src={star} alt="start" className='host-indicator' />}
+                                    <div title='Ready Status' className={`ready-indicator ${playersInfo.player1.ready ? 'ready' : "not-ready"}`}></div>
+                                    {playersInfo.player1.host === true && <img title='Game Host' src={star} alt="start" className='host-indicator' />}
                                 </li>
                         
-                                <li className='item-m'>
+                                <li className={`item-m ${playersInfo.player2.name === "?" ? 'item-hide' : ""}`}>
                                     <img src={player2} alt="P2" className='player-image-m' />
                                     <h4 className='player-name-m'>- {playersInfo.player2.name}</h4>
                                     <div className={`ready-indicator ${playersInfo.player2.ready ? 'ready' : "not-ready"}`}></div>
                                     {playersInfo.player2.host === true && <img src={star} alt="start" className='host-indicator' />}
                                 </li>
 
-                                <li className='item-m'>
+                                <li className={`item-m ${playersInfo.player3.name === "?" ? 'item-hide' : ""}`}>
                                     <img src={player3} alt="P3" className='player-image-m' />
                                     <h4 className='player-name-m'>- {playersInfo.player3.name}</h4>
                                     <div className={`ready-indicator ${playersInfo.player3.ready ? 'ready' : "not-ready"}`}></div>
                                     {playersInfo.player3.host === true && <img src={star} alt="start" className='host-indicator' />}
                                 </li>
 
-                                <li className='item-m'>
+                                <li className={`item-m ${playersInfo.player4.name === "?" ? 'item-hide' : ""}`}>
                                     <img src={player4} alt="P4" className='player-image-m' />
                                     <h4 className='player-name-m'>- {playersInfo.player4.name}</h4>
                                     <div className={`ready-indicator ${playersInfo.player4.ready ? 'ready' : "not-ready"}`}></div>

@@ -5,6 +5,7 @@ import { Component } from "react";
 
 import Maze from './Maze';
 import Sidebar from './Sidebar'
+import MessageBox from './MessageBox';
 
 
 class PlayerVsPlayer extends Component {
@@ -135,7 +136,7 @@ class PlayerVsPlayer extends Component {
         this.setState({
             start: false,
             newMaze: true,
-            gameMessage: "You ran out of time! You lost!",
+            gameMessage: "Out of time! You lost!",
         })
     }
 
@@ -148,11 +149,24 @@ class PlayerVsPlayer extends Component {
         })
     }
 
+    removeMessageBox = () => {
+        this.setState({
+            gameMessage: ""
+        })
+    }
+
 
     render() {
 
         return (
             <div className="main-container">
+
+                <MessageBox 
+                    open={this.state.gameMessage !== ""}
+                    message={this.state.gameMessage}
+                    buttons={[{ text: "Close", onClick: this.removeMessageBox, className: "enabled" }]}
+                />
+
                 <Maze
                     mode={"hide"}
                     key={this.state.createNewMaze}

@@ -5,7 +5,7 @@
 //import { onChildAdded, onChildRemoved, onValue } from 'firebase/database';
 
 import Sidebar from './Sidebar'
-import {MessageBox } from './MessageBox'
+import MessageBox from './MessageBox'
 
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -79,7 +79,7 @@ function Multiplayer(props) {
     let [player4, setPlayer4] = useState("OPEN");
 
     let [host, setHost] = useState(false);
-    let [start, setStart] = useState(true);
+    let [start, setStart] = useState(false);
     let [newMaze, setNewMaze] = useState(false);
     let [randomNumber, setRandomNumber] = useState(0);
     let [mazeType, setMazeType] = useState("")
@@ -373,11 +373,12 @@ function Multiplayer(props) {
                     console.log("TIMELEFT: ", timeLeft);
                     count += 1;
                     console.log("COUNT.......... ", count)
-                    if (timeLeft < 0) {
+                    if (timeLeft < 1000) {
                         countdownChanges = 0;
                         clearInterval(countdownInterval);
                         console.log("0.0 left");
                         if (GAME_ON) {
+                            setCountdown(0);
                             setStart(true);
                             setControls(true);
                         }
@@ -589,6 +590,7 @@ function Multiplayer(props) {
                             gameInfo.maze = {};
                             console.log("TESTTTTTT")
                         }
+                        setControls(false);
                         console.log(gameInfo);
                         _set(gameRef, gameInfo);
 
@@ -608,7 +610,7 @@ function Multiplayer(props) {
                             gameInfo.gameInfo.winner = null;
                             gameInfo.maze = {};
                         }
-
+                        setControls(false);
                         _set(gameRef, gameInfo);
                     }
                 }
@@ -844,8 +846,8 @@ function Multiplayer(props) {
                     <div className='form-container'>
                         <form onSubmit={handleSubmit} >
                             <label>
-                                Name
-                                <input type="text" value={name} onChange={handleChange} />
+                                Enter Name: 
+                                <input type="text" value={name} onChange={handleChange} maxLength={7} />
                             </label>
                             <input type="submit" value="Enter" />
                         </form>
@@ -859,13 +861,13 @@ function Multiplayer(props) {
             <MessageBox 
                 open={showInitialSetup}
                 message={"Welcome!"}
-                buttons={[{text: "Spectate", onClick: onSpectateClicked}, {text: "Join", onClick: canJoin ? onJoinClicked : null, className: canJoin ? "" : "disabled-join"}]}
+                buttons={[{text: "Spectate", onClick: onSpectateClicked, className: "enabled"}, {text: "Join", onClick: canJoin ? onJoinClicked : null, className: canJoin ? "enabled" : "disabled-join"}]}
             />
 
             <MessageBox
                 open={showMessage}
                 message={`Winner is ${winner}`}
-                buttons={[{text: "Close", onClick: removeMessageBox}]}
+                buttons={[{ text: "Close", onClick: removeMessageBox, className: "enabled" }]}
             />
 
             <div className='main-container'>
@@ -882,7 +884,7 @@ function Multiplayer(props) {
                     //handleOnKeyUp={this.handleOnKeyUp}
                     rows={30}
                     columns={30}
-                //start={this.state.start}
+                    start={start && controls}
                     countdown={countdown}
                 />
 

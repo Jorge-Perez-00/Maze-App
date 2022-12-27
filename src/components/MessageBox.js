@@ -37,4 +37,4 @@ function MessageBox(props) {
 }
 
 
-export {MessageBox }//Button};
+export default MessageBox;

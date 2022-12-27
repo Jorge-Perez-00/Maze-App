@@ -17,6 +17,9 @@ function Title(props) {
     else if (mode === 'Player Vs Player') {
         cardNumber = 2;
     }
+    else if (mode === 'Multiplayer') {
+        cardNumber = 3;
+    }
     
 
     return(
@@ -24,7 +27,8 @@ function Title(props) {
             <h1 className={mode === "" ? 'Title homepage-title' : 'Title modes-title title' + `${cardNumber}`} onClick={mode !== "" ? handleTitleClick : null}>
             {mode === 'Solo Game' ? "MAZE GAME: SOLO" : 
             mode === 'Player Vs Player' ? "MAZE GAME: PLAYER VS PLAYER" :
-            mode === 'Maze Training' ? "MAZE: REINFORCEMENT LEARNING" : "MAZE"}
+            mode === 'Maze Training' ? "MAZE: REINFORCEMENT LEARNING" :
+            mode === 'Multiplayer' ? "MAZE: MULTIPLAYER" : "MAZE"}
             </h1>
         </div>
        
