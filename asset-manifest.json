@@ -1,18 +1,21 @@
 {
   "files": {
     "main.css": "/Maze-App/static/css/main.8be3418b.css",
-    "main.js": "/Maze-App/static/js/main.ece99d93.js",
+    "main.js": "/Maze-App/static/js/main.90d5e481.js",
     "static/js/787.116a652f.chunk.js": "/Maze-App/static/js/787.116a652f.chunk.js",
+    "static/media/maze.mp3": "/Maze-App/static/media/maze.0986be14faab2d394f9f.mp3",
+    "static/media/countdown.mp3": "/Maze-App/static/media/countdown.07bb2c015f8b2deb4382.mp3",
+    "static/media/conclusion.mp3": "/Maze-App/static/media/conclusion.570065f10e2c4a46c6c5.mp3",
     "static/media/arrowkeys.png": "/Maze-App/static/media/arrowkeys.32183f2c5229d5cecf50.png",
     "static/media/awsdkeys.png": "/Maze-App/static/media/awsdkeys.2b5bea50d10754f130bf.png",
     "static/media/goldstar.png": "/Maze-App/static/media/goldstar.71353acc7550d4c5f4fc.png",
     "index.html": "/Maze-App/index.html",
     "main.8be3418b.css.map": "/Maze-App/static/css/main.8be3418b.css.map",
-    "main.ece99d93.js.map": "/Maze-App/static/js/main.ece99d93.js.map",
+    "main.90d5e481.js.map": "/Maze-App/static/js/main.90d5e481.js.map",
     "787.116a652f.chunk.js.map": "/Maze-App/static/js/787.116a652f.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8be3418b.css",
-    "static/js/main.ece99d93.js"
+    "static/js/main.90d5e481.js"
   ]
 }
