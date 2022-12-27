@@ -15,11 +15,10 @@ function Background (props) {
     let [cellSet, updateCellSet] = useState(new Set());
     let [cellSet2, updateCellSet2] = useState(new Set());
 
-    console.log("Component is running...")
+    //console.log("Component is running...")
     useEffect(() => {
-        //let interval = null;
 
-        console.log(hover);
+        //console.log(hover);
         if(hover === "Solo Game" || hover === "Maze Training" || hover === "Multiplayer") {                
             interval = setInterval(() => {
                 RandomCells();
@@ -49,10 +48,7 @@ function Background (props) {
         FUNCTION THAT WILL RANDOMLY LIGHT UP THE MAZE BACKGROUND WITH A SINGLE COLOR
     */
     function RandomCells() {
-        //console.log("RANDOM CELL FUNCTION")
-      
-        
-
+    
         let newSet = new Set();
         for(let cells = 0; cells < 30 /*50*/; cells++) {
             let randomX = Math.floor(Math.random() * 50);
@@ -71,7 +67,6 @@ function Background (props) {
         FUNCTION THAT WILL RANDOMLY LIGHT UP THE MAZE BACKGROUND WITH 2 DIFFERENT COLORS
     */
     function RandomCellsDoubleSets() {
-        //console.log("RANDOM CELL FUNCTION")
         
         let newSet = new Set();
         for (let cells = 0; cells < 15/*30*/; cells++) {

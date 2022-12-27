@@ -13,7 +13,9 @@ import { db, auth, _signInAnonymously, _onAuthStateChanged, _ref, _set, _onDisco
 
 import Maze from './Maze'
 import '../css/Multiplayer.css'
-
+import  COUNTDOWN_SOUND from '../audios/countdown.mp3'
+import MAZE_MUSIC from '../audios/maze.mp3'
+import CONCLUSION_SOUND from '../audios/conclusion.mp3'
 
 let playerID;
 let myPlayerNumber;
@@ -57,7 +59,9 @@ let playersInfo = {
     }
 };
 
-
+let countdownSound = new Audio(COUNTDOWN_SOUND);
+let mazeMusic = new Audio(MAZE_MUSIC);
+let conclusionSound = new Audio(CONCLUSION_SOUND);
 
 function Multiplayer(props) {
 
@@ -95,10 +99,14 @@ function Multiplayer(props) {
    
     useEffect(() => {
         
+        //countdownSound.play()
         signIn();
        
         return () => {
            //signOut(auth);
+           countdownSound.pause();
+           mazeMusic.pause();
+           conclusionSound.pause();
         }
     },[])
 
@@ -181,7 +189,7 @@ function Multiplayer(props) {
 
         _onValue(serverTimeOffset_ref, (snapshot) => { 
             serverTimeOffset = snapshot.val() 
-            console.log(serverTimeOffset);
+            //console.log(serverTimeOffset);
         })
 
         
@@ -189,7 +197,7 @@ function Multiplayer(props) {
 
 
         _onValue(mazeInfoRef, (snapshot) => {
-            console.log("MAZEINFOREF TEST: ", snapshot.val());
+            //console.log("MAZEINFOREF TEST: ", snapshot.val());
             gameInfo.maze = snapshot.val();
             if (gameInfo.maze !== undefined && gameInfo.maze !== null && gameInfo.maze !== {}) {
                 let matrixFromObject = [];
@@ -224,7 +232,7 @@ function Multiplayer(props) {
 
 
         _onValue(gameInfoRef, (snapshot) => {
-            console.log("GAMEINFOREF TEST: ", snapshot.val());
+            //console.log("GAMEINFOREF TEST: ", snapshot.val());
             gameInfo.gameInfo = snapshot.val();
 
 
@@ -242,11 +250,13 @@ function Multiplayer(props) {
             //console.log("PLAYERS:  ", Object.keys(players).length)
             if(/*Object.keys(players).length !== 0 && */gameInfo.gameInfo.winner !== "" && gameInfo.gameInfo.winner !== undefined && gameInfo.gameInfo.winner !== null) {
                 const gameWinner = gameInfo.gameInfo.winner;
-                console.log("WINNER IS ", gameWinner);
+                //console.log("WINNER IS ", gameWinner);
                 setWinner(gameWinner);
                 //setStart(false);
                 setControls(false);
                 setShowMessage(true)
+                mazeMusic.pause();
+                conclusionSound.play();
 
                 
                 if(spectator === false) {
@@ -280,14 +290,14 @@ function Multiplayer(props) {
         })
 
         _onValue(playersInfoRef, (snapshot) => {
-            console.log("PLAYERSINFOREF TEST: ", snapshot.val());
+            //console.log("PLAYERSINFOREF TEST: ", snapshot.val());
             gameInfo.playersInfo = snapshot.val();
-            console.log("TOTAL PLAYERS IN GAME: ", gameInfo.playersInfo.totalPlayers);
+            //console.log("TOTAL PLAYERS IN GAME: ", gameInfo.playersInfo.totalPlayers);
 
             if(spectator && gameInfo.playersInfo !== null && gameInfo.playersInfo !== {}) {
-                const maxPlayers = 3;
+                const maxPlayers = 4;
                 if(gameInfo.playersInfo.totalPlayers === maxPlayers /*&& Object.keys(players).length === 3*/) {
-                    console.log("CANNOT JOIN !")
+                    //console.log("CANNOT JOIN !")
                     setJoin(false);
 
                     setShowForm(false);
@@ -295,7 +305,7 @@ function Multiplayer(props) {
                
 
                 if((gameInfo.playersInfo.totalPlayers < maxPlayers)) {
-                    console.log("YOU CAN JOIN !");
+                    //console.log("YOU CAN JOIN !");
                     setJoin(true);
                     /*
                     if(!showInitialSetup) {
@@ -328,17 +338,17 @@ function Multiplayer(props) {
             COUNTDOWN
         */
         _onValue(countdownRef, (snapshot) => {
-            console.log("COUNTDOWN!")
+            //console.log("COUNTDOWN!")
             const seconds = snapshot.val().seconds;
             const startTime = snapshot.val().startTime;
 
-            console.log("REAL TIMESTART: ", startTime);
-            console.log("TEST: ", startTime - serverTimeOffset);
+            //console.log("REAL TIMESTART: ", startTime);
+            //console.log("TEST: ", startTime - serverTimeOffset);
 
             if(spectator === false && startTime !== 0) {
                 if(players[playerID].host === true) {
                     countdownChanges = countdownChanges + 1;
-                    console.log("Change CHECK: ", countdownChanges)
+                    //console.log("Change CHECK: ", countdownChanges)
                 }
                 else {
                     countdownChanges = 2;
@@ -352,7 +362,9 @@ function Multiplayer(props) {
 
             let count = 0;
             if(startTime !== 0 && countdownChanges === 2) {
-
+                countdownSound.currentTime = 0;
+                countdownSound.play();
+                
                 const countdownInterval = setInterval(() => {
                     if (spectator === false) {
                         if (players[playerID].ready === false) {
@@ -365,20 +377,37 @@ function Multiplayer(props) {
                             
                         }
                     }
-                    console.log("DATE NOW: ", Date.now());
-                    console.log("START TIME: ", startTime);
+                    
+                    //console.log("DATE NOW: ", Date.now());
+                    //console.log("START TIME: ", startTime);
                     const timeLeft = (seconds * 1000) - (Date.now() - startTime - serverTimeOffset);
-                    console.log("TIMELEFT: ", timeLeft);
-                    count += 1;
-                    console.log("COUNT.......... ", count)
+                    //console.log("TIMELEFT: ", timeLeft);
+                    //count += 1;
+                    //console.log("COUNT.......... ", count)
+                    
+
+                    //const timeLeft = (seconds * 1000) - (Date.now() - startTime - serverTimeOffset);
+                    /*
+                    if(GAME_ON === false) {
+                        clearInterval(countdownInterval);
+                        setCountdown(0);
+                    }
+                    */
+                    
                     if (timeLeft < 1000) {
                         countdownChanges = 0;
                         clearInterval(countdownInterval);
                         //console.log("0.0 left");
+                        
+                        countdownSound.pause();
                         if (GAME_ON) {
+                            mazeMusic.currentTime = 0;
+                            mazeMusic.play();
                             setCountdown(0);
-                            setStart(true);
-                            setControls(true);
+                            if(spectator === false) {
+                                setStart(true);
+                                setControls(true);
+                            }
                         }
 
                         if (spectator === false) {
@@ -395,8 +424,17 @@ function Multiplayer(props) {
                         //setControls(true);
                     }
                     else {
-                        console.log(`${Math.floor(timeLeft / 1000)}`) //.${timeLeft % 1000}`);
-                        setCountdown(Math.floor(timeLeft / 1000));
+                        //console.log(`${Math.floor(timeLeft / 1000)}`) //.${timeLeft % 1000}`);
+                        if(!GAME_ON) {
+                            clearInterval(countdownInterval);
+                            setCountdown(0);
+                            countdownChanges = 0;
+                        }
+                        else{
+                            setCountdown(Math.floor(timeLeft / 1000));
+
+                        }
+                        //setCountdown(Math.floor(timeLeft / 1000));
                     }
                 }, 100)
             }
@@ -433,12 +471,12 @@ function Multiplayer(props) {
           
 
         _onValue(allPlayersRef, (snapshot) => {
-            console.log("                   ");
-            console.log("SNAPSHOT: ", snapshot.val());
+            //console.log("                   ");
+            //console.log("SNAPSHOT: ", snapshot.val());
             //console.log("SNAPSHOT NUMBER: ", snapshot.val().length());
             players = snapshot.val();
             if(players !== null) {
-                console.log("THERE ARE PLAYERS IN GAME!");
+                //console.log("THERE ARE PLAYERS IN GAME!");
             }
 
             snapshot.forEach((player) => {
@@ -446,7 +484,7 @@ function Multiplayer(props) {
                 const playerData = player.val();
                 //console.log(playerID);
                 
-                console.log(playerData);
+                //console.log(playerData);
                 
                 if(playerKey === playerID && playerData.host === true) {
                     setHost(true);
@@ -484,7 +522,7 @@ function Multiplayer(props) {
 
         _onChildAdded(allPlayersRef, (snapshot)=>{
             const newPlayer = snapshot.val();
-            console.log("NEW PLAYER NAME: ", newPlayer.name);
+            //console.log("NEW PLAYER NAME: ", newPlayer.name);
             if(newPlayer.playerNumber === 1) {
                 setPlayer({ x: newPlayer.x, y: newPlayer.y });
             }
@@ -501,10 +539,10 @@ function Multiplayer(props) {
         })
 
         _onChildRemoved(allPlayersRef, (data) => {
-            console.log("             ")
-            console.log("PLAYER HAS BEEN DISCONNECTED...")
-            console.log(data.val());
-            console.log(data.key);
+            //console.log("             ")
+            //console.log("PLAYER HAS BEEN DISCONNECTED...")
+            //console.log(data.val());
+            //console.log(data.key);
             const playerData = data.val();
             const removedPlayerID = playerData.id;
             const playerNumber = playerData.playerNumber;
@@ -556,6 +594,16 @@ function Multiplayer(props) {
 
             }
 
+
+            if(spectator && Object.keys(players).length === 2) {
+                countdownSound.pause();
+                mazeMusic.pause();
+                if (GAME_ON) {
+                    conclusionSound.play();
+
+                }
+            }
+
             //HANDLE IF HOST HAS DISCONNECTED
             let newHostID = null;
 
@@ -570,7 +618,7 @@ function Multiplayer(props) {
 
                 if (newHostID !== null) {
                     if (playerID === newHostID) {
-                        console.log("YOU ARE THE NEW HOST !");
+                        //console.log("YOU ARE THE NEW HOST !");
                         players[playerID].host = true;
                         _set(playerRef, players[playerID]);
                         gameInfo.playersInfo.totalPlayers = gameInfo.playersInfo.totalPlayers - 1;
@@ -584,10 +632,16 @@ function Multiplayer(props) {
                             gameInfo.gameInfo.startGame = false;
                             gameInfo.gameInfo.winner = null;
                             gameInfo.maze = {};
-                            console.log("TESTTTTTT")
+
+                            countdownSound.pause();
+                            mazeMusic.pause();
+                            if(GAME_ON) {
+                                conclusionSound.play();
+
+                            }
                         }
                         setControls(false);
-                        console.log(gameInfo);
+                        //console.log(gameInfo);
                         _set(gameRef, gameInfo);
 
                     }
@@ -605,6 +659,12 @@ function Multiplayer(props) {
                             gameInfo.gameInfo.startGame = false;
                             gameInfo.gameInfo.winner = null;
                             gameInfo.maze = {};
+
+                            countdownSound.pause();
+                            mazeMusic.pause();
+                            if (GAME_ON) {
+                                conclusionSound.play();
+                            }
                         }
                         setControls(false);
                         _set(gameRef, gameInfo);
@@ -621,8 +681,10 @@ function Multiplayer(props) {
             //console.log(user);
             if (user) {
                 //User is signed in...
-                console.log("SIGNED IN: ", user.uid)
-                //playerID = user.uid;
+
+                //console.log("SIGNED IN: ", user.uid)
+
+
                 setOnline(true);
                 setInitialSetup(true);
 
@@ -640,7 +702,7 @@ function Multiplayer(props) {
                 Game();
             }
             else {
-                console.log("SIGNED OUT!")
+                //console.log("SIGNED OUT!")
             }
 
         })
@@ -666,31 +728,31 @@ function Multiplayer(props) {
         return 0 if there are no open spots and the game if full.
     */
     function getOpenSpot() {
-        console.log(player);
+        //console.log(player);
         if(player === "OPEN") {
-            console.log("Spot 1 is available...")
+            //console.log("Spot 1 is available...")
             return 1;
         }
         else if(player2 === "OPEN") {
-            console.log("Spot 2 is available...")
+            //console.log("Spot 2 is available...")
             return 2;
         }
         else if (player3 === "OPEN") {
-            console.log("Spot 3 is available...")
+            //console.log("Spot 3 is available...")
             return 3;
         }
         else if (player4 === "OPEN") {
-            console.log("Spot 4 is available...")
+            //console.log("Spot 4 is available...")
             return 4;
         }
-        console.log("GAME IS FULL!");
+        //console.log("GAME IS FULL!");
         return 0;
     }
 
     function handleSubmit(event) {
         event.preventDefault();
 
-        console.log("SUBMITTED...")
+        //console.log("SUBMITTED...")
         setUsername(true);
         if(GAME_ON) {
             setReadyStatus(true);
@@ -822,12 +884,12 @@ function Multiplayer(props) {
     }
     
     function onSpectateClicked() {
-        console.log("YOU ARE A SPECTATOR!")
+        //console.log("YOU ARE A SPECTATOR!")
         setInitialSetup(false);
     }
 
     function onJoinClicked() {
-        console.log("YOU WILL JOIN !")
+        //console.log("YOU WILL JOIN !")
         setInitialSetup(false);
         setShowForm(true);
     }

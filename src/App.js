@@ -42,7 +42,7 @@ class App extends Component {
   }
 
   handleHover = (event) => {
-    console.log("ID HOVER: ", event.target.id);
+    //console.log("ID HOVER: ", event.target.id);
     this.setState({
       hover: event.target.id
     })

@@ -17,8 +17,6 @@ class Maze extends Component {
             gameMessage: "",
             clicked: false,
         }
-        //Maze for modes that do not show animated maze being built in real time.
-        //this.maze = [...this.state.maze];
 
         //MAZE BUILDER AGENT
         this.builder = { x: 0, y: 0 };
@@ -34,7 +32,7 @@ class Maze extends Component {
      
         //SHOW MAZE GENERATION FOR THE TRAINING MODE
         if(this.props.mode === "show") {
-            console.log("GENERATING MAZE WITH ANIMATION...");
+            //console.log("GENERATING MAZE WITH ANIMATION...");
             this.timeout = setTimeout(() => {
                 this.Maze[this.props.rows - 4][this.props.columns - 1] = 2;
                 this.Maze[this.props.rows - 1][this.props.columns - 4] = 2;
@@ -45,10 +43,10 @@ class Maze extends Component {
         }
         //HIDE MAZE GENERATION FOR ALL GAME MODES
         if(this.props.mode === "hide") {
-            console.log("GENERATING MAZE WITHOUT ANIMATION...");
+            //console.log("GENERATING MAZE WITHOUT ANIMATION...");
             this.generateMazeBTS();
         }
-        console.log("maze running...")
+        //console.log("maze running...")
        
     }
 
@@ -176,7 +174,7 @@ class Maze extends Component {
 
 
     generateMazeBTS = () => {
-        console.log("Generating Maze Behind the Scenes...")
+        //console.log("Generating Maze Behind the Scenes...")
         let newMaze = this.Maze;
 
         //SETUP MAZE
@@ -241,7 +239,7 @@ class Maze extends Component {
         }
         
         
-        console.log("FINISHED BUILDING MAZE")
+        //console.log("FINISHED BUILDING MAZE")
         //PARENT FUNCTION CALLBACK
         //THIS CALL WILL SEND THE RANDOM COMPLETED MAZE BACK TO THE PARENT
         this.props.setMazeInfo(newMaze)
@@ -256,7 +254,7 @@ class Maze extends Component {
 
         let newMaze = this.Maze;
 
-        console.log("Generating Maze...")
+        //console.log("Generating Maze...")
 
         if (newMaze[0][0] === -9999) {
             let initial_cell = this.builder;
@@ -330,7 +328,7 @@ class Maze extends Component {
     }
 
     setRandomOpenCells = () => {
-        console.log("SETTING RANDOM OPEN CELLS")
+        //console.log("SETTING RANDOM OPEN CELLS")
         let cells = [];
 
         let maze = this.Maze;
@@ -379,7 +377,7 @@ class Maze extends Component {
         this.setState({
             clicked: false,
         })
-        console.log("Maze lost its focus!");
+        //console.log("Maze lost its focus!");
     }
 
     deleteMessage = () => {
