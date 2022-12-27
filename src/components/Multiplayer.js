@@ -9,12 +9,10 @@ import MessageBox from './MessageBox'
 
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { db, auth, _signInAnonymously, _onAuthStateChanged, _ref, _set, _onDisconnect, _onChildAdded, _onChildRemoved, _onValue } from './firebase'
+import { db, auth, _signInAnonymously, _onAuthStateChanged, _ref, _set, _onDisconnect, _onChildAdded, _onChildRemoved, _onValue, _serverTimestamp } from './firebase'
 
 import Maze from './Maze'
 import '../css/Multiplayer.css'
-import { serverTimestamp } from 'firebase/database';
-
 
 
 let playerID;
@@ -376,7 +374,7 @@ function Multiplayer(props) {
                     if (timeLeft < 1000) {
                         countdownChanges = 0;
                         clearInterval(countdownInterval);
-                        console.log("0.0 left");
+                        //console.log("0.0 left");
                         if (GAME_ON) {
                             setCountdown(0);
                             setStart(true);
@@ -500,8 +498,6 @@ function Multiplayer(props) {
                 setPlayer4({ x: newPlayer.x, y: newPlayer.y });
 
             }
-           
-           
         })
 
         _onChildRemoved(allPlayersRef, (data) => {
@@ -798,7 +794,7 @@ function Multiplayer(props) {
 
         //console.log("SERVERTIMESTAMP: ", serverTimestamp())
         _set(COUNTDOWN_REF, {
-            startTime: serverTimestamp(), //db.ServerValue.TIMESTAMP,
+            startTime: _serverTimestamp, //db.ServerValue.TIMESTAMP,
             seconds: 10
         })
 
