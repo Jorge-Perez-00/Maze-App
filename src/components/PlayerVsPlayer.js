@@ -1,12 +1,12 @@
 
-
-
 import { Component } from "react";
 
 import Maze from './Maze';
 import Sidebar from './Sidebar'
 import MessageBox from './MessageBox';
 
+import MAZE_MUSIC from '../audios/maze.mp3'
+import CONCLUSION_SOUND from '../audios/conclusion.mp3'
 
 class PlayerVsPlayer extends Component {
     constructor(props) {
@@ -21,12 +21,21 @@ class PlayerVsPlayer extends Component {
 
             start: true,
             gameMessage: "",
+            showMessage: false,
             newMaze: true,
 
         }
 
+        this.mazeMusic = new Audio(MAZE_MUSIC);
+        this.conclusionSound = new Audio(CONCLUSION_SOUND);
+
     }
 
+    componentWillUnmount() {
+        if(this.mazeMusic.currentTime !== 0 ) {
+            this.stopMusic();
+        }
+    }
 
     setMazeInfo = (maze) => {
         this.setState({
@@ -40,7 +49,7 @@ class PlayerVsPlayer extends Component {
 
     /*
             Handles all key presses when playing the Maze game modes
-          */
+    */
     handleOnKeyDown = (event) => {
 
         if (this.state.start) {
@@ -94,13 +103,17 @@ class PlayerVsPlayer extends Component {
             let p1_col = PlayerPosition.y;
 
             if ((p1_row !== -1 && p1_row !== this.state.rows) && (p1_col !== -1 && p1_col !== this.state.columns) && maze[p1_row][p1_col] !== -9999 && p1) {
-                console.log(PlayerPosition)
+
                 this.setState({
                     player: PlayerPosition,
                     gameMessage: (p1_row === this.state.rows - 1 && p1_col === this.state.columns - 1) ? "Player 1 Won!" : "",
+                    showMessage: true,
                     start: (p1_row === this.state.rows - 1 && p1_col === this.state.columns - 1) ? false : true,
                     newMaze: (p1_row === this.state.rows - 1 && p1_col === this.state.columns - 1) ? true : false,
                 })
+                if (p1_row === this.state.rows - 1 && p1_col === this.state.columns - 1) {
+                    this.stopMusic();
+                }
 
             }
 
@@ -112,9 +125,13 @@ class PlayerVsPlayer extends Component {
                 this.setState({
                     player2: Player2Position,
                     gameMessage: (p2_row === this.state.rows - 1 && p2_col === this.state.columns - 1) ? "Player 2 Won!" : "",
+                    showMessage: true,
                     start: (p2_row === this.state.rows - 1 && p2_col === this.state.columns - 1) ? false : true,
                     newMaze: (p2_row === this.state.rows - 1 && p2_col === this.state.columns - 1) ? true : false,
                 })
+                if (p2_row === this.state.rows - 1 && p2_col === this.state.columns - 1) {
+                    this.stopMusic();
+                }
 
             }
 
@@ -130,6 +147,9 @@ class PlayerVsPlayer extends Component {
             start: true,
             newMaze: false,
         })
+
+        this.mazeMusic.currentTime = 0;
+        this.mazeMusic.play();
     }
 
     stopGame = () => {
@@ -137,7 +157,9 @@ class PlayerVsPlayer extends Component {
             start: false,
             newMaze: true,
             gameMessage: "Out of time! You lost!",
+            showMessage: true,
         })
+        this.stopMusic();
     }
 
     createNewMaze = () => {
@@ -151,8 +173,16 @@ class PlayerVsPlayer extends Component {
 
     removeMessageBox = () => {
         this.setState({
-            gameMessage: ""
+            showMessage: false,
         })
+    }
+
+    stopMusic = () => {
+        this.mazeMusic.pause();
+        this.mazeMusic.currentTime = 0;
+
+        this.conclusionSound.currentTime = 0;
+        this.conclusionSound.play();
     }
 
 
@@ -162,7 +192,7 @@ class PlayerVsPlayer extends Component {
             <div className="main-container">
 
                 <MessageBox 
-                    open={this.state.gameMessage !== ""}
+                    open={this.state.gameMessage !== "" && this.state.showMessage}
                     message={this.state.gameMessage}
                     buttons={[{ text: "Close", onClick: this.removeMessageBox, className: "enabled" }]}
                 />

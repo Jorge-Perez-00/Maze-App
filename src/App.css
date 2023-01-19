@@ -6,25 +6,23 @@
 }
 
 .App {
+  position: absolute;
   text-align: center;
   background-color: #121212;
   height: 100%;
   width: 100%;
-  position: absolute;
   overflow: auto;
   z-index: -9999;
   box-sizing: border-box;
 }
 
-
-
 button {
-  font-size: 25px;
- 
-  display: inline-block;
   cursor: pointer;
-  
+  padding: 0;
+  border-style: none;
 }
+
+
 
 .mode {
   font-size: 40px;
@@ -46,22 +44,24 @@ button {
 
 .cell {
   background-color: #1C2833;
-  /*
-  outline: 2.5px solid black;
-  */
-  
-  /*
-  width: 20px;
-  height: 20px;
-  */
-  outline: 2.5px solid black;
-  width: 20px;
-  height: 20px;
-  display: inline-flex;
-  margin-left: 1px;
-  margin-right: 1px;
+ 
 
-  
+    outline: .10vmin solid black;
+    width: 3.33%;
+    height: 100%;
+    margin: auto;
+    padding: 0;
+    display: inline-flex;
+    
+ 
+
+    position: relative;
+
+    margin-left: .025%;
+    margin-right: .025%;
+
+    z-index: 51;
+
 }
 
 
@@ -77,20 +77,21 @@ button {
 
 
 .rows {
+    width: 100%;
+    height: 3.33%;
+    padding: 0;
+    display: flex;
 }
 
 .player {
   box-sizing: border-box;
-  /*
-  width: 20px;
-  height: 20px;
-  */
 
-  width: 20px;
-  height: 20px;
-  font-size: 15px;
+  width: 100%;
+  height: 100%;
+
+  font-size: 1.5vw;
   color: black;
-  outline: 1px solid black;
+  outline: .10vmin solid black;
   text-align: center;
   position: absolute;
   margin-bottom: auto;
@@ -115,6 +116,7 @@ button {
   background-color: #3e69f8;
 }
 
+
 .you {
   z-index: 50;
 }
@@ -123,21 +125,18 @@ button {
   z-index: 20;
 }
 
+
 .playerBox {
   position: absolute;
   background-color: #1C2833;
-  outline: 1px solid white;
-  border-radius: 6px;
-  padding-left: 3.5px;
-  padding-right: 3.5px;
+  outline: .10vmin solid white;
+  border-radius: .75vmin;
+  padding-left: .5vmin;
+  padding-right: .5vmin;
   width: max-content;
   height: max-content;
   
   color: white;
-  /*
-  top: -25px;
-  left: -6.5px;
-*/
   top: -65%;
   left: 50%;
 
@@ -155,58 +154,57 @@ button {
 
 
 .builder {
-  width: 20px;
-  height: 20px;
-  font-size: 15px;
-  color: black;
   background-color: rgb(221, 224, 0);
-  outline: 2px solid black;
-  text-align: center;
-  position: absolute;
-  margin-bottom: auto;
-  margin-top: auto;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 
 
 .main-container {
-  background-color: transparent;
   display: flex;
+  background-color: transparent;
   width: max-content;
   height: max-content;
   margin: auto;
-  padding: 10px;
-  border-radius: 10px;
-  outline: 2px solid white;
+  padding: 1.25vmin;
+  border-radius: 1.25vmin;
+  outline: .25vmin solid white;
 }
 
 .maze-container {
+  position: relative;
   background-color: transparent;
   cursor: pointer;
-  width: max-content;
-  height: max-content;
+  
+  width: 62.5vw;
+  height: 62.5vw;
+    
+  max-width: 80vh;
+  max-height: 80vh;
+  
+  
   margin: auto;
-  position: relative;
+  padding: 0;
+  outline: none;
 
 }
 
 
 .click-message {
-  width: 280px;
+  position: absolute;
+  
+  width: 50%;
   height: max-content;
   margin: auto;
   text-align: center;
-  position: absolute;
   background-color: rgba(180, 32, 32, 0.85);
   color: white;
   font-weight: lighter;
-  font-size: 50px;
+ 
+  font-size: 5vw;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 10px;
+  border-radius: 2vmin;
   z-index: 100;
 
 }
@@ -219,7 +217,7 @@ button {
   top: 0;
   left: 0;
   opacity: 70%;
-  z-index: 50;
+  z-index: 51;
 }
 
 .multiplayer-countdown-container {
@@ -227,20 +225,22 @@ button {
   background-color: aliceblue;
   top: 50%;
   left: 50%;
-  width: 25%;
-  height: 25%;
+  width: 35%;
+  height: 35%;
   transform: translate(-50%, -50%);
-  padding: 10px;
-  border-radius: 15px;
-  z-index: 51;
+  padding: 2vmin;
+  border-radius: 8%;
+  z-index: 52;
 }
 
 .multiplayer-countdown {
+  position: absolute;
   color: rgb(20, 160, 160);
-  font-size: 125px;
+  /*font-size: 125px;*/
+
+  font-size: 20vw;
   margin: auto;
   transform: translate(-50%, -50%);
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -253,73 +253,21 @@ button {
   
 }
 
-@media screen and (max-width: 1150px) {
-  
-  .maze-container {
-    margin: 0;
-  }
 
-  .cell {
-
-    width: 17px;
-    height: 17px;
-  }
-
+@media screen and (max-height: 75vw) {
   .player {
-    width: 17px;
-    height: 17px;
-  }
-  
-}
-
-@media screen and (min-width: 1921px) {
-  .main-container {
-    margin-top: 100px;
-  }
-
-  .cell {
-    width: 30px;
-    height: 30px;
-  }
-
-  .player {
-    width: 30px;
-    height: 30px;
-    font-size: 22.5px;
+    font-size: 2vh;
   }
 
   .multiplayer-countdown {
-    font-size: 175px;
+    font-size: 25vh;
   }
 
-} 
-
-@media screen and (max-height: 800px) {
-
-  .maze-container {
-    margin: 0;
+  .click-message {
+    font-size: 6.5vh;
+  
   }
-
-  .cell {
-    width: 20px;
-    height: 20px;
-    outline: 1px solid black;
-  }
-
-  .player {
-    width: 20px;
-    height: 20px;
-    font-size: 15px;
-  }
-
-  .rows {
-    display: flex;
-  }
-
 }
-
-
-
 
 
 

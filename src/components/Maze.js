@@ -108,16 +108,6 @@ class Maze extends Component {
       Returns true if 'position' has no visited neighbours.
     */
     hasNoVisitedNeighbours = (previousPosition, position) => {
-        /*
-        let maze; 
-        if(this.props.mode === "Training") {
-            //maze = [...this.state.maze];
-            maze = this.Maze;
-        }
-        else {
-            maze = this.maze
-        }
-        */
         let maze = this.Maze;
 
 
@@ -144,16 +134,6 @@ class Maze extends Component {
       - If the unvisited neighbour cell also has no unvisited neighbours.
     */
     checkNeighbours = (position) => {
-        /*
-        let maze;
-        if (this.props.mode === "Training") {
-            //maze = [...this.state.maze];
-            maze = this.Maze;
-        }
-        else {
-            maze = this.maze
-        }
-        */
         let maze = this.Maze;
 
         let neighbours = this.getNeighbours(position);
@@ -396,7 +376,6 @@ class Maze extends Component {
         let message;
         
         if(!this.state.clicked && this.props.start && !this.props.agent) {
-            //message = <h1 className="click-message" >'Click Maze'</h1>
             message = 
             <>
                 <div className="maze-message-background">
@@ -407,12 +386,9 @@ class Maze extends Component {
         }
         
         
-        // if(!this.state.clicked && (this.props.start === true) && this.props.multiplayerMaze) {
-        //     message = <h1 className="click-message" >'Click Maze'</h1>
-        // }
        
 
-        //Prop Characters
+        //PROPS CHARACTERS
         let agent = this.props.agent ? this.props.agent : {};
         let player = this.props.player ? this.props.player : {};
         let player2 = this.props.player2 ? this.props.player2 : {}; 
@@ -423,9 +399,7 @@ class Maze extends Component {
         let path = this.props.path ? this.props.path : new Set();
        
 
-        //console.log(path)
-
-        //Prop Functions
+        //PROP FUNCTIONS
         let handleOnKeyDown = this.props.handleOnKeyDown ? this.props.handleOnKeyDown : null;
         let handleOnKeyUp = this.props.handleOnKeyUp ? this.props.handleOnKeyUp : null;
 
@@ -442,7 +416,7 @@ class Maze extends Component {
                                     ((path.has(rowID.toString() + '-' + cellID.toString()) && this.state.maze[rowID][cellID] !== -9999) && <h2 className="player agent-path"></h2>)
 
                                 }
-                                { (this.state.builder.x === rowID && this.state.builder.y === cellID) ? <h2 className="builder">B</h2> : null }
+                                { (this.state.builder.x === rowID && this.state.builder.y === cellID) ? <h2 className="player builder">B</h2> : null }
                                 { (agent.x === rowID && agent.y === cellID) ? <h2 className="player agent">A</h2> : null }
                                 { (player4.x === rowID && player4.y === cellID) ? 
                                     <h2 className={`player p4 ${player4.player ? player4.player : ""}`}>P4

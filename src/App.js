@@ -102,10 +102,11 @@ class App extends Component {
           buttons={[{ text: "Close", onClick: this.closeMessageBox }]}
         />
 
+
         <MessageBox 
-          open={this.state.matches && !this.state.touchScreen}
-          message={"Screen is too small!"}
-          buttons={[]}
+          //open={this.state.matches && !this.state.touchScreen}
+          //message={"Screen is too small!"}
+          //buttons={[]}
         />
 
 

@@ -2,42 +2,42 @@
 .form-container {
     position: absolute;
     background-color: rgb(165, 182, 196);
-    outline: 2px solid rgb(255, 255, 255); 
+    outline: .5vmin solid aqua; 
     
-    border-radius: 5px;
-    padding: 40px;
+    border-radius: 1vmin;
+    padding: 5vmin;
     z-index: 100;
-    width: 400px;
+    width: 50vmin;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
 label {
-    font-size: 25px;
-    margin-left: 0;
-    font-weight: 600;
+    font-size: 4vmin;
+    font-weight: 500;
 }
 
 input[type=text] {
     width: 100%;
-    font-size: 20px;
+    font-size: 3.25vmin;
     display: inline-block;
-    padding: 12px 20px;
-    border: 1px solid black;
+    padding: 1vmin 1.5vmin;
+    border: .10vmin solid black;
     box-sizing: border-box;
-    margin: 8px 0;
-    border-radius: 8px;
+    margin: 1vmin 0;
+    border-radius: 1.25vmin;
+    border-style: none;
     background-color: aliceblue;
 }
 
 input[type=submit] {
     width: 50%;
-    font-size: 25px;
-    padding: 10px 20px;
-    border: 1px solid black;
-    margin: 8px 0;
-    border-radius: 8px;
+    font-size: 3vmin;
+    padding: 1vmin 1.75vmin;
+    border: .10vmin solid black;
+    margin: 1vmin 0;
+    border-radius: 1.25vmin;
     cursor: pointer;
     background-color: aliceblue;
 }
@@ -47,20 +47,3 @@ input[type=submit]:hover {
 }
 
 
-@media screen and (min-width: 1921px) {
-  .form-container {
-    width: 600px;
-  }
-
-  label {
-    font-size: 45px;
-  }
-
-  input[type=text] {
-    font-size: 40px;
-  }
-
-  input[type=submit] {
-    font-size: 40px;
-  }
-}

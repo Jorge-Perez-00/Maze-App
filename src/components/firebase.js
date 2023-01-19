@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, onDisconnect, onChildAdded, onChildRemoved, onValue, serverTimestamp } from "firebase/database";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInAnonymously, onAuthStateChanged, browserSessionPersistence, setPersistence } from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_APIkEY,
@@ -28,4 +28,5 @@ export const _onChildAdded = onChildAdded;
 export const _onChildRemoved = onChildRemoved;
 export const _onValue = onValue;
 export const _serverTimestamp = serverTimestamp();
-
+export const _browserSessionPersistence = browserSessionPersistence;
+export const _setPersistence = setPersistence;

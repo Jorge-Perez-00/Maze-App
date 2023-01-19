@@ -42,14 +42,15 @@ function Sidebar(props) {
 
     return(
         <div className="sidebar-container">
-            
+             
             {(mode !== "Training" && mode !== "Multiplayer") &&
                 <div className="game-info-childs child-one" >
-                    {start && mode !== "Training" ? <Timer onZero={stopGame} /> : <div className="timer">0:00</div>}
+                    {start && mode !== "Training" ? <Timer onZero={stopGame} /> : <div className="timer">1:00</div>}
 
                 </div>
             }
            
+            
             {mode !== "Multiplayer" ? 
                 <div className="game-info-childs child-two" style={mode === "Training" ? { height: '76%' } : { height: '58%' }} >
                     {mode !== "Training" &&
@@ -71,7 +72,7 @@ function Sidebar(props) {
                     }
 
                     <div className='maze-info-container'>
-                        <div className='character-info'>
+                        <div className='character-info-container'>
                             <h4 className='info-title'>Characters</h4>
                             <ul className='character-list'>
                                 {mode === "Training" &&
@@ -103,7 +104,7 @@ function Sidebar(props) {
 
                         </div>
 
-                        <div className='environment-info'>
+                        <div className='environment-info-container'>
                             <h4 className='info-title'>Environment</h4>
 
                             <ul className='environment-list'>
@@ -113,16 +114,16 @@ function Sidebar(props) {
                                 </li>
                                 <li>
                                     <img src={wallcell} alt="wall/trap cell" className='info-image' />
-                                    <h4 className='info-name'>- Wall/Trap Cell</h4>
+                                    <h4 className='info-name'>- Wall</h4>
                                 </li>
                                 <li>
                                     <img src={exitcell} alt="exit cell" className='info-image' />
-                                    <h4 className='info-name'>- Exit Cell</h4>
+                                    <h4 className='info-name'>- Exit</h4>
                                 </li>
                                 {mode === "Training" &&
                                     <li>
                                         <img src={agentPath} alt="path" className='info-image' />
-                                        <h4 className='info-name'>- Agent's Path</h4>
+                                        <h4 className='info-name'>- Path</h4>
                                     </li>
                                 }
 
@@ -132,14 +133,16 @@ function Sidebar(props) {
                     </div>
                     {mode === "Training" &&
                         <div className='info-box'>
-                            <h1 className='info-text'>Episodes: {trainingInfo.Episode}</h1>
-                            <h1 className='info-text'>Epsilon: {trainingInfo.Epsilon}</h1>
-                            {trainingInfo.mazeType === "show" ?
-                                <h1 className='info-text'>Mode: Show Animation</h1> :
-                                trainingInfo.mazeType === "hide" ?
-                                    <h1 className='info-text'>Mode: Hide Animation</h1> :
-                                    <h1 className='info-text'>Mode: ? </h1>
-                            }
+                            <div className='style-box'>
+                                <h1 className='info-text'>Episodes: {trainingInfo.Episode}</h1>
+                                <h1 className='info-text'>Epsilon: {trainingInfo.Epsilon}</h1>
+                                {trainingInfo.mazeType === "show" ?
+                                    <h1 className='info-text'>Mode: Show Animation</h1> :
+                                    trainingInfo.mazeType === "hide" ?
+                                        <h1 className='info-text'>Mode: Hide Animation</h1> :
+                                        <h1 className='info-text'>Mode: ? </h1>
+                                }
+                            </div>
                         </div>
                     }
 
@@ -147,7 +150,7 @@ function Sidebar(props) {
                 <div className="game-info-childs child-two" style={{ height: '76%' }}>
                     <div className='maze-info-container'>
                         <div className='multiplayer-players'>
-                            <h4 className='info-title'>Players</h4>
+                            <h4 className='info-title'>PLAYERS</h4>
                             <ul className='character-list-m'>          
                                 
                                 <li className={`item-m ${playersInfo.player1.name === "?" ? 'item-hide' : "" }`}>
@@ -184,7 +187,8 @@ function Sidebar(props) {
                 </div>
 
             }
-            {mode === "Training" ? 
+
+            {mode === "Training" ?
                 <div className="game-info-childs child-three training" style={{ height: '10%' }}>
                     {trainingInfo.mazeType !== "show" && start && !trainingInfo.mazeInProgress ?
                         <button title="Show maze generation and training animation" onClick={trainingInfo.setMazeType} id={"show"} className='game-buttons left enabled-training-button'>SHOW</button> :
@@ -199,45 +203,19 @@ function Sidebar(props) {
                             <button title="Hide maze generation and training animation" className='game-buttons right frozen-training-button'>HIDE</button> :
                             <button className='game-buttons right disabled-button'>HIDE</button>
                     }
-                </div> : 
-                mode === "Multiplayer" ? null : 
+                </div> :
+                mode === "Multiplayer" ? null :
                     <div className="game-info-childs child-three">
                         {gameMessage}
                     </div>
             }
 
-            
-            
-          
-            {/*mode !== "Multiplayer" &&
-                <div className="game-info-childs child-four" >
-                    {startButton}
-                    {newMaze ?
-                        <button title="Generate a new random maze" onClick={createNewMaze} className="game-buttons right enabled-button" >NEW MAZE</button> :
-                        <button className="game-buttons right disabled-button" >NEW MAZE</button>
-                    }
-                </div> 
-                */}
 
-            {/*(mode === "Multiplayer" && multiplayerHost) ? 
-                <div className="game-info-childs child-four" >
-                    {startButton}
-                    {newMaze ?
-                        <button title="Generate a new random maze" onClick={createNewMaze} className="game-buttons right enabled-button" >NEW MAZE</button> :
-                        <button className="game-buttons right disabled-button" >NEW MAZE</button>
-                    }
-                </div> : 
+            {(mode === "Multiplayer" && !multiplayerHost) ?
                 <div className="game-info-childs child-four" >
                     <button className="game-buttons left disabled-button">START</button>
                     <button className="game-buttons right disabled-button" >NEW MAZE</button>
-                </div>
-                */}
-
-            {(mode === "Multiplayer" && !multiplayerHost) ? 
-                <div className="game-info-childs child-four" >
-                    <button className="game-buttons left disabled-button">START</button>
-                    <button className="game-buttons right disabled-button" >NEW MAZE</button>
-                </div> : 
+                </div> :
                 <div className="game-info-childs child-four" >
                     {startButton}
                     {newMaze ?
@@ -248,16 +226,16 @@ function Sidebar(props) {
 
             }
 
-            {mode === "Multiplayer" && 
+            {mode === "Multiplayer" &&
                 <div className="game-info-childs child-five">
-                    {(hasUsername && !ready) ? 
+                    {(hasUsername && !ready) ?
                         <button onClick={setReady} className='ready-button-m ready-enabled'>READY</button> :
                         <button className='ready-button-m ready-disabled'>READY</button>
                     }
                 </div>
             }
-            
 
+            
         </div>
     )
 }

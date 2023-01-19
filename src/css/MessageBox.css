@@ -20,25 +20,29 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 8px;
-    border: 5px solid none;
-    padding: 50px;
+    border-radius: 1vmin;
+    padding: 5vmin;
     z-index: 150;
 }
 
 .message-text{
     color: black;
+
+    font-size: 5.5vmin;
     font-weight: lighter;
+    
     margin-top: 0;
 }
 
 .message-button {
-    width: 150px;
-    margin: 5px;
-    font-size: 25px;
-    border-radius: 12px;
-    padding: 8px;
+    width: 20vmin;
+    margin: 1vmin;
+    
+    font-size: 3.5vmin;
+    border-radius: 1.5vmin;
+    padding: 1.5vmin;
     background-color: aliceblue;
+    outline: .10vmin solid black;
 }
 
 
@@ -53,17 +57,4 @@
 }
 
 
-@media screen and (min-width: 1921px) {
-   .message-text {
-    font-size: 60px;
-   }
-
-   .message-button {
-    width: 250px;
-    font-size: 45px;
-   }
-
-
-
-}
 

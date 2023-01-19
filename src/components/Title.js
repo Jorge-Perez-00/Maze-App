@@ -1,9 +1,6 @@
 
 import '../css/Title.css'
 
-
-
-
 function Title(props) {
     const {mode, handleTitleClick} = props;
 
@@ -35,6 +32,5 @@ function Title(props) {
     )
 
 }
-
 
 export default Title;

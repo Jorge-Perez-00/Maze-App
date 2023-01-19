@@ -1,7 +1,4 @@
 
-
-
-
 .background-container {
     position: fixed;
     z-index: -2;
@@ -17,30 +14,14 @@
 
 
 .background-cells {
-    /*
-    width: 20px;
-    height: 20px;
-    */
     width: 2vw;
     height: 2vw;
+
     display: inline-flex;
     margin: auto;
 
-    outline: 1px solid #121212;
+    outline: .10vmin solid #121212;
 
-    /*
-    outline: 1px solid rgb(140, 150, 158);
-    */
-
-    /*
-    outline: 1px solid black;
-    background-color: rgba(240, 248, 255, 0.692);
-    */
-
-    /*
-    outline: 1px solid black;
-    background-color: rgba(173, 216, 230, 0.493);
-    */
     opacity: 1;
 }
 
@@ -52,7 +33,6 @@
 .blue {
    opacity: 1;
    background-color: rgba(0, 255, 255, 0.35);
-   outline: 1px solid black;
 }
 
 .pink {
@@ -65,25 +45,6 @@
     opacity: 1;
     background-color: rgba(240, 248, 255, 0.692);
 }
-
-
-
-
-
-
-
-/*
-.col-1 {
-    animation-duration: 1s;
-    animation-delay: 1s;
-    animation-iteration-count: infinite;
-}
-.col-2 {
-    animation-duration: 1s;
-    animation-delay: 1.1s;
-    animation-iteration-count: infinite;
-}
-*/
 
 @keyframes LightUp {
     0% {

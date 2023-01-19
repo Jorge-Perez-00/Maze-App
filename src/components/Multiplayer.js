@@ -1,33 +1,26 @@
-//import db from './firebase'
-//import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
-//import { set } from 'firebase/database';
-
-//import { onChildAdded, onChildRemoved, onValue } from 'firebase/database';
 
 import Sidebar from './Sidebar'
 import MessageBox from './MessageBox'
 
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { db, auth, _signInAnonymously, _onAuthStateChanged, _ref, _set, _onDisconnect, _onChildAdded, _onChildRemoved, _onValue, _serverTimestamp } from './firebase'
+import { db, auth, _signInAnonymously, _onAuthStateChanged, _ref, _set, _onDisconnect, _onChildAdded, _onChildRemoved, _onValue, _serverTimestamp, _browserSessionPersistence, _setPersistence } from './firebase'
 
 import Maze from './Maze'
 import '../css/Multiplayer.css'
 import  COUNTDOWN_SOUND from '../audios/countdown.mp3'
 import MAZE_MUSIC from '../audios/maze.mp3'
 import CONCLUSION_SOUND from '../audios/conclusion.mp3'
+//import { get } from 'firebase/database';
 
 let playerID;
-let myPlayerNumber;
 let playerRef;
 let gameRef;
 let gameInfoRef;
-let mazeRef;
 let gameInfo = {};
 let players = {};
 let spectator;
 
-let userMode = null;
 let GAME_ON = null;
 
 
@@ -62,6 +55,7 @@ let playersInfo = {
 let countdownSound = new Audio(COUNTDOWN_SOUND);
 let mazeMusic = new Audio(MAZE_MUSIC);
 let conclusionSound = new Audio(CONCLUSION_SOUND);
+
 
 function Multiplayer(props) {
 
@@ -98,9 +92,13 @@ function Multiplayer(props) {
     //let playerRef;
    
     useEffect(() => {
-        
-        //countdownSound.play()
-        signIn();
+        //signOut(auth);
+        //console.log("CURRENT USER: ", auth.currentUser);
+        //if(!auth.currentUser) {
+            signIn();
+        //}
+
+        //signIn();
        
         return () => {
            //signOut(auth);
@@ -152,25 +150,6 @@ function Multiplayer(props) {
 
                 }
             }
-            
-
-            //let row = PlayerPosition.x;
-            //let col = PlayerPosition.y;
-        //if ((row !== -1 && row !== 30) && (col !== -1 && col !== 30)) {
-
-        //}
-            /*
-            if ((row !== -1 && row !== this.state.rows) && (col !== -1 && col !== this.state.columns) && maze[row][col] !== -9999) {
-                this.setState({
-                    player: PlayerPosition,
-                    gameMessage: (row === this.state.rows - 1 && col === this.state.columns - 1) ? "You Won!" : "",
-                    start: (row === this.state.rows - 1 && col === this.state.columns - 1) ? false : true,
-                    newMaze: (row === this.state.rows - 1 && col === this.state.columns - 1) ? true : false,
-                })
-
-            }
-            */
-            //console.log(event.key);
 
         }
 
@@ -438,42 +417,16 @@ function Multiplayer(props) {
                     }
                 }, 100)
             }
-            /*
-            const interval = setInterval(() => {
-                const timeLeft = (seconds * 1000) - (Date.now() - startTime - serverTimeOffset);
-                if (timeLeft < 0) {
-                    clearInterval(interval);
-                    console.log("0.0 left");
-                    if(GAME_ON) {
-                        setStart(true);
-                        setControls(true);
-                    }
-
-                    if(spectator === false) {
-                        const COUNTDOWN_REF = _ref(db, 'countdown');
-
-                        _set(COUNTDOWN_REF, {
-                            startTime: 0, //db.ServerValue.TIMESTAMP,
-                            seconds: 7
-                        })
-                    }
-                    //setStart(true);
-                    //setControls(true);
-                }
-                else {
-                    console.log(`${Math.floor(timeLeft / 1000)}`) //.${timeLeft % 1000}`);
-                    setCountdown(Math.floor(timeLeft / 1000));
-                }
-            }, 100)
-            */
         })
        
           
 
         _onValue(allPlayersRef, (snapshot) => {
-            //console.log("                   ");
-            //console.log("SNAPSHOT: ", snapshot.val());
-            //console.log("SNAPSHOT NUMBER: ", snapshot.val().length());
+            /*
+            console.log("                   ");
+            console.log("SNAPSHOT: ", snapshot.val());
+            console.log("SNAPSHOT NUMBER: ", snapshot.val().length());
+            */
             players = snapshot.val();
             if(players !== null) {
                 //console.log("THERE ARE PLAYERS IN GAME!");
@@ -483,9 +436,8 @@ function Multiplayer(props) {
                 const playerKey = player.key; 
                 const playerData = player.val();
                 //console.log(playerID);
-                
                 //console.log(playerData);
-                
+
                 if(playerKey === playerID && playerData.host === true) {
                     setHost(true);
                 }
@@ -539,10 +491,12 @@ function Multiplayer(props) {
         })
 
         _onChildRemoved(allPlayersRef, (data) => {
-            //console.log("             ")
-            //console.log("PLAYER HAS BEEN DISCONNECTED...")
-            //console.log(data.val());
-            //console.log(data.key);
+            /* 
+            console.log("             ")
+            console.log("PLAYER HAS BEEN DISCONNECTED...")
+            console.log(data.val());
+            console.log(data.key);
+            */
             const playerData = data.val();
             const removedPlayerID = playerData.id;
             const playerNumber = playerData.playerNumber;
@@ -675,6 +629,10 @@ function Multiplayer(props) {
         })
     }
 
+
+    /*
+        SIGN IN FUNCTION THAT WILL SIGN IN THE USER ANONYMOUSLY
+    */
     function signIn() {
         
         _onAuthStateChanged(auth, (user) => {
@@ -682,14 +640,13 @@ function Multiplayer(props) {
             if (user) {
                 //User is signed in...
 
-                //console.log("SIGNED IN: ", user.uid)
+                console.log("SIGNED IN: ", user.uid)
 
 
                 setOnline(true);
                 setInitialSetup(true);
 
                 playerID = user.uid;
-                myPlayerNumber = -1;
 
                 spectator = true;
 
@@ -700,24 +657,67 @@ function Multiplayer(props) {
                 _onDisconnect(playerRef).remove();
 
                 Game();
+
+                /*
+                let PLAYERS = Object.keys(players);
+                console.log("CHECK PLAYERS: ", PLAYERS);
+                */
             }
             else {
                 //console.log("SIGNED OUT!")
             }
 
         })
+        /*
+        get(_ref(db, 'players')).then((snapshot) => {
+            if (snapshot.exists()) {
+                console.log(snapshot.val());
+            } else {
+                console.log("No data available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+        */
         
+        _setPersistence(auth, _browserSessionPersistence)
+            .then(() => {
+                // Existing and future Auth states are now persisted in the current
+                // session only. Closing the window would clear any existing state even
+                // if a user forgets to sign out.
+                // ...
+                // New sign-in will be persisted with session persistence.
+                return _signInAnonymously(auth)
+                    .then(() => {
+                        // Signed in..
+                        //console.log("SIGNED IN !")
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        // ...
+                    });;
+            })
+            .catch((error) => {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+            });
+        /*
         _signInAnonymously(auth)
             .then(() => {
                 // Signed in..
+                console.log("SIGNED IN !")
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 // ...
             });
-    
+        */        
+            
     }
+
 
     /*
         Function that will check all 4 players states and returns the first open spot. 
@@ -749,6 +749,7 @@ function Multiplayer(props) {
         return 0;
     }
 
+
     function handleSubmit(event) {
         event.preventDefault();
 
@@ -771,8 +772,6 @@ function Multiplayer(props) {
         spectator = false;
         let openSpot = getOpenSpot();
         
-        
-        myPlayerNumber = openSpot;
         
         let firstPlayer = players === null ? true : false;
 
@@ -911,11 +910,8 @@ function Multiplayer(props) {
                         </form>
                     </div> 
                 </>
-               
             }
 
-            
-            {/*countdown !== 0 && <h1 style={{color: "white"}} >{countdown}</h1>*/}
             <MessageBox 
                 open={showInitialSetup}
                 message={"Welcome!"}

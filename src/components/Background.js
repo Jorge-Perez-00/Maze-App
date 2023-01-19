@@ -28,11 +28,7 @@ function Background (props) {
             interval = setInterval(() => {
                 RandomCellsDoubleSets();
             }, 25)   
-        }
-       
-        
-        
-        
+        }      
         
         return () => { 
             clearInterval(interval);

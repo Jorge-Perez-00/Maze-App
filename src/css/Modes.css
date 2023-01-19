@@ -1,5 +1,4 @@
 
-
 .mode-container {
     
     display: flex;
@@ -9,13 +8,18 @@
     list-style: none;
     position: relative;
     margin: 10px auto;
-    margin-top: 5vh;
-    padding: 10px;
-    background-color: transparent;
-
+    margin-top: 5vmin;
     
-    max-width: 1250px;
-    width: 80%;
+    padding: .5vw;
+    background-color: none;
+
+
+    /*width: 70vw;*/
+    width: 75vw;
+    height: max-content;
+    max-width: 150vh;
+    max-height: 75vh;    
+    
     
 }
 
@@ -23,38 +27,38 @@
     box-sizing: border-box;
     display: flex;
     width: 25%;
-    padding: 10px;
+    padding: .50%;
   
     height: auto;
-    aspect-ratio: 1/2;
+   
     background-color: none;
 
-    /*outline: 1px solid aqua;
-    */
 }
 
 .mode-card {
+    position: relative;
     box-sizing: border-box;
     text-align: center;
     
     background-color: #1b1a1ac7;
   
-    outline: 1.25px solid aliceblue;
+    outline: .10vmin solid aliceblue;
     width: 100%;
+    height: 100%;
     cursor: pointer;
 
     filter: brightness(1);
-    /*box-shadow: 0px 0px 10px -2px rgb(62, 249, 255);
-    */
+   
     animation: FadeIn 0.5s linear 0s;
 
-    
-    /*padding: 10px;
-    */
-    padding-top: 6px;
-    padding-right: 5px;
-    padding-left: 5px;
-    border-radius: 8px;
+
+    padding-top: 2%;
+    padding-right: 1.75%;
+    padding-left: 1.75%;
+
+
+
+    border-radius: 1.75%;
     
 }
 
@@ -64,31 +68,119 @@
 .mode-card:hover {
     color: black;
     background-color: rgb(238, 238, 238);
-    outline: 1.25px solid rgb(255, 255, 255);
 }
+
+.card0 .mode-title {
+    border-bottom: .25vmin solid rgb(255, 68, 62);
+}
+
+.card1 .mode-title {
+    border-bottom: .25vmin solid rgb(62, 249, 255);
+}
+
+.card2 .mode-title {
+    border-bottom: .25vmin solid pink;
+}
+
+.card3 .mode-title {
+    color: black;
+    border-bottom: .25vmin solid black;
+    /*animation: 4s colorChange infinite;*/
+}
+
+.card3 .mode-text {
+    color: black;
+}
+
+.card0 {
+    animation: homepageAnimation .50s linear;
+}
+
+.card1 {
+    animation: homepageAnimation .55s linear;
+}
+
+.card2 {
+    animation: homepageAnimation .6s linear;
+}
+
+.card3 {
+    animation: homepageAnimation .65s linear, backgroundColorChange 4s infinite;
+}
+
+
+@keyframes colorChange {
+    25% {
+        border-bottom-color: rgb(62, 249, 255);
+    }
+    50% {
+        border-bottom-color: pink;
+    }
+    75% {
+        border-bottom-color: rgb(251, 255, 0);
+    }
+    100% {
+        border-bottom-color: #3e69f8;
+    }
+} 
+
+@keyframes homepageAnimation {
+    0% {
+        top: -100px;
+        opacity: 0;
+    }
+
+    100% {
+        top: 0px;
+        opacity: 1;
+    }
+
+}
+
 
 /*
     BOX-SHADOW COLORS FOR EACH CARD (0-4) 
 */
 .card0:hover {
-    box-shadow: 4px 4px 15px rgb(255, 68, 62);
+    box-shadow: .5vmin .5vmin 2vmin rgb(255, 68, 62);
 }
 
 .card1:hover {
-    box-shadow: 4px 4px 15px rgb(62, 249, 255);
+    box-shadow: .5vmin .5vmin 2vmin rgb(62, 249, 255);
 }
 
 .card2:hover {
-    box-shadow: 4px 4px 15px pink;
+    box-shadow: .5vmin .5vmin 2vmin pink;
 }
 
 .card3:hover {
-    box-shadow: 4px 4px 15px white;
+    /*box-shadow: 4px 4px 15px white;
+    */
+    box-shadow: .5vmin .5vmin 2vmin white;
+
 }
 
-.card4:hover {
-    box-shadow: 4px 4px 15px white;
+@keyframes backgroundColorChange {
+    25% {
+        background-color: rgb(62, 249, 255);
+        
+    }
+
+    50% {
+        background-color: pink;
+        
+    }
+
+    75% {
+        background-color: rgb(251, 255, 0);
+    }
+
+    100% {
+        background-color: #3e69f8;
+    }
 }
+
+
 
 
 
@@ -114,22 +206,27 @@
 
 .mode-title {
     color: aliceblue;
-    font-size: 25px;
+    background-color: none;
+    width: max-content;
+  
     margin: auto;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight: lighter;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 4%;
+    margin-bottom: 5%;
+
+    
 }
 
 
 .mode-text {
     background-color: transparent;
     color: aliceblue;
-    font-size: 16px;
+    
     inline-size: 99%;
     line-height: 1.25;
     margin: auto;
+    margin-bottom: 15%;
 }
 
 
@@ -144,55 +241,36 @@
     }
 }
 
-/*
-@media screen and (max-width: 600px) {
+
+
+@media screen and (min-width: 1000px) {
+
     .mode-title {
-        font-size: 10px;
-    }
-    
-    .mode-text {
-        font-size: 5px;
-    }
-}
-
-@media screen and (max-width: 700px) {
-    .mode-title {
-        font-size: 15px;
-    }
-    
-    .mode-text {
-        font-size: 10px;
-    }
-    
-}
-*/
-
-
-
-
-
-
-
-@media screen and (max-width: 1000px) {
-    .card-item {
-        padding: 5px;
-        width: 38%;
-    }
-}
-
-@media screen and (min-width: 1001px) and (max-width: 1080px) {
-    .mode-title {
-        font-size: 20px;
+        font-size: 1.5vw;
     }
 
     .mode-text {
-        font-size: 14px;
+        font-size: 1vw;
+    }
+    
+}
+
+@media screen and (max-height: 50vw) {
+    .mode-title {
+        font-size: 3vh;
+    }
+
+    .mode-text {
+        font-size: 2vh;
     }
 }
 
-@media screen and (max-width: 768px) {
+
+@media screen and (min-width: 426px) and (max-width: 1000px) {
     .mode-container {
         width: 90%;
+        max-width: none;
+        max-height: none;
     }
 
     .card-item {
@@ -200,37 +278,21 @@
     }
 
     .mode-title {
-        font-size: 20px;
+        font-size: 4vw;
     }
 
     .mode-text {
-        font-size: 14px;
+        font-size: 2.25vw;
     }
 
 }
 
-@media screen and (min-width: 426px) and (max-width: 600px) {
-    .mode-container {
-        width: 90%;
-    }
-
-    .card-item {
-        width: 45%;
-    }
-
-    .mode-title {
-        font-size: 18px;
-    }
-
-    .mode-text {
-        font-size: 12px;
-    }
-
-}
 
 @media screen and (max-width: 425px /*620px*/) {
     .mode-container {
         width: 100%;
+        max-width: none;
+            max-height: none;
     }
 
     .card-item {
@@ -239,49 +301,13 @@
         aspect-ratio: 1/2;
     }
 
-    
-
-
-    /*
-    .mode-card {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-    }
-
-    .mode-image-container {
-       width: 50%;
-       margin: 0;
-    }
-
-    .mode-text-container {
-        width: 50%;
-
-    }
-    */
-    
-}
-
-@media screen and (max-height: 800px) {
-    .mode-container {
-        margin-top: 2vh;
-    }
-    
-}
-
-@media screen and (min-width: 1920px) and (min-height: 1080px) {
-    .mode-container {
-        max-width: 1800px;
-    }
-
     .mode-title {
-        font-size: 35px;
+        font-size: 6vw;
     }
-
-    .mode-text {
-        font-size: 25px;
-        
-    }
-
     
+    .mode-text {
+        font-size: 4.75vw;
+    }
 }
+
+
